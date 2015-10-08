@@ -1,9 +1,9 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 
-\title{RASPI Project Vision}
-\author{Evan Steele, Sean Rettig, Malcom Diller }
-\date{Senior Capstone}
+\title{Not exactly the Internet of Things for Outdoor Lighting: Problem Statement}
+\author{CS Senior Capstone Group 129\\Malcolm Diller, Sean Rettig, Evan Steele}
+\date{}
 
 \usepackage{natbib}
 \usepackage{graphicx}
@@ -22,8 +22,7 @@ What's better than outdoor lighting for home?  Outdoor lighting that just works 
 \label{fig:raspberry pi}
 \end{figure}
 
-Our system will consist of a wireless network of tiny computers (such as Raspberry Pis) that attach to each light (called a "node").  Each "client" node communicates with a central "server" node, which will automatically send out commands to the clients when it's time to turn on or off.  The central node will run a control program that can be easily accessed via a touch screen, a web browser, or a mobile device, where the user can locally or remotely control each light individually.  Want your lights to turn on at sunset and then dim gradually as the sun rises?  Simple.  Want your lights to flash when you're throwing a party?  Just press a button.  The control interface will allow users to easily set "rules" for what their lights do and when, depending on the time of day, the sun/moon position, and potentially even triggers such as weather conditions or calendar dates.  This system will be easily extendable to potentially control other devices as well, such as garage doors, sound systems, and more.
-
+Our system will consist of a wireless network of tiny “client” computers that each control up to 4 lights and are controlled by a central "server" computer, which will automatically send out commands to the clients when it's time to turn on or off.  The central node will run a control program that can be easily accessed via a touch screen, a web browser, or a mobile device, where the user can locally or remotely control each light individually.  Want your lights to turn on at sunset and then dim gradually as the sun rises?  Simple.  Want your lights to flash when you're throwing a party?  Just press a button.  The control interface will allow users to easily set "rules" for what their lights do and when, depending on the time of day, the sun/moon position, and potentially even triggers such as weather conditions or calendar dates.  This system will be easily extensible to potentially control other devices as well, such as garage doors, sound systems, and more.
 
 \begin{figure}[h!]
 \centering
@@ -32,7 +31,7 @@ Our system will consist of a wireless network of tiny computers (such as Raspber
 \label{fig:relay}
 \end{figure}
 
-To start off, this project will focus on a basic program to run on the server node that can successfully communicate on/off instructions to the client nodes, which in turn actually turn the lights on/off.  Next, we will need to create an interface for the server node that can be accessed either through the touchscreen or through a web browser/mobile device to actually configure the system.  The final main component will be the implementation of the rule system, which will allow lights to be toggled based on external factors such as sun position.
+To start off, this project will focus on a basic program to run on the server computer that can successfully communicate on/off instructions to the client computers, which then actually turn the lights on/off.  Next, we will need to create an interface for the server node that can be accessed either through the touchscreen or through a web browser/mobile device to actually configure the system.  The final main component will be the implementation of the rule system, which will allow lights to be toggled based on external factors such as sun position.
 
 \begin{figure}[h!]
 \centering
@@ -40,7 +39,6 @@ To start off, this project will focus on a basic program to run on the server no
 \caption{Wunderground, the API source}
 \label{fig:relay}
 \end{figure}
-
 
 What will we be showing at expo?  Simple: the whole thing!  All we need is the system itself and a power source.  Visitors will be able to use the interface to control the lights at the booth!
 
