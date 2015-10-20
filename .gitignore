@@ -3,4 +3,5 @@
 *.pyc
 *.aux
 *.log
+*.out
 Thumbs.db
