@@ -1,8 +1,10 @@
 \documentclass[12pt]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[margin=1.5in]{geometry}
+
 \usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage[margin=1.5in]{geometry}
 \usepackage{hyperref}
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{rotating}
 
@@ -32,46 +34,121 @@ Oregon State University\\
 Phone: 541-737-4398\\
 Email: hsuv@onid.orst.edu
 
-\section{Introduction to the Problem}
+\section{Problem Statement}
 
-introduction
+Outdoor lighting seems like a simple problem to solve, but the solutions on the
+market today are less than ideal.  The standard transformer/timer combos
+available in the big box stores are rudimentary and clunky at best (constantly
+needing to be adjusted for the changing sunset and sunrise times), but are
+reasonably priced. The new-generation smart apps for home automation are
+flexible and fancier, but are quite spendy and lock you into a specific
+protocol.  So why not use an open platform running on commodity hardware?  Easy
+to use, reasonably priced, and highly customizable--that is our goal.
 
 \section{Project Description}
 
-description
-
-\section{Requirements}
-
-high-level requirements
-
-\subsection{Requirement Status Table}
-\begin{tabular}{p{1cm}|p{7cm}|p{2cm}|p{2cm}} 
-    \textbf{Req \#} & \textbf{Requirement} & \textbf{Status}& \textbf{Comments}\\
-    1 & First requirement & Pending &\\
-\end{tabular}
+Our system will consist of a wireless network of tiny “client” computers that
+each control up to 4 sets of lights and are controlled by a central "server"
+computer, which will automatically send out commands to the clients when it's
+time to turn on or off.  The central node will run a control program that can
+be easily accessed via a touch screen, a web browser, or a mobile device, where
+the user can locally or remotely control each light individually.  Want your
+lights to turn on at sunset and then dim gradually as the sun rises?  Simple.
+Want your lights to flash when you're throwing a party?  Just press a button.
+The control interface will allow users to easily set "rules" for what their
+lights do and when, depending on the time of day, the sun/moon position, and
+potentially even triggers such as weather conditions or calendar dates.  This
+system will be easily extensible to potentially control other devices as well,
+such as garage doors, sound systems, and more.
 
 \section{Design}
 
-design
+Specifically, we plan to use a Raspberry Pi running Linux as the central server
+computer.  The Raspberry Pi will run a web server program that will allow
+nearby devices (such as laptops, phones, or tablets) to control it over a
+wireless network, or if connected to the home's internet connection, from
+practically anywhere in the world.  The Pi will also have a small touchscreen
+connected to it with the website open in a browser, so the user has a dedicated
+interface for the device.  The Pi will connect wirelessly to small wifi-enabled
+microcontrollers placed throughout the home, each of which are connected to up
+to 4 relays to control 4 sets of lights.
 
-\section{Specific Tasks to be Undertaken}
+\section{Requirements}
 
-\subsection{Defining the product}
+\subsection{Critical Requirements}
 
-defining
+The following requirements are critical to the basic functionality of the
+system and must be functional prior to the expo in spring term.
 
-\subsection{Tasks}
+\begin{enumerate}
+    \item Device control
+        \begin{enumerate}
+            \item Server is able to boot and start the control program
+            \item Server is able to send instructions wirelessly to clients
+            \item Clients are able to read instructions wirelessly from server
+            \item Clients are able to control the relays to power the lights on/off
+        \end{enumerate}
 
-\subsubsection{task 1}
-\begin{itemize}
-    \item subtask 1
-    \item subtask 2
-    \item subtask 3
-\end{itemize}
+    \item User interface
+        \begin{enumerate}
+            \item Main control program on server serves a web site with a control interface for the user
+            \item The web interface is accessible via the system's built-in touchscreen
+            \item The web interface is accessible to other devices like laptops and phones via a local wireless network
+        \end{enumerate}
+
+    \item Rules
+        \begin{enumerate}
+            \item Lights can be toggled based on time of day
+            \item Lights can be toggled based on day of week
+            \item Lights can be toggled based on day of month
+            \item Lights can be toggled based on day of year
+            \item Lights can be toggled based on specific dates
+            \item Lights can be toggled based on sunrise/sunset times
+        \end{enumerate}
+\end{enumerate}
+
+\subsection{Stretch Goals}
+
+The following requirements are optional; they are not critical to the basic
+functionality of the system and may be implemented only if time permits.
+
+\begin{enumerate}[resume]
+    \item Device control
+        \begin{enumerate}
+            \item System also controls devices other than lights
+                \begin{enumerate}
+                    \item Garage door openers
+                    \item Music players
+                    \item Holiday decorations
+                    \item Sprinkler systems
+                \end{enumerate}
+        \end{enumerate}
+    \item User interface
+        \begin{enumerate}
+            \item The web interface is accessible over the Internet
+                \begin{enumerate}
+                    \item The web interface is accessible only to the homeowner or other authorized individuals
+                    \item The web interface is hosted on a remote server for high availablity and the lack of need for the user to perform port forwarding on their router
+                \end{enumerate}
+        \end{enumerate}
+    \item Rules
+        \begin{enumerate}
+            \item Lights can be toggled based on weather conditions (would require Internet connection or light/moisture sensors)
+            \item Lights can be toggled based on a schedule in the user's calendar, e.g. Google calendar (would require Internet connection)
+            \item Lights can be toggled based on moon position or other celestial data
+            \item Lights can be toggled based on input from attached sensors
+                \begin{enumerate}
+                    \item Motion sensors
+                    \item Light sensors
+                    \item Moisture sensors
+                    \item Sound sensors
+                \end{enumerate}
+        \end{enumerate}
+\end{enumerate}
 
 \section{Preliminary Timetable}
 
-time estimate summary
+By the end of fall term, we plan to have a working proof-of-concept, using the Raspberry Pi and a basic control program to toggle lights on and off.  By the end of winter term, we plan to have all required features at least partially implemented, at which our project enters the beta phase.  As we finish up by ironing out bugs and perhaps completing stretch goals
 
 \subsection{Gantt Chart}
 Gantt chart available at our project SharePoint website: \url{url}
@@ -83,11 +160,9 @@ Gantt chart available at our project SharePoint website: \url{url}
 
 \section{Team Member Roles}
 
-Malcolm Diller -- Does stuff
-
-Sean Rettig -- Does stuff
-
-Evan Steele -- Does stuff
+Malcolm Diller -- Does stuff\\
+Sean Rettig -- Does stuff\\
+Evan Steele -- Does stuff\\
 
 We will take turns updating the project blog, with one student posting the
 update per week.
