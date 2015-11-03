@@ -83,10 +83,18 @@ system and must be functional prior to the expo in spring term.
 \begin{enumerate}
     \item Device control
         \begin{enumerate}
-            \item Server is able to boot and start the control program
-            \item Server is able to send instructions wirelessly to clients
-            \item Clients are able to read instructions wirelessly from server
-            \item Clients are able to control the relays to power the lights on/off
+            \item Server is loaded with firmware and is able to boot
+            \item Server is able to start the server control program automatically when powered on
+            \item Clients are loaded with firmware and are able to boot
+            \item Clients are able to start the client control program automatically when powered on
+            \item Client control program is able to automatically discover relays/lights that are connected to it
+            \item Client control program can control the relays to power the lights on/off individually
+            \item Lights can be toggled over a user-specified period of time, e.g. a light can gradually turn on and grow brighter over the course of 30 seconds
+            \item Clients can be paired with a server by pressing a button on each device at the same time, allowing multiple servers to be used in close proximity
+            \item Clients are able to communicate to the server which lights are available for control
+            \item Server is able to send light toggle instructions wirelessly to clients
+            \item Clients are able to read light toggle instructions wirelessly from the server
+            \item Clients are able to perform light toggle instructions received from the server
         \end{enumerate}
 
     \item User interface
@@ -94,18 +102,31 @@ system and must be functional prior to the expo in spring term.
             \item Main control program on server serves a web site with a control interface for the user
             \item The web interface is accessible via the system's built-in touchscreen
             \item The web interface is accessible to other devices like laptops and phones via a local wireless network
+            \item The web interface displays a list of connected clients
+            \item The web interface allows users to give each client a "nickname" for easy identification
+            \item The web interface displays a list of connected lights
+            \item The web interface allows users to give each light a "nickname" for easy identification
+            \item The web interface contains buttons for each light that can be used to control lights individually
+            \item The web interface contains the ability to put lights into "groups" that can be controlled together all at once
+            \item The web interface displays a list of light groups
+            \item The web interface allows users to give each light group a "nickname" for easy identification
+            \item Groups can also be nested into other groups to create hierarchies of lights
+            \item The web interface provides the user with options to toggle lights/groups based on rules, as described in the below "Rules" section
         \end{enumerate}
 
     \item Rules
         \begin{enumerate}
             \item Lights can be toggled manually, overriding any rules
-            \item Lights can be toggled based on time of day
-            \item Lights can be toggled based on day of week
-            \item Lights can be toggled based on day of month
-            \item Lights can be toggled based on day of year
-            \item Lights can be toggled based on specific dates
+            \item Lights can be toggled based on time of day (e.g. "turn on at 8pm and turn off at 6am")
+            \item Lights can be toggled based on day of week (e.g. "turn on during Wednesdays")
+            \item Lights can be toggled based on day of month (e.g. "turn on every 1st of the month")
+            \item Lights can be toggled based on day of year (e.g. "turn on every January 1st")
+            \item Lights can be toggled based on specific dates (e.g. "turn on from Dec. 24th at 2am to Dec 27th at 8pm")
             \item Lights can be toggled based on sunrise/sunset times
+            \item Multiple rules can be applied to a single light/group using an AND/OR system to combine the rules (e.g. "turn on between 8pm and 6am AND turn on on Wednesday" will turn the lights on between 8pm and 6am on Wednesdays, and will be off the rest of the time, whereas using an OR instead of an AND would cause the lights to be on every day from 8pm to 6am and also on all day during Wednesday)
+            \item Lights can be toggled based on the toggle state of its parent group (e.g. by default, a light will turn on if its parent group turns on, but it can also be set to turn off if the parent group turns on)
             \item Rules can be set to toggle early/late by a constant or random period of time
+            \item Lights within a group can be set to toggle early/late by a random period of time so that they toggle in a staggered fashion
         \end{enumerate}
 \end{enumerate}
 
