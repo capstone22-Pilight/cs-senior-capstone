@@ -1,0 +1,88 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage[margin=1.5in]{geometry}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{rotating}
+
+\title{Not exactly the Internet of Things for Outdoor Lighting: Technology Review}
+\author{Oregon State University CS Senior Capstone Group 22\\Malcolm Diller, Sean Rettig, Evan Steele\\Client: Victor Hsu}
+\begin{document} 
+
+\maketitle
+
+\pagebreak
+
+\section{Client}
+
+Victor Hsu\\
+Oregon State University\\
+Phone: 541-737-4398\\
+Email: hsuv@onid.orst.edu
+
+\section{Problem Statement}
+
+Outdoor lighting seems like a simple problem to solve, but the solutions on the
+market today are less than ideal.  The standard transformer/timer combos
+available in the big box stores are rudimentary and clunky at best (constantly
+needing to be adjusted for the changing sunset and sunrise times), but are
+reasonably priced. The new-generation smart apps for home automation are
+flexible and fancier, but are quite spendy and lock you into a specific
+protocol.  So why not use an open platform running on commodity hardware?  Easy
+to use, reasonably priced, and highly customizable--that is our goal. \\
+
+\section{Project Description}
+
+Our system will consist of a wireless network of tiny “client” computers that
+each control up to 4 sets of lights and are controlled by a central "server"
+computer, which will automatically send out commands to the clients when it's
+time to turn on or off.  The central node will run a control program that can
+be easily accessed via a touch screen, a web browser, or a mobile device, where
+the user can locally or remotely control each light individually.  Want your
+lights to turn on at sunset and then dim gradually as the sun rises?  Simple.
+Want your lights to flash when you're throwing a party?  Just press a button.
+The control interface will allow users to easily set "rules" for what their
+lights do and when, depending on the time of day, the sun/moon position, and
+potentially even triggers such as weather conditions or calendar dates.  This
+system will be easily extensible to potentially control other devices as well,
+such as garage doors, sound systems, and more. \\
+
+\section{Pieces}
+
+\begin{enumerate}
+    \item Server OS for the PI
+        \begin{enumerate}
+            \item Raspbian \\
+                Custom built for the PI, this operating system would provide many important features, and be a solid foundation to run on.
+            \item Yocto build of Linux \\
+                We will not need all of the fancy features that Raspbian offers, and one way we can strip our OS down to the features we need is by building a Linux system using Yocto.
+            \item something else?
+        \end{enumerate}
+        We have decided to use a yocto build of linux because (reasons)
+    \item Server Program Implementation
+        \begin{enumerate}
+            \item Python / MicroPython
+            \item C
+            \item Java?
+        \end{enumerate}
+        We have decided to use Python and MicroPython because (reasons)
+    \item Web Site Implementation
+        \begin{enumerate}
+            \item JavaScript
+            \item HTML
+            \item PHP
+        \end{enumerate}
+        We have decided to use (html \& php?) because (reasons)
+    \item Server/Client Communication
+        \begin{enumerate}
+            \item Sockets
+            \item Technology2
+            \item Technology3
+        \end{enumerate}
+        We have decided to use Sockets because (reasons)
+\end{enumerate}
+    
+\end{document}
