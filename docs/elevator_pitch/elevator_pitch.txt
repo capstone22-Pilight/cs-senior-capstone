@@ -1,15 +1,12 @@
-// Restructure
-
 Enter into the 21st century with our new way to have your home respond to YOU.
 Have all your primitive enlightening fixtures respond at the touch of your
 smartphone with our new lighting automation system.
 
-Simply bring up your phone or use our high-tech remote unit with touchscreen
-functionality to control your lights.  Have them switch on with the sunset, or
-flash on the weekends.  With just a few taps, you'll multiply your lighting
-power.  Two! Three! Fifty! They intensify, they strobe, they don't break the
-bank!
+Simply pull out your phone or use our remote touchscreen unit to control your
+lights. Have them switch on with the sunset, or flash on the weekends. With
+just a few taps, you'll multiply your lighting power. Two! Three! Fifty! They
+intensify, they strobe, and they don't break the bank!
 
 Open source software, running on commodity hardware, all controllable from your
-phone.  Simple, powerful, wireless.  For all the lights in your home.
-Enlighten yourself.
+phone. Simple, powerful, wireless. For all the lights in your home.  Enlighten
+yourself.
