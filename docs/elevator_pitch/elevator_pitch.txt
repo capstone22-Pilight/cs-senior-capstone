@@ -3,10 +3,9 @@ Have all your primitive enlightening fixtures respond at the touch of your
 smartphone with our new lighting automation system.
 
 Simply pull out your phone or use our remote touchscreen unit to control your
-lights. Have them switch on with the sunset, or flash on the weekends. With
-just a few taps, you'll multiply your lighting power. Two! Three! Fifty! They
+lights. Have them switch on with the sunset, or flash on the weekends. They
 intensify, they strobe, and they don't break the bank!
 
 Open source software, running on commodity hardware, all controllable from your
-phone. Simple, powerful, wireless. For all the lights in your home.  Enlighten
+phone. Simple, powerful, wireless. For all the lights in your home. Enlighten
 yourself.
