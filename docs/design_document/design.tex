@@ -1,0 +1,54 @@
+\documentclass[oneside,openright]{scrreprt}
+\usepackage{listings}
+\usepackage{underscore}
+\usepackage[bookmarks=true]{hyperref}
+\usepackage{atbegshi}% http://ctan.org/pkg/atbegshi
+\AtBeginDocument{\AtBeginShipoutNext{\AtBeginShipoutDiscard}}
+\hypersetup{
+	bookmarks=false,    % show bookmarks bar?
+		pdftitle={Software Requirement Specification},    % title
+		pdfauthor={Yiannis Lazarides},                     % author
+		pdfsubject={TeX and LaTeX},                        % subject of the document
+		pdfkeywords={TeX, LaTeX, graphics, images}, % list of keywords
+		colorlinks=true,       % false: boxed links; true: colored links
+		linkcolor=blue,       % color of internal links
+		citecolor=black,       % color of links to bibliography
+		filecolor=black,        % color of file links
+		urlcolor=purple,        % color of external links
+		linktoc=page            % only page is linked
+}%
+\def\myversion{1.0 }
+\title{
+	\flushright
+		\rule{16cm}{5pt}\vskip1cm
+		\Huge{SOFTWARE REQUIREMENTS}\\
+		\vspace{2cm}
+	for\\
+		\vspace{2cm}
+	Not Exactly the Internet of Things for Outdoor Lighting\\
+		\vspace{2cm}
+	\LARGE{Conceptual Release:}
+	\vspace{2cm}
+	\LARGE{Subject to change\\}
+	\vspace{2cm}
+	Prepared by Evan Steele, Sean Rettig, Malcom McDiller\\
+		\vfill
+		\rule{16cm}{5pt}
+}
+
+\date{}
+\usepackage{hyperref}
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+\section{Overview}
+\section{Introduction}
+\section{Purpose}
+\section{Project Scope and Product Features}
+\section{References}
+\section{Overall Description}
+\section{Product Perspective}
+\section{User Classes and Characteristics}
+% add other chapters and sections to suit
+\end{document}
