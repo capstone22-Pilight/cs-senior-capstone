@@ -69,50 +69,7 @@ readily accessible through smartphones and web interfaces. With a clean user
 interface that enables both manual control and automation profiles, the
 application will require a minimal learning curve and be simple to set up.  
 
-\section{Overview}
-
-We will be using a wide variety of open source technologies and inexpensive
-hardware to provide a low-cost home automation system. We will be using a
-varied set of tools to accomplish our goal, including:
-
-\begin{enumerate}
-    \item The Yocto Project 
-    \begin{enumerate}
-        \item The Yocto Project is a kernel building system designed for
-            embedded systems. It easily incorporates additional features and
-            custom packages directly from Git repositories. It makes it easy to
-            build a customized image with only exactly what we want and no
-            unnecessary packages. It also allows us to customize elements of
-            the kernel such as startup scripts in init.d, kernel modules, and
-            network scripts. The kernel will be compiled for the Raspberry Pi
-            and copied to an SD card using Yocto's filesystem script.
-    \end{enumerate} 
-        \item Raspberry Pi 2
-    \begin{enumerate}
-        \item The Raspberry Pi 2 is an ARMv7-processor-based microcomputer
-            designed for educational and embedded projects. We will use it as a
-            low-cost server solution for the lighting automation system. It can
-            serve as the web server running NGINX and transmit TCP commands to
-            the ESP8266 wifi modules. The Pi will be outfitted with a 320x280
-            TFTLCD display \cite{tftlcd} so that the interface for control can be
-            accessed directly.  The Pi will also act as a wireless router for
-            the plug units to connect to, and run a DHCP server to distribute
-            IP addresses to the plug units.
-    \end{enumerate} 
-        \item ESP8266
-    \begin{enumerate}
-        \item The ESP8266 is a self-contained SoC (System on a Chip) that has a
-            built-in Wi-Fi radio. Our module is outfitted with custom firmware,
-            written in Lua and flashed to the device using the Arduino IDE,
-            that allows the module to automatically connect to the Raspberry Pi
-            (control unit) that acts as a WAP (Wireless Access Point). The
-            board we have is designed to connect to an electronic relay using
-            jumper cables. Using simple TCP commands, the board will flip the
-            relay pins on and off.
-    \end{enumerate}
-\end{enumerate}
-
-\section{Project Scope and Product Features}
+\section{Design View}
 
 The aim of this project is to create a home lighting automation system that is
 inexpensive, wireless, and easy to use. The user of this product should the
@@ -189,7 +146,50 @@ following features:
     \end{enumerate}
 \end{enumerate}
 
-\section{Product Perspective}
+\section{Design Viewpoints}
+
+We will be using a wide variety of open source technologies and inexpensive
+hardware to provide a low-cost home automation system. We will be using a
+varied set of tools to accomplish our goal, including:
+
+\begin{enumerate}
+    \item The Yocto Project 
+    \begin{enumerate}
+        \item The Yocto Project is a kernel building system designed for
+            embedded systems. It easily incorporates additional features and
+            custom packages directly from Git repositories. It makes it easy to
+            build a customized image with only exactly what we want and no
+            unnecessary packages. It also allows us to customize elements of
+            the kernel such as startup scripts in init.d, kernel modules, and
+            network scripts. The kernel will be compiled for the Raspberry Pi
+            and copied to an SD card using Yocto's filesystem script.
+    \end{enumerate} 
+        \item Raspberry Pi 2
+    \begin{enumerate}
+        \item The Raspberry Pi 2 is an ARMv7-processor-based microcomputer
+            designed for educational and embedded projects. We will use it as a
+            low-cost server solution for the lighting automation system. It can
+            serve as the web server running NGINX and transmit TCP commands to
+            the ESP8266 wifi modules. The Pi will be outfitted with a 320x280
+            TFTLCD display \cite{tftlcd} so that the interface for control can be
+            accessed directly.  The Pi will also act as a wireless router for
+            the plug units to connect to, and run a DHCP server to distribute
+            IP addresses to the plug units.
+    \end{enumerate} 
+        \item ESP8266
+    \begin{enumerate}
+        \item The ESP8266 is a self-contained SoC (System on a Chip) that has a
+            built-in Wi-Fi radio. Our module is outfitted with custom firmware,
+            written in Lua and flashed to the device using the Arduino IDE,
+            that allows the module to automatically connect to the Raspberry Pi
+            (control unit) that acts as a WAP (Wireless Access Point). The
+            board we have is designed to connect to an electronic relay using
+            jumper cables. Using simple TCP commands, the board will flip the
+            relay pins on and off.
+    \end{enumerate}
+\end{enumerate}
+
+\section{User Experience}
 
 The final deliverable of a commercial version of this product would likely
 include the following:
