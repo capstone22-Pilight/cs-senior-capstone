@@ -16,7 +16,7 @@
 		citecolor=black,       % color of links to bibliography
 		filecolor=black,        % color of file links
 		urlcolor=blue,        % color of external links
-		linktoc=page            % only page is linked
+		%linktoc=page            % only page is linked
 }%
 \def\myversion{1.0 }
 \title{
@@ -83,6 +83,62 @@ We will be using a wide variety of open source technologies and inexpensive hard
 \end{enumerate}
 
 \section{Project Scope and Product Features}
+
+The aim of this project is to create a home automation system that is cheap, wireless, and easy to use. The user of this product should expect to be able to use the following features of our device:
+\begin{enumerate}
+\item Lights and Groups
+\begin{enumerate}
+\item The lights can be controlled from a phone or from the built-in touchscreen
+\item Lights can be put into "groups" so that they can be controlled all at once
+\item Groups can also be nested into other groups to create hierarchies of lights, in order to control an even larger scope.
+\item The user will be able to add groups of lights to the system under a nickname.
+\item Lights and groups of lights will be displayed as a list.
+\item A slider will be used to adjust the intensity of each light.
+\end{enumerate}
+\item Rules / Types of Control
+\begin{enumerate}
+\item Lights can be toggled on and off manually, but they can also be set to be activated on a specific schedule
+\item Rules can be set for lights or groups of lights
+\item There are 6 main types of schedules that Rules can trigger on
+\begin{enumerate}
+\item Time of Day (e.g. “turn on at 8pm and turn off at 6am”) 
+\item Day of Week  (e.g. “turn on during Wednesdays”)
+\item Day of Month  (e.g. “turn on every 1st of the month”)
+\item Day of Year  (e.g. “turn on every January 1st”)
+\item Specific Dates  (e.g. “turn on from Dec. 24th at 2am to Dec 27th at 8pm”)
+\item Sunrise / Sunset (e.g "turn on when the sun sets, turn off when the sun rises")
+\end{enumerate}
+\item Multiple rules can be applied to each light or group of lights by using AND or OR
+\item Lights can be toggled based on the toggle state of its parent group
+\item Rules can be enabled or disabled
+\item Lights or groups can be set to gradually dim/brighten over a set period of time instead of toggling
+\end{enumerate}
+\item Stretch Goals
+\begin{enumerate}
+\item The system can control devices other than just lights:
+\begin{enumerate}
+\item Garage door openers
+\item Music players
+\item Holiday decorations
+\item Sprinkler systems
+\end{enumerate}
+\item The web interface is accessible over the Internet (Instead of only on the local network)
+\begin{enumerate}
+\item The interface is accessible for only the homeowner or authorized individuals
+\item The interface hosted on a remote server if the user does not want to deal with port forwarding their home network.
+\end{enumerate}
+\item Additional types of triggers for rules
+\begin{enumerate}
+\item Weather conditions (e.g. lights can turn on automatically if it starts raining)
+\item Toggled based off of a schedule in a google calendar
+\item Moon position or other celestial data (e.g. lights could turn off during a full moon or solar eclipse for better viewing)
+\item Motion sensors (e.g. lights turn on when someone walks up to the front door
+\item Light sensors (e.g. lights turn off at a certain brightness level)
+\item Moisture sensors (e.g. lights turn on when its wet outside)
+\item Sound sensors (e.g. lights turn on after a loud noise, or strobe to the beat of music that is playing)
+\end{enumerate}
+\end{enumerate}
+\end{enumerate}
 
 \section{Product Perspective}
 
