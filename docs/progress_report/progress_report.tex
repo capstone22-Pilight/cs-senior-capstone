@@ -1,9 +1,9 @@
 \documentclass[letterpaper,10pt]{article}
 \usepackage[margin=0.75in]{geometry}
 
-\title{Progress Report}
+\title{Not Exactly the Internet of Things for Outdoor Lighting:\\Progress Report}
 \author{Oregon State University CS Senior Capstone Group 22\\Malcolm Diller, Sean Rettig, Evan Steele\\Client: Victor Hsu}
-\date{\today}
+\date{\today, Fall Term}
 
 \begin{document}
 
@@ -13,94 +13,116 @@
 
 abstract goes here
 
+\pagebreak
+
 \section{Progress}
 
-% Week 3
+\subsection{Week 3}
 
-Our first week of the capstone project ``Not exactly the Internet of Things for Outdoor Lighting​'' was relatively uneventful, as we spent most of the time starting to meet with the client and coordinating with the group for meeting times.​​ \\
-Plans for the coming week: \\
-​Start to work with the hardware as soon as we get it. This will probably consist of ​booting the Raspberry Pi with an operating system and compiling MicroPython on the Wifi Modules \\
-If we get far enough, work on communication between the Pi and the controllers \\
-​​​Progress since last week: \\
-​We got our project and met with the client \\
-We finished our proposal document \\
-Problems: \\
-​Everything is fine. Nothing is ruined. The world is in perfect order. \\
-We will be showing off progress here when we have progress to show off. For now, please enjoy the following educational​ video. \\
- \\
-% Week 4 
- \\
-Progress since last week: \\
-​We have started on our requirements document and listed the required and optional requirements. \\
-Problems: \\
-​No problems this week. \\
-​Plans for the coming week: \\
-Meet with our client to review our draft of the requirements document and finalize it. \\
-​Start to work with the hardware as soon as we get it. This will probably consist of ​booting the Raspberry Pi with an operating system and compiling MicroPython on the Wifi Modules. \\
-If we get far enough, work on communication between the Pi and the controllers​. \\
- \\
-% Week 5 
- \\
-Progress since last week: \\
-​​We h​ave finished the requirements document after having our client review it. \\
-We recieved our Raspberry Pi and touchscreen hardware. \\
-Problems: \\
-No problems this week \\
-Plans for the coming week: \\
-Begin working on the Pi starting with an operating system and then branching out to communication between the devices and touchscreen capabilities. \\
- \\
-% Week 6 
- \\
-Most of what we did this week involved trying to get a functioning proof of concept for our project, which turned out to be filled with more problems than anticipated. We began to investigate software packages and technologies that would help us meet the requirements outlined on our document. We will hopefully have a functional proof-of-concept by the next week. \\
- \\
-​Progress since last week: \\
-​​Tested the devices with various wireless networking methods, including ad-hoc and in access-point mode \\
-Continued to develop our documents such as the technical requirements and elevator pitch \\
-Problems: \\
-​The ad-hoc system did not work as expected due to the USB WiFi adapters we were using, and we had to reevaluate​ our network implementation \\
-​​Plans for next week: \\
-​​Continue to develop a proof-of-concept, working with a new structure with the wireless components that will function to expectations. \\
- \\
-% Week 7 
- \\
-Progress since last week: \\
-​​We now have a working proof of concept where the Pi is able to wirelessly communicate to the ESPs and cause each of the connections on the relays to be activated individually. \\
-Completed technology review and revision of requirements document. \\
-Started on expo poster. \\
-Problems: \\
-​No real problems other than having to revise the requirements document to be more detailed and fine-grained. \\
-​​Plans for next week: \\
-Finish poster \\
-Revise elevator pitch \\
-Demonstrate proof of concept to TA \\
-Possibly attach actual lights to the relay rather than just using the relay's LEDs to see which switches are enabled. \\
- \\
-% Week 8 
- \\
-Progress since last week: \\
- \\
-Our proof of concept is now portable, and booting the pi connects it to the esp and cycles the lights on the relay.​ It has also been shown to the TA. \\
-​​​​​Completed the expo poster \\
-​​​Re-Wrote​ the elevator pitch​​ \\
-Problems:​​ \\
-No real problems this week \\
-​​Plans for next week:​​ \\
-Continue to develop the proof of concept, possibly by adding actual lights to the relay instead of the LED's. \\
-Present the elevator pitch \\
- \\
-% Week 9 
- \\
-Progress since last week: \\
- \\
-We have connected actual lights to our relay and verified that they can be toggled on/off. \\
-​​​​​We have presented our elevator pitch. \\
-We have begun learning how to use Flask for our website. \\
-Problems:​​ \\
-No real problems this week. \\
-​​Plans for next week:​​ \\
-Work on our design document​ \\
-Work on our progress report \\
-Become more familiar with Flask and potentially start on the website \\
-Use the Yocto build server to build the new system rather than using Raspbian. \\
+Our first week of the capstone project ``Not exactly the Internet of Things for
+Outdoor Lighting'' was relatively uneventful, as we spent most of the time
+coordinating group meetings.  At our first group meeting, we brainstormed a
+list of clarifying questions to ask our client, Victor, about the project,
+including:
+
+\begin{itemize}
+    \item How is the system going to be controlled by phones?  Is a dedicated
+        app necessary, or can we provide a mobile-friendly website?\\ Answer: A
+        mobile-friendly website is acceptable.
+    \item Are we just going to be controlling lights, or are we going to expand
+        to other devices if we have time (e.g. sprinkler system, music players,
+        garage door openers, alarm systems)?\\
+        Answer: The control of other devices is currently outside the scope of
+        this project, but can be a stretch goal.
+    \item Will the code for this project be open source?\\
+        Answer: Yes!  The entire project is hosted on Github.com in a public
+        repository.
+    \item What hardware will we have access to?\\
+        Answer: In addition to the hardware mentioned in the client's original
+        project proposal, Victor agreed to order a 2.8" TFT Display with
+        Resistive Touchscreen <http://www.adafruit.com/products/1774> for use
+        with the Raspberry Pi in the control unit.
+\end{itemize}
+
+In addition, we were able to finish our Problem Statement document, which
+largely involved expanding upon our client's original project proposal with
+additional clarification, focus, technical details, and performance metrics.
+
+\subsection{Week 4}
+ 
+Progress since last week: 
+We have started on our requirements document and listed the required and optional requirements. 
+Problems: 
+No problems this week. 
+Plans for the coming week: 
+Meet with our client to review our draft of the requirements document and finalize it. 
+Start to work with the hardware as soon as we get it. This will probably consist of booting the Raspberry Pi with an operating system and compiling MicroPython on the Wifi Modules. 
+If we get far enough, work on communication between the Pi and the controllers. 
+
+\subsection{Week 5}
+ 
+Progress since last week: 
+We have finished the requirements document after having our client review it. 
+We recieved our Raspberry Pi and touchscreen hardware. 
+Problems: 
+No problems this week 
+Plans for the coming week: 
+Begin working on the Pi starting with an operating system and then branching out to communication between the devices and touchscreen capabilities. 
+
+\subsection{Week 6}
+ 
+Most of what we did this week involved trying to get a functioning proof of concept for our project, which turned out to be filled with more problems than anticipated. We began to investigate software packages and technologies that would help us meet the requirements outlined on our document. We will hopefully have a functional proof-of-concept by the next week. 
+ 
+Progress since last week: 
+Tested the devices with various wireless networking methods, including ad-hoc and in access-point mode 
+Continued to develop our documents such as the technical requirements and elevator pitch 
+Problems: 
+The ad-hoc system did not work as expected due to the USB WiFi adapters we were using, and we had to reevaluate our network implementation 
+Plans for next week: 
+Continue to develop a proof-of-concept, working with a new structure with the wireless components that will function to expectations. 
+
+\subsection{Week 7}
+ 
+Progress since last week: 
+We now have a working proof of concept where the Pi is able to wirelessly communicate to the ESPs and cause each of the connections on the relays to be activated individually. 
+Completed technology review and revision of requirements document. 
+Started on expo poster. 
+Problems: 
+No real problems other than having to revise the requirements document to be more detailed and fine-grained. 
+Plans for next week: 
+Finish poster 
+Revise elevator pitch 
+Demonstrate proof of concept to TA 
+Possibly attach actual lights to the relay rather than just using the relay's LEDs to see which switches are enabled. 
+
+\subsection{Week 8}
+ 
+Progress since last week: 
+ 
+Our proof of concept is now portable, and booting the pi connects it to the esp and cycles the lights on the relay. It has also been shown to the TA. 
+Completed the expo poster 
+Re-Wrote the elevator pitch 
+Problems: 
+No real problems this week 
+Plans for next week: 
+Continue to develop the proof of concept, possibly by adding actual lights to the relay instead of the LED's. 
+Present the elevator pitch 
+
+\subsection{Week 9}
+ 
+Progress since last week: 
+ 
+We have connected actual lights to our relay and verified that they can be toggled on/off. 
+We have presented our elevator pitch. 
+We have begun learning how to use Flask for our website. 
+Problems: 
+No real problems this week. 
+Plans for next week: 
+Work on our design document 
+Work on our progress report 
+Become more familiar with Flask and potentially start on the website 
+Use the Yocto build server to build the new system rather than using Raspbian. 
+
+\subsection{Week 10}
 
 \end{document}
