@@ -6,23 +6,23 @@
 \AtBeginDocument{\AtBeginShipoutNext{\AtBeginShipoutDiscard}}
 \renewcommand\thesection{\arabic{section}}
 \hypersetup{
-	bookmarks=false,    % show bookmarks bar?
-		pdftitle={Software Requirement Specification},    % title
-		pdfauthor={Malcom Diller, Evan Steele, Sean Rettig},                     % author
-		pdfsubject={Raspberry Pi Outdoor Lighting},                        % subject of the document
-		pdfkeywords={TeX, LaTeX, graphics, images}, % list of keywords
-		colorlinks=true,       % false: boxed links; true: colored links
-		linkcolor=blue,       % color of internal links
-		citecolor=black,       % color of links to bibliography
-		filecolor=black,        % color of file links
-		urlcolor=blue,        % color of external links
-		%linktoc=page            % only page is linked
-}%
+    bookmarks=false, % show bookmarks bar?
+    pdftitle={Software Requirement Specification}, % title
+    pdfauthor={Malcom Diller, Evan Steele, Sean Rettig}, % author
+    pdfsubject={Raspberry Pi Outdoor Lighting}, % subject of the document
+    pdfkeywords={TeX, LaTeX, graphics, images}, % list of keywords
+    colorlinks=true, % false: boxed links; true: colored links
+    linkcolor=blue, % color of internal links
+    citecolor=black, % color of links to bibliography
+    filecolor=black, % color of file links
+    urlcolor=blue, % color of external links
+    %linktoc=page % only page is linked
+}
 \def\myversion{1.0 }
 \title{
 	\flushright
 		\rule{16cm}{5pt}\vskip1cm
-		\Huge{SOFTWARE REQUIREMENTS}\\
+		\Huge{DESIGN DOCUMENT}\\
 	for\\
 		\vspace{2cm}
 	Not Exactly the Internet of Things for Outdoor Lighting\\
@@ -31,7 +31,9 @@
 	\vspace{2cm}
 	\LARGE{Subject to change\\}
 	\vspace{2cm}
-	Prepared by Evan Steele, Sean Rettig, and Malcolm Diller\\
+	Malcolm Diller, Sean Rettig, and Evan Steele\\
+        Client: Victor Hsu\\
+        OSU CS Senior Capstone Group 22
 		\vfill
 		\rule{16cm}{5pt}
 }
@@ -60,96 +62,142 @@ The project is called "Not Exactly the Internet-of-Things" because it's not
 designed as a typical IoT product. The network is entirely local, not worrying
 about an external connection to the Wide Area Network. Some additional
 components such as consulting an external API could be considered, but that's
-an addon to the finished product. As it is made as a home application, it
-is readily accessible through smartphones and web interfaces. With a clean user
+an addon to the finished product. As it is made as a home application, it is
+readily accessible through smartphones and web interfaces. With a clean user
 interface that enables both manual control and automation profiles, the
 application will require a minimal learning curve and be simple to set up.  
 
 \section{Overview}
-We will be using a wide variety of open source technologies and inexpensive hardware to provide a low-cost home automation system. We will be using a varied set of tools to accomplish our goal, including these tools:
+
+We will be using a wide variety of open source technologies and inexpensive
+hardware to provide a low-cost home automation system. We will be using a
+varied set of tools to accomplish our goal, including these tools:
+
 \begin{enumerate}
-\item The Yocto Project 
-\begin{enumerate}
-\item The Yocto Project is a kernel building system designed for embedded systems. It easily incorporates additional features and custom packages directly from Git repositories. It makes it easy to build a customized image with only exactly what we want and no unnecessary packages. It also allows us to customize elements of the kernel such as startup scripts in init.d, kernel modules and network scripts. The kernel will be compiled for the Raspberry Pi and copied to an SD card using Yocto's filesystem script.
-\end{enumerate} 
-\item Raspberry Pi 2
-\begin{enumerate}
-\item The Raspberry Pi 2 is an ARMv7 processor based microcomputer designed for educational and embedded projects. We will use it as a low-cost server solution for the Lighting project. It can serve as the web server running NGINX and transmit TCP commands to the ESP8266 wifi modules. The Pi will be outfitted witha 320x280 TFTLCD display so that the interface for control can be accessed directly. The Pi will also run a DHCP server to distribute IP addresses to the modules.
-\end{enumerate} 
-\item ESP8266
-\begin{enumerate}
-\item The ESP8266 is a self-contained SoC that provides Wi-Fi functionality to a device. Our module is outfitted with custom firmware, written in Lua and flashed to the device using the Arduino IDE, that allows the module to autoconnect to the Raspberry Pi acting as a WAP. The board we have is designed to connect to an electronic relay using jumper cables. Using simple TCP commands, the board will flip the relay pins on and off.
-\end{enumerate}
+    \item The Yocto Project 
+    \begin{enumerate}
+        \item The Yocto Project is a kernel building system designed for
+            embedded systems. It easily incorporates additional features and
+            custom packages directly from Git repositories. It makes it easy to
+            build a customized image with only exactly what we want and no
+            unnecessary packages. It also allows us to customize elements of
+            the kernel such as startup scripts in init.d, kernel modules and
+            network scripts. The kernel will be compiled for the Raspberry Pi
+            and copied to an SD card using Yocto's filesystem script.
+    \end{enumerate} 
+        \item Raspberry Pi 2
+    \begin{enumerate}
+        \item The Raspberry Pi 2 is an ARMv7 processor based microcomputer
+            designed for educational and embedded projects. We will use it as a
+            low-cost server solution for the Lighting project. It can serve as
+            the web server running NGINX and transmit TCP commands to the
+            ESP8266 wifi modules. The Pi will be outfitted witha 320x280 TFTLCD
+            display so that the interface for control can be accessed directly.
+            The Pi will also run a DHCP server to distribute IP addresses to
+            the modules.
+    \end{enumerate} 
+        \item ESP8266
+    \begin{enumerate}
+        \item The ESP8266 is a self-contained SoC that provides Wi-Fi
+            functionality to a device. Our module is outfitted with custom
+            firmware, written in Lua and flashed to the device using the
+            Arduino IDE, that allows the module to autoconnect to the Raspberry
+            Pi acting as a WAP. The board we have is designed to connect to an
+            electronic relay using jumper cables. Using simple TCP commands,
+            the board will flip the relay pins on and off.
+    \end{enumerate}
 \end{enumerate}
 
 \section{Project Scope and Product Features}
 
-The aim of this project is to create a home automation system that is cheap, wireless, and easy to use. The user of this product should expect to be able to use the following features of our device:
+The aim of this project is to create a home automation system that is cheap,
+wireless, and easy to use. The user of this product should expect to be able to
+use the following features of our device:
+
 \begin{enumerate}
-\item Lights and Groups
-\begin{enumerate}
-\item The lights can be controlled from a phone or from the built-in touchscreen
-\item Lights can be put into "groups" so that they can be controlled all at once
-\item Groups can also be nested into other groups to create hierarchies of lights, in order to control an even larger scope.
-\item The user will be able to add groups of lights to the system under a nickname.
-\item Lights and groups of lights will be displayed as a list.
-\item A slider will be used to adjust the intensity of each light.
-\end{enumerate}
-\item Rules / Types of Control
-\begin{enumerate}
-\item Lights can be toggled on and off manually, but they can also be set to be activated on a specific schedule
-\item Rules can be set for lights or groups of lights
-\item There are 6 main types of schedules that Rules can trigger on
-\begin{enumerate}
-\item Time of Day (e.g. “turn on at 8pm and turn off at 6am”) 
-\item Day of Week  (e.g. “turn on during Wednesdays”)
-\item Day of Month  (e.g. “turn on every 1st of the month”)
-\item Day of Year  (e.g. “turn on every January 1st”)
-\item Specific Dates  (e.g. “turn on from Dec. 24th at 2am to Dec 27th at 8pm”)
-\item Sunrise / Sunset (e.g "turn on when the sun sets, turn off when the sun rises")
-\end{enumerate}
-\item Multiple rules can be applied to each light or group of lights by using AND or OR
-\item Lights can be toggled based on the toggle state of its parent group
-\item Rules can be enabled or disabled
-\item Lights or groups can be set to gradually dim/brighten over a set period of time instead of toggling
-\end{enumerate}
-\item Stretch Goals
-\begin{enumerate}
-\item The system can control devices other than just lights:
-\begin{enumerate}
-\item Garage door openers
-\item Music players
-\item Holiday decorations
-\item Sprinkler systems
-\end{enumerate}
-\item The web interface is accessible over the Internet (Instead of only on the local network)
-\begin{enumerate}
-\item The interface is accessible for only the homeowner or authorized individuals
-\item The interface hosted on a remote server if the user does not want to deal with port forwarding their home network.
-\end{enumerate}
-\item Additional types of triggers for rules
-\begin{enumerate}
-\item Weather conditions (e.g. lights can turn on automatically if it starts raining)
-\item Toggled based off of a schedule in a google calendar
-\item Moon position or other celestial data (e.g. lights could turn off during a full moon or solar eclipse for better viewing)
-\item Motion sensors (e.g. lights turn on when someone walks up to the front door
-\item Light sensors (e.g. lights turn off at a certain brightness level)
-\item Moisture sensors (e.g. lights turn on when its wet outside)
-\item Sound sensors (e.g. lights turn on after a loud noise, or strobe to the beat of music that is playing)
-\end{enumerate}
-\end{enumerate}
+    \item Lights and Groups
+    \begin{enumerate}
+        \item The lights can be controlled from a phone or from the built-in
+            touchscreen
+        \item Lights can be put into "groups" so that they can be controlled
+            all at once
+        \item Groups can also be nested into other groups to create hierarchies
+            of lights, in order to control an even larger scope.
+        \item The user will be able to add groups of lights to the system under
+            a nickname.
+        \item Lights and groups of lights will be displayed as a list.
+        \item A slider will be used to adjust the intensity of each light.
+    \end{enumerate}
+    \item Rules / Types of Control
+    \begin{enumerate}
+        \item Lights can be toggled on and off manually, but they can also be
+            set to be activated on a specific schedule
+        \item Rules can be set for lights or groups of lights
+        \item There are 6 main types of schedules that Rules can trigger on
+        \begin{enumerate}
+            \item Time of Day (e.g. “turn on at 8pm and turn off at 6am”) 
+            \item Day of Week  (e.g. “turn on during Wednesdays”)
+            \item Day of Month  (e.g. “turn on every 1st of the month”)
+            \item Day of Year  (e.g. “turn on every January 1st”)
+            \item Specific Dates  (e.g. “turn on from Dec. 24th at 2am to Dec
+                27th at 8pm”)
+            \item Sunrise / Sunset (e.g "turn on when the sun sets, turn off
+                when the sun rises")
+        \end{enumerate}
+        \item Multiple rules can be applied to each light or group of lights by
+            using AND or OR
+        \item Lights can be toggled based on the toggle state of its parent
+            group
+        \item Rules can be enabled or disabled
+        \item Lights or groups can be set to gradually dim/brighten over a set
+            period of time instead of toggling
+    \end{enumerate}
+    \item Stretch Goals
+    \begin{enumerate}
+        \item The system can control devices other than just lights:
+        \begin{enumerate}
+            \item Garage door openers
+            \item Music players
+            \item Holiday decorations
+            \item Sprinkler systems
+        \end{enumerate}
+        \item The web interface is accessible over the Internet (Instead of
+            only on the local network)
+        \begin{enumerate}
+            \item The interface is accessible for only the homeowner or
+                authorized individuals
+            \item The interface hosted on a remote server if the user does not
+                want to deal with port forwarding their home network.
+        \end{enumerate}
+        \item Additional types of triggers for rules
+        \begin{enumerate}
+            \item Weather conditions (e.g. lights can turn on automatically if
+                it starts raining)
+            \item Toggled based off of a schedule in a google calendar
+            \item Moon position or other celestial data (e.g. lights could turn
+                off during a full moon or solar eclipse for better viewing)
+            \item Motion sensors (e.g. lights turn on when someone walks up to
+                the front door
+            \item Light sensors (e.g. lights turn off at a certain brightness
+                level)
+            \item Moisture sensors (e.g. lights turn on when its wet outside)
+            \item Sound sensors (e.g. lights turn on after a loud noise, or
+                strobe to the beat of music that is playing)
+        \end{enumerate}
+    \end{enumerate}
 \end{enumerate}
 
 \section{Product Perspective}
 
-The final deliverable of a commercial version of this product would likely include the following:
+The final deliverable of a commercial version of this product would likely
+include the following:
 
 \begin{itemize}
     \item A central control unit consisting of the Raspberry Pi, its power
-cable, the touchscreen module, a case, and an SD card with the server software
-preloaded onto it.
+        cable, the touchscreen module, a case, and an SD card with the server
+        software preloaded onto it.
     \item One or more plug units which would likely resemble a power strip,
-with each plug being individually controllable by the system.
+        with each plug being individually controllable by the system.
 \end{itemize}
 
 To set up the system, the user simply plugs both the control unit and the plug
@@ -168,37 +216,39 @@ applying rules for when to toggle lights.
 
 \section{Testing}
 
-To test the functionality and correctness of our system, we will test the various components both individually and when integrated with other components:
+To test the functionality and correctness of our system, we will test the
+various components both individually and when integrated with other components:
 
 \begin{itemize}
     \item We plan to test the wireless communication capabilities of the system
-by attempting to send packets between the control unit and plug units at
-varying distances and in varying environments, including open and walled areas.
-Ideally, the range should be great enough to fully cover the average American
-house/apartment.  Once this is complete, it will likely not need to be changed
-or extended much, reducing the need for regression testing.
+        by attempting to send packets between the control unit and plug units
+        at varying distances and in varying environments, including open and
+        walled areas.  Ideally, the range should be great enough to fully cover
+        the average American house/apartment.  Once this is complete, it will
+        likely not need to be changed or extended much, reducing the need for
+        regression testing.
     \item We plan to test the actual light toggling (as performed by the plug
-units) manually.  Once this is complete, it will likely not need to be changed
-or extended much, reducing the need for regression testing.
+        units) manually.  Once this is complete, it will likely not need to be
+        changed or extended much, reducing the need for regression testing.
     \item We plan to test the functionality of the touchscreen interface
-through manual human interaction testing.  Once this is complete, it will
-likely not need to be changed or extended much, reducing the need for
-regression testing.
+        through manual human interaction testing.  Once this is complete, it
+        will likely not need to be changed or extended much, reducing the need
+        for regression testing.
     \item We plan to test the functionality of the web interface through a
-combination of manual human interaction testing, automated API-driven testing,
-and automated GUI testing (using a platform such as Selenium).  The plug units
-can send back acknowledgement packets to confirm what actions they took in
-response to the tests, allowing nearly complete integration tests to be
-performed automatically when changes are made to the control program and web
-interface.  These automated tests will help prevent regressions as new features
-are developed and save time in ensuring the correctness of the system.
+        combination of manual human interaction testing, automated API-driven
+        testing, and automated GUI testing (using a platform such as Selenium).
+        The plug units can send back acknowledgement packets to confirm what
+        actions they took in response to the tests, allowing nearly complete
+        integration tests to be performed automatically when changes are made
+        to the control program and web interface.  These automated tests will
+        help prevent regressions as new features are developed and save time in
+        ensuring the correctness of the system.
 \end{itemize}
 
 \section{Timeline}
-% Should probably change table to look better later
 \begin{tabular}{ | l | l | }
    \hline
-   \textbf{Device control} & \\ \hline
+   \textbf{Device control} & \textbf{Due Date} \\ \hline
 
    Server can boot with GUI and touchscreen support & Thu 11/19/15 \\ \hline
    Server starts control program on power on & Mon 11/23/15 \\ \hline
@@ -247,24 +297,21 @@ are developed and save time in ensuring the correctness of the system.
    Lights can gradually toggle over time & Thu 1/7/16 \\ \hline
 \end{tabular}
 
-\section{User Classes and Characteristics}
-
-% add other chapters and sections to suit
-
 \section{References}
 
 Hardware:
 \begin{itemize}
-\item ESP8266 Board: https://www.tindie.com/products/hbouzas/general-purpose-wifi-control-board-x4/
-\item TFTLCD Screen for Raspberry Pi: http://www.adafruit.com/products/1774
-\item Raspberry Pi 2: https://www.raspberrypi.org/products/raspberry-pi-2-model-b/
-\item 10A Relay Board: https://www.electronickits.com/4-channel-auto-roll-rf-relay-board-assembled/
+    \item ESP8266 Board: https://www.tindie.com/products/hbouzas/general-purpose-wifi-control-board-x4/
+    \item TFTLCD Screen for Raspberry Pi: http://www.adafruit.com/products/1774
+    \item Raspberry Pi 2: https://www.raspberrypi.org/products/raspberry-pi-2-model-b/
+    \item 10A Relay Board: https://www.electronickits.com/4-channel-auto-roll-rf-relay-board-assembled/
 \end{itemize}
 Software:
 \begin{itemize}
-\item Yocto Project: https://www.yoctoproject.org/
-\item Lua: http://www.lua.org/
-\item Flask: http://flask.pocoo.org/
-\item NGINX: https://www.nginx.com/resources/wiki/
+    \item Yocto Project: https://www.yoctoproject.org/
+    \item Lua: http://www.lua.org/
+    \item Flask: http://flask.pocoo.org/
+    \item NGINX: https://www.nginx.com/resources/wiki/
 \end{itemize}
+
 \end{document}
