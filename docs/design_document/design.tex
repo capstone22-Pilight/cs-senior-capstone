@@ -1,9 +1,10 @@
-\documentclass[oneside,openright]{scrreprt}
+\documentclass[oneside,openright]{book}
 \usepackage{listings}
 \usepackage{underscore}
 \usepackage[bookmarks=true]{hyperref}
 \usepackage{atbegshi}% http://ctan.org/pkg/atbegshi
 \AtBeginDocument{\AtBeginShipoutNext{\AtBeginShipoutDiscard}}
+\renewcommand\thesection{\arabic{section}}
 \hypersetup{
 	bookmarks=false,    % show bookmarks bar?
 		pdftitle={Software Requirement Specification},    % title
@@ -14,7 +15,7 @@
 		linkcolor=blue,       % color of internal links
 		citecolor=black,       % color of links to bibliography
 		filecolor=black,        % color of file links
-		urlcolor=purple,        % color of external links
+		urlcolor=blue,        % color of external links
 		linktoc=page            % only page is linked
 }%
 \def\myversion{1.0 }
@@ -22,7 +23,6 @@
 	\flushright
 		\rule{16cm}{5pt}\vskip1cm
 		\Huge{SOFTWARE REQUIREMENTS}\\
-		\vspace{2cm}
 	for\\
 		\vspace{2cm}
 	Not Exactly the Internet of Things for Outdoor Lighting\\
@@ -196,4 +196,18 @@ are developed and save time in ensuring the correctness of the system.
 
 \section{References}
 
+Hardware:
+\begin{itemize}
+\item ESP8266 Board: https://www.tindie.com/products/hbouzas/general-purpose-wifi-control-board-x4/
+\item TFTLCD Screen for Raspberry Pi: http://www.adafruit.com/products/1774
+\item Raspberry Pi 2: https://www.raspberrypi.org/products/raspberry-pi-2-model-b/
+\item 10A Relay Board: https://www.electronickits.com/4-channel-auto-roll-rf-relay-board-assembled/
+\end{itemize}
+Software:
+\begin{itemize}
+\item Yocto Project: https://www.yoctoproject.org/
+\item Lua: http://www.lua.org/
+\item Flask: http://flask.pocoo.org/
+\item NGINX: https://www.nginx.com/resources/wiki/
+\end{itemize}
 \end{document}
