@@ -73,7 +73,7 @@ application will require a minimal learning curve and be simple to set up.
 
 We will be using a wide variety of open source technologies and inexpensive
 hardware to provide a low-cost home automation system. We will be using a
-varied set of tools to accomplish our goal, including these tools:
+varied set of tools to accomplish our goal, including:
 
 \begin{enumerate}
     \item The Yocto Project 
@@ -83,74 +83,74 @@ varied set of tools to accomplish our goal, including these tools:
             custom packages directly from Git repositories. It makes it easy to
             build a customized image with only exactly what we want and no
             unnecessary packages. It also allows us to customize elements of
-            the kernel such as startup scripts in init.d, kernel modules and
+            the kernel such as startup scripts in init.d, kernel modules, and
             network scripts. The kernel will be compiled for the Raspberry Pi
             and copied to an SD card using Yocto's filesystem script.
     \end{enumerate} 
         \item Raspberry Pi 2
     \begin{enumerate}
-        \item The Raspberry Pi 2 is an ARMv7 processor based microcomputer
+        \item The Raspberry Pi 2 is an ARMv7-processor-based microcomputer
             designed for educational and embedded projects. We will use it as a
-            low-cost server solution for the Lighting project. It can serve as
-            the web server running NGINX and transmit TCP commands to the
-            ESP8266 wifi modules. The Pi will be outfitted witha 320x280 TFTLCD
-            display so that the interface for control can be accessed directly.
-            The Pi will also run a DHCP server to distribute IP addresses to
-            the modules.
+            low-cost server solution for the lighting automation system. It can
+            serve as the web server running NGINX and transmit TCP commands to
+            the ESP8266 wifi modules. The Pi will be outfitted with a 320x280
+            TFTLCD display [2] so that the interface for control can be
+            accessed directly.  The Pi will also act as a wireless router for
+            the plug units to connect to, and run a DHCP server to distribute
+            IP addresses to the plug units.
     \end{enumerate} 
         \item ESP8266
     \begin{enumerate}
-        \item The ESP8266 is a self-contained SoC that provides Wi-Fi
-            functionality to a device. Our module is outfitted with custom
-            firmware, written in Lua and flashed to the device using the
-            Arduino IDE, that allows the module to autoconnect to the Raspberry
-            Pi acting as a WAP. The board we have is designed to connect to an
-            electronic relay using jumper cables. Using simple TCP commands,
-            the board will flip the relay pins on and off.
+        \item The ESP8266 is a self-contained SoC (System on a Chip) that has a
+            built-in Wi-Fi radio. Our module is outfitted with custom firmware,
+            written in Lua and flashed to the device using the Arduino IDE,
+            that allows the module to automatically connect to the Raspberry Pi
+            (control unit) that acts as a WAP (Wireless Access Point). The
+            board we have is designed to connect to an electronic relay using
+            jumper cables. Using simple TCP commands, the board will flip the
+            relay pins on and off.
     \end{enumerate}
 \end{enumerate}
 
 \section{Project Scope and Product Features}
 
-The aim of this project is to create a home automation system that is cheap,
-wireless, and easy to use. The user of this product should expect to be able to
-use the following features of our device:
+The aim of this project is to create a home lighting automation system that is
+inexpensive, wireless, and easy to use. The user of this product should the
+following features:
 
 \begin{enumerate}
     \item Lights and Groups
     \begin{enumerate}
-        \item The lights can be controlled from a phone or from the built-in
-            touchscreen
+        \item The lights can be controlled from the built-in touchscreen on the
+            control unit, or a mobile device such as a phone, tablet, or laptop
         \item Lights can be put into "groups" so that they can be controlled
             all at once
         \item Groups can also be nested into other groups to create hierarchies
-            of lights, in order to control an even larger scope.
-        \item The user will be able to add groups of lights to the system under
-            a nickname.
-        \item Lights and groups of lights will be displayed as a list.
-        \item A slider will be used to adjust the intensity of each light.
+            of lights, in order to control many lights at once
+        \item The user will be able to nickname lights and light groups
+        \item The intensity of each light can be adjusted using a slider
     \end{enumerate}
     \item Rules / Types of Control
     \begin{enumerate}
         \item Lights can be toggled on and off manually, but they can also be
-            set to be activated on a specific schedule
+            set to be activated on specific schedules using "rules"
         \item Rules can be set for lights or groups of lights
-        \item There are 6 main types of schedules that Rules can trigger on
+        \item There are 6 main types of schedules that rules can trigger on
         \begin{enumerate}
-            \item Time of Day (e.g. “turn on at 8pm and turn off at 6am”) 
-            \item Day of Week  (e.g. “turn on during Wednesdays”)
-            \item Day of Month  (e.g. “turn on every 1st of the month”)
-            \item Day of Year  (e.g. “turn on every January 1st”)
-            \item Specific Dates  (e.g. “turn on from Dec. 24th at 2am to Dec
+            \item Time of day (e.g. “turn on at 8pm and turn off at 6am”) 
+            \item Day of week (e.g. “turn on during Wednesdays”)
+            \item Day of month (e.g. “turn on every 1st of the month”)
+            \item Day of year (e.g. “turn on every January 1st”)
+            \item Specific dates (e.g. “turn on from Dec. 24th at 2am to Dec
                 27th at 8pm”)
-            \item Sunrise / Sunset (e.g "turn on when the sun sets, turn off
+            \item Sunrise / sunset (e.g "turn on when the sun sets, turn off
                 when the sun rises")
         \end{enumerate}
         \item Multiple rules can be applied to each light or group of lights by
-            using AND or OR
+            using AND or OR logic
         \item Lights can be toggled based on the toggle state of its parent
             group
-        \item Rules can be enabled or disabled
+        \item Rules can be enabled or disabled temporarily
         \item Lights or groups can be set to gradually dim/brighten over a set
             period of time instead of toggling
     \end{enumerate}
@@ -175,14 +175,14 @@ use the following features of our device:
         \begin{enumerate}
             \item Weather conditions (e.g. lights can turn on automatically if
                 it starts raining)
-            \item Toggled based off of a schedule in a google calendar
+            \item Schedule in a Google calendar
             \item Moon position or other celestial data (e.g. lights could turn
                 off during a full moon or solar eclipse for better viewing)
             \item Motion sensors (e.g. lights turn on when someone walks up to
-                the front door
+                the front door)
             \item Light sensors (e.g. lights turn off at a certain brightness
                 level)
-            \item Moisture sensors (e.g. lights turn on when its wet outside)
+            \item Moisture sensors (e.g. lights turn on when it's wet outside)
             \item Sound sensors (e.g. lights turn on after a loud noise, or
                 strobe to the beat of music that is playing)
         \end{enumerate}
