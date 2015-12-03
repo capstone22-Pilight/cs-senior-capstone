@@ -77,6 +77,58 @@ application will require a minimal learning curve and be simple to set up.
 
 \section{Product Perspective}
 
+The final deliverable of a commercial version of this product would likely include the following:
+
+\begin{itemize}
+    \item A central control unit consisting of the Raspberry Pi, its power
+cable, the touchscreen module, a case, and an SD card with the server software
+preloaded onto it.
+    \item One or more plug units which would likely resemble a power strip,
+with each plug being individually controllable by the system.
+\end{itemize}
+
+To set up the system, the user simply plugs both the control unit and the plug
+unit(s) into wall power.  The plug units will preconfigured to connect to the
+control unit.  The user can then plug devices into the plug units, such as
+lamps, and the display on the control unit will update itself automatically
+with a list of lights.  The lights can have either numbered (e.g. "Zone 1,
+Light 1") or randomized but memorable names by default (e.g. "Blue Koala")
+which can be later edited through the web interface.  To access the web
+interface, the user connects to the wifi network provided by the control unit
+using the credentials included with the manual, or perhaps printed on the
+control unit itself.  They then open a web browser and connect to a specific
+URL, provided to the user with the wifi password.  From the web interface, all
+features are accessble, such as renaming lights, creating light groups, and
+applying rules for when to toggle lights.
+
+\section{Testing}
+
+To test the functionality and correctness of our system, we will test the various components both individually and when integrated with other components:
+
+\begin{itemize}
+    \item We plan to test the wireless communication capabilities of the system
+by attempting to send packets between the control unit and plug units at
+varying distances and in varying environments, including open and walled areas.
+Ideally, the range should be great enough to fully cover the average American
+house/apartment.  Once this is complete, it will likely not need to be changed
+or extended much, reducing the need for regression testing.
+    \item We plan to test the actual light toggling (as performed by the plug
+units) manually.  Once this is complete, it will likely not need to be changed
+or extended much, reducing the need for regression testing.
+    \item We plan to test the functionality of the touchscreen interface
+through manual human interaction testing.  Once this is complete, it will
+likely not need to be changed or extended much, reducing the need for
+regression testing.
+    \item We plan to test the functionality of the web interface through a
+combination of manual human interaction testing, automated API-driven testing,
+and automated GUI testing (using a platform such as Selenium).  The plug units
+can send back acknowledgement packets to confirm what actions they took in
+response to the tests, allowing nearly complete integration tests to be
+performed automatically when changes are made to the control program and web
+interface.  These automated tests will help prevent regressions as new features
+are developed and save time in ensuring the correctness of the system.
+\end{itemize}
+
 \section{Timeline}
 % Should probably change table to look better later
 \begin{tabular}{ | l | p{0.8\linewidth} | }
