@@ -94,7 +94,7 @@ varied set of tools to accomplish our goal, including:
             low-cost server solution for the lighting automation system. It can
             serve as the web server running NGINX and transmit TCP commands to
             the ESP8266 wifi modules. The Pi will be outfitted with a 320x280
-            TFTLCD display [2] so that the interface for control can be
+            TFTLCD display \cite{tftlcd} so that the interface for control can be
             accessed directly.  The Pi will also act as a wireless router for
             the plug units to connect to, and run a DHCP server to distribute
             IP addresses to the plug units.
@@ -298,22 +298,23 @@ various components both individually and when integrated with other components:
    Lights can toggle early/late randomly within groups & Wed 1/6/16 \\ \hline
    Lights can gradually toggle over time & Thu 1/7/16 \\ \hline
 \end{tabular}
+\newpage
+\bibliography{design}{}
+\bibliographystyle{IEEEtran}
 
-\section{References}
-
-Hardware:
-\begin{itemize}
-    \item ESP8266 Board: https://www.tindie.com/products/hbouzas/general-purpose-wifi-control-board-x4/
-    \item TFTLCD Screen for Raspberry Pi: http://www.adafruit.com/products/1774
-    \item Raspberry Pi 2: https://www.raspberrypi.org/products/raspberry-pi-2-model-b/
-    \item 10A Relay Board: https://www.electronickits.com/4-channel-auto-roll-rf-relay-board-assembled/
-\end{itemize}
-Software:
-\begin{itemize}
-    \item Yocto Project: https://www.yoctoproject.org/
-    \item Lua: http://www.lua.org/
-    \item Flask: http://flask.pocoo.org/
-    \item NGINX: https://www.nginx.com/resources/wiki/
-\end{itemize}
+%Hardware:
+%\begin{itemize}
+ %   \item ESP8266 Board: https://www.tindie.com/products/hbouzas/general-purpose-wifi-control-board-x4/
+%    \item TFTLCD Screen for Raspberry Pi: http://www.adafruit.com/products/1774
+   % \item Raspberry Pi 2: https://www.raspberrypi.org/products/raspberry-pi-2-model-b/
+    %\item 10A Relay Board: https://www.electronickits.com/4-channel-auto-roll-rf-relay-board-assembled/
+%\end{itemize}
+%Software:
+%\begin{itemize}
+%    \item Yocto Project: https://www.yoctoproject.org/
+%    \item Lua: http://www.lua.org/
+%    \item Flask: http://flask.pocoo.org/
+%    \item NGINX: https://www.nginx.com/resources/wiki/
+%\end{itemize}
 
 \end{document}

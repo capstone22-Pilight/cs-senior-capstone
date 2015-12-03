@@ -6,4 +6,7 @@
 *.out
 *.toc
 *.pdf
+*.bbl
+*.blg
+*.dvi
 Thumbs.db
