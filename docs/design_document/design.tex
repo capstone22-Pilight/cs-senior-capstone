@@ -159,18 +159,18 @@ varied set of tools to accomplish our goal, including:
             embedded systems. It easily incorporates additional features and
             custom packages directly from Git repositories. It makes it easy to
             build a customized image with only exactly what we want and no
-            unnecessary packages. It also allows us to customize elements of
+            unnecessary packages \cite{yocto}. It also allows us to customize elements of
             the kernel such as startup scripts in init.d, kernel modules, and
-            network scripts. The kernel will be compiled for the Raspberry Pi
+            network scripts \cite{flask}. The kernel will be compiled for the Raspberry Pi
             and copied to an SD card using Yocto's filesystem script.
     \end{enumerate} 
         \item Raspberry Pi 2
     \begin{enumerate}
         \item The Raspberry Pi 2 is an ARMv7-processor-based microcomputer
-            designed for educational and embedded projects. We will use it as a
+            designed for educational and embedded projects \cite{raspi}. We will use it as a
             low-cost server solution for the lighting automation system. It can
             serve as the web server running NGINX and transmit TCP commands to
-            the ESP8266 wifi modules. The Pi will be outfitted with a 320x280
+            the ESP8266 wifi modules \cite{nginx}. The Pi will be outfitted with a 320x280
             TFTLCD display \cite{tftlcd} so that the interface for control can be
             accessed directly.  The Pi will also act as a wireless router for
             the plug units to connect to, and run a DHCP server to distribute
@@ -179,13 +179,13 @@ varied set of tools to accomplish our goal, including:
         \item ESP8266
     \begin{enumerate}
         \item The ESP8266 is a self-contained SoC (System on a Chip) that has a
-            built-in Wi-Fi radio. Our module is outfitted with custom firmware,
+            built-in Wi-Fi radio \cite{esp8266}. Our module is outfitted with custom firmware,
             written in Lua and flashed to the device using the Arduino IDE,
             that allows the module to automatically connect to the Raspberry Pi
-            (control unit) that acts as a WAP (Wireless Access Point). The
+            (control unit) that acts as a WAP (Wireless Access Point) \cite{lua}. The
             board we have is designed to connect to an electronic relay using
             jumper cables. Using simple TCP commands, the board will flip the
-            relay pins on and off.
+            relay pins on and off \cite{relay}.
     \end{enumerate}
 \end{enumerate}
 
