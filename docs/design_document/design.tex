@@ -1,10 +1,13 @@
 \documentclass[oneside,openright]{book}
 \usepackage{listings}
 \usepackage{underscore}
-\usepackage[bookmarks=true]{hyperref}
+\usepackage[breaklinks]{hyperref}
+\usepackage{url}
+\usepackage{breakurl}
 \usepackage{atbegshi}% http://ctan.org/pkg/atbegshi
 \AtBeginDocument{\AtBeginShipoutNext{\AtBeginShipoutDiscard}}
 \renewcommand\thesection{\arabic{section}}
+\renewcommand{\bibname}{References}
 \hypersetup{
     bookmarks=false, % show bookmarks bar?
     pdftitle={Software Requirement Specification}, % title
@@ -16,7 +19,7 @@
     citecolor=black, % color of links to bibliography
     filecolor=black, % color of file links
     urlcolor=blue, % color of external links
-    %linktoc=page % only page is linked
+  %linktoc=page % only page is linked
 }
 \def\myversion{1.0 }
 \title{
@@ -299,22 +302,8 @@ various components both individually and when integrated with other components:
    Lights can gradually toggle over time & Thu 1/7/16 \\ \hline
 \end{tabular}
 \newpage
+\Urlmuskip=0mu plus 1mu\relax
 \bibliography{design}{}
 \bibliographystyle{IEEEtran}
-
-%Hardware:
-%\begin{itemize}
- %   \item ESP8266 Board: https://www.tindie.com/products/hbouzas/general-purpose-wifi-control-board-x4/
-%    \item TFTLCD Screen for Raspberry Pi: http://www.adafruit.com/products/1774
-   % \item Raspberry Pi 2: https://www.raspberrypi.org/products/raspberry-pi-2-model-b/
-    %\item 10A Relay Board: https://www.electronickits.com/4-channel-auto-roll-rf-relay-board-assembled/
-%\end{itemize}
-%Software:
-%\begin{itemize}
-%    \item Yocto Project: https://www.yoctoproject.org/
-%    \item Lua: http://www.lua.org/
-%    \item Flask: http://flask.pocoo.org/
-%    \item NGINX: https://www.nginx.com/resources/wiki/
-%\end{itemize}
 
 \end{document}
