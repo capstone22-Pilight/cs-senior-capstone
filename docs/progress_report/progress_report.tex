@@ -96,28 +96,36 @@ into three categories:
 
 The ``device control'' section includes the bare essentials for booting each
 device, running the control programs, and ensuring that the devices are able to
-communicate with each other wirelessly.  The ``user interface'' section
-includes requirements regarding the user's experience and access through the
-touchscreen and web site interfaces, including how they can view, name, group,
-toggle, and apply rules to lights.  The ``rules'' section, then, describes the
-rules that will be available for users to control their lights with.  These
-include time-based rules (e.g. turning on at 8pm and off at 6am every weekday)
-and of course, the crowning feature, rules for toggling based on the sunset and
-sunrise, obviating the need to manually adjust the system when the sunset and
-sunrise times change with the seasons.
+communicate with each other wirelessly.
+
+The ``user interface'' section includes requirements regarding the user's
+experience and access through the touchscreen and web site interfaces,
+including how they can view, name, group, toggle, and apply rules to lights.
+
+The ``rules'' section, then, describes the rules that will be available for
+users to control their lights with.  These include time-based rules (e.g.
+turning on at 8pm and off at 6am every weekday) and of course, the crowning
+feature, rules for toggling based on the sunset and sunrise, obviating the need
+to manually adjust the system when the sunset and sunrise times change with the
+seasons.
 
 We also included a ``stretch goals'' category following the same 3-section
 layout as described above, where we filled in interesting ideas that we and our
 client had, but were not absolutely necessary for the proper functioning of the
 system and would only be implemented after the core requirements were complete,
-if time allowed.  In the device control section, stretch goals included
-potentially expanding the system to control devices other than lights, such as
-garage door openers, music players, holiday decorations, and sprinklers.  In
-the user interface section, we considered additional usability features, such
-as allowing the web interface to be accessible over the Internet (for remote
-control) or even external "cloud" hosting for the web interface to improve
-uptime and obviate the need for the user to port forward on their router.  The
-rules section included more complex rules, such as toggling based on
+if time allowed.
+
+In the device control section, stretch goals included potentially expanding the
+system to control devices other than lights, such as garage door openers, music
+players, holiday decorations, and sprinklers.
+
+In the user interface section, we considered additional usability features,
+such as allowing the web interface to be accessible over the Internet (for
+remote control) or even external "cloud" hosting for the web interface to
+improve uptime and obviate the need for the user to port forward on their
+router.
+
+The rules section included more complex rules, such as toggling based on
 weather/celestial conditions (which might require Internet access) or various
 attachable sensors, such as motion sensors, light sensors, moisture sensors,
 and sound sensors.  These types of rules would require significant additional
@@ -130,52 +138,56 @@ by.
 
 \subsection{Week 5}
 
-This week, we completed our requirements document and began researching
-the hardware once we had it in our hands. We picked up the Raspberry Pi
-and TFTLCD display from Victor and booted the device with the \textit{fbtft} 
-module for the device. This week was otherwise uneventful with everyone working
-on other projects and midterms, but there was still work done with regards to 
-group logistics and future planning. When we aren't so busy next week, we will
-continue our proof of concept project to get the firmware and relay online.
+This week, we completed our requirements document and began researching the
+hardware once we had it in our hands. We picked up the Raspberry Pi and TFTLCD
+display from Victor and booted the device with the \textit{fbtft} module for
+the device. This week was otherwise uneventful with everyone working on other
+projects and midterms, but there was still work done with regards to group
+logistics and future planning. We planned to continue our proof of concept
+project next week to get the firmware and relay online.
 
 \subsection{Week 6}
  
 Most of what we did on week 6 of our project involved trying to get a
 functioning proof of concept for our project, which turned out to be filled
 with more problems than anticipated. We began to investigate software packages
-and technologies that would help us meet the requirements outlined on our
-document. The main problem that we ran into this wee was with the wireless
-networking that we were planning on for the Pi.
+and technologies that would help us meet the requirements outlined in our
+requirements document. The main problem that we ran into this week was with the
+wireless networking that we were planning on for the Pi.
 
-We tested the devices with various wireless networking methods including ad-hoc
-and in access-point mode. While testing, we discovered that the ad-hoc system
-was not working as expected. This was due to the USB WiFi adapters we were
-using not being compatible with an ad-hoc setup. This was especially
+We tested the devices with various wireless networking methods, including
+ad-hoc and access-point mode. While testing, we discovered that the ad-hoc
+system was not working as expected. This was due to the USB WiFi adapters we
+were using not being compatible with an ad-hoc setup. This was especially
 problematic because our main plan was to use ad-hoc for networking. After
 further investigation, it became clear that we would have to reevaluate our
 network implementation, as there would be no way to work around the issue and
-still use ad-hoc. We are now just using the Pi as a wireless access point. This
-solves the problems caused by the compatibility issues with ad-hoc.
+still use ad-hoc. We are now just using the Pi as a wireless access point that
+the plug nodes will connect to. This solves the problems caused by the
+compatibility issues with ad-hoc.
 
 In addition to working on the proof of concept, we also made headway on some of
-the documents that we had due soon. As we continued to develop the Technical
-Requirements document, we asked the TA to see if he had any comments on it. His
+the documents that we had due soon. We started an outline of our Technical
+Review document, and also started revising our Requirements Document as Kevin
+suggested.  We asked our TA, Xinze, to see if he had any comments on it.  His
 advice was to elaborate more on the requirements we already had and make them
 as specific as possible. Following his advice, we expanded on our current
-requirements by adding more detail and specifying exactly what we meant. We
-also refined our elevator pitch to make it a better fit for the intended
-audience.
+requirements by adding more detail and specifying exactly what we meant, rather
+than relying on assumptions.
+
+Finally, we also wrote the first draft of our elevator pitch, a 30-second
+overview of our project that we will be presenting to the rest of the class
+later in the term.
 
 \subsection{Week 7}  
 
-After much delay, sweat and tears, we finally have a functional proof 
-of concept to demo and show off. The program is super simple but 
-accomplishes the bare minimum of what we would expect the program to do.
-Sending a basic TCP command to the ESP8266 module will cycle the lights 
-through the device's Lua firmware, and will in turn flip the relays out of
-the board's GPIO once we wire it up too. The TCP commands are sent by the 
-Raspberry Pi using a boot script on lxTerminal, using an execution sequence
-that looks like this:
+After much delay, sweat, and tears, we finally had a functional proof of
+concept to demo and show off. The program was quite simple, but accomplished
+the bare minimum of what we would expect the program to do.  Sending a basic
+TCP command to the ESP8266 module will cycle the lights through the device's
+Lua firmware, and will in turn flip the relays out of the board's GPIO once we
+wire it up too. The TCP commands are sent by the Raspberry Pi using a boot
+script on lxTerminal, using an execution sequence that looks like this:
 
 \begin{enumerate}
     \item Pi boots into the TFTLCD module, screen initialized
@@ -187,33 +199,85 @@ that looks like this:
         device
 \end{enumerate}
 
-For our next step, we need to make sure that the Pi can reliably perform the
-discovery operation (the IP is hard-coded right now) and that the ESP8266
-module can run as a client in the future, connecting to the Pi to take
-advantage of the Pi's DHCP server and to simplify future connections.\\
+For our next step, we planned to make sure that the Pi could reliably perform
+the discovery operation (the IP was hard-coded) and that the ESP8266 module
+could run as a client in the future, connecting to the Pi to take advantage of
+the Pi's DHCP server and to simplify future connections.
 
 \includegraphics[scale=0.1]{circuit.jpg}
 
+As far as documents go, we also finished revising our requirements document,
+fleshed out our technology review, and started on our expo poster this week.
+The expo poster largely involved filling out the provided template with the
+proper information from our existing documents in a more condensed and less
+technical format.
+
+For our technology review, we chose to focus on four different main components of the system:
+
+\begin{itemize}
+    \item OS for the control unit (the Raspberry Pi)
+    \item Server program implementation
+    \item Web site implementation
+    \item Server/client communication
+\end{itemize}
+
+For each component, we reviewed 3 potential solutions and chose what seemed to
+be the best fit for the job, given our requirements for the project.
+
+For the Pi's OS, we considered using an existing OS such as OpenWRT (designed
+for networking tasks) and Raspbian (designed for ease of use on the Raspberry
+Pi), but in the end, we decided to go with Yocto, as it will allow us to strip
+the OS down to just what we need, making the system more optimized and
+responsive.  This is particularly important given the modest processing power
+of the Pi and the fact that it will be facing the user directly, making
+response time all the more important.
+
+For the server program implementation, we considered writing it in a low-level
+language such as C for performance benefits.  We also considered whether to use
+sysfs directly to interact with hardware devices, or whether to use the libmraa
+library to abstract them and make the interaction easier.  However, in the end,
+we decided to go with Python for its ease of use and higher development speed.
+Since the ESP8266 can run MicroPython, using Python for the Pi as well made
+sense since we only have to focus on using one language.
+
+For the website implementation, we considered several languages and frameworks,
+both for the backend and the frontend.  For the frontend, there is probably no
+way to get around the standard HTML/CSS/JS stack, but for the backend, we
+condidered whether to write our own site from scratch using PHP/Ruby/Python, or
+whether to use a framework like Ruby on Rails for Django/Flask.  In the end, we
+decided on using Flask, as it is a fairly simple yet powerful web framework
+written in Python, which will allow us to use Python almost everywhere for this
+project and communicate easily with the server control program.
+
+Finally, for the server/client communication, we considered three
+architectures: ad-hoc, where every device would connect to every other device;
+central WAP, where the Pi would act as a central Wireless Access Point and
+server, with the ESP plug units connecting to it; and CAS, where every device
+connects to an external server that directs the entire system.  In the end, we
+decided that the CAS system would rely too heavily on external resources and
+would be too difficult to maintain, while the ad-hoc system was not possible
+with the given hardware.  Thus, we decided to use the central WAP method.
+
 \subsection{Week 8}
  
-Progress since last week: 
- 
-Our proof of concept is now portable, and booting the pi connects it to the esp and cycles the lights on the relay. It has also been shown to the TA. 
-Completed the expo poster 
-Re-Wrote the elevator pitch 
-Problems: 
-No real problems this week 
-Plans for next week: 
-Continue to develop the proof of concept, possibly by adding actual lights to the relay instead of the LED's. 
-Present the elevator pitch 
+We have accomplished the task of automatic communication between the control
+and plug units; booting the Pi connects it to the ESP automatically and cycles
+the lights on the relay.  We also demonstrated our proof of concept to our TA,
+Xinze Guan, so he could see our progress.
+
+As far as documents go, we also finished up our expo poster and got feedback
+from Kevin McGrath on our elevator pitch.  Though he said he liked it
+personally, it was a bit too informal for a business presentation, so we
+reworked it a bit to sound more professional.
 
 \subsection{Week 9}
  
-On Week 9 we continued to work on testing out our proof of concept. We managed
-to connect actual lights to our relay and verified that we can control them by
-toggling them on and off. This is a good step toward getting a fully working
-proof of concept working as it means we have most of the main parts done, and
-mainly need to start working on the UI of the touchscreen and web page.
+During week 9, we continued to work on testing out our proof of concept. We
+managed to connect actual lights to our relay and verified that we can control
+them by toggling them on and off. This is a good step toward getting a fully
+working proof of concept working as it means we have most of the main parts
+done, and mainly need to start working on the UI of the touchscreen and web
+page.
 
 We decided that we are most likely going to use Flask to implement the website.
 Flask is a micro-framework for Python that is designed for developing websites.
@@ -226,7 +290,7 @@ create our our website.
 
 We also presented our elevator pitch on this week, which went decently well.
 There were no documents to turn in this week, and there was only class on
-Tuesday so there is not much else to report. Next week we planned to iron out
+Tuesday, so there is not much else to report. Next week, we planned to iron out
 the design document and work on the progress report. 
 
 \subsection{Week 10}
@@ -234,21 +298,21 @@ the design document and work on the progress report.
 The final week of the capstone project was largely uneventful as our group
 began working on other final projects and studying for exams. However, we did
 get some work in with regards to some project details and the work on the
-design document.  This week we took our document to the TA to get some feedback
-regarding the design elements we focused on for the paper, and he was pleased
-with the overall result after some vocabulary changes.  The hardware project
-itself didn't get much direct attention this week, but we did wonder about the
-usability of the final result, from a user perspective.  How easy-to-use should
-set-up be? Should the user have to worry about port forwarding on the home
-network?  According to Victor, our project sponsor, there was no need to design
-an overly-simplified option.  We will continue to investigate more networking
-options over break.
+design document.  This week, we took our document to the TA to get some
+feedback regarding the design elements we focused on for the paper, and he was
+pleased with the overall result after some vocabulary changes.  The hardware
+project itself didn't get much direct attention this week, but we did wonder
+about the usability of the final result, from a user perspective.  How easy
+should the setup process be? Should the user have to worry about port
+forwarding on the home network? According to Victor, our project sponsor, there
+was no need to design an overly-simplified option. We will continue to
+investigate more networking options over break.
 
 \begin{itemize}
     \item Completed: Design Document\\
         The design document was reviewed by our group and a TA and turned in.
         we also had our weekly meeting with the TA at this time.  
-    \item How complicated does the user-setup portion of the project need to be
+    \item How complicated does the user setup portion of the project need to be
         and are there restrictions on what they should be able to do?\\
         Answer: As of now, having to reconnect to the device to reconfigure it
         is acceptable. Victor imagines that we won't have to connect so often
