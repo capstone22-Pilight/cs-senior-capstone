@@ -32,9 +32,8 @@ implementation next term.
 
 \pagebreak
 
-\section{Progress}
+\section{Weekly Breakdown}
 
-% sean
 \subsection{Week 3}
 
 Our first week of the capstone project ``Not exactly the Internet of Things for
@@ -66,14 +65,62 @@ In addition, we were able to finish our Problem Statement document, which
 largely involved expanding upon our client's original project proposal with
 additional clarification, focus, technical details, and performance metrics.
 
-% sean
 \subsection{Week 4}
  
-Having not received the hardware from out client yet, there was not much we could do.  We did, however, begin work on our Requirements Document, listing out several core requirements, as well as some stretch goals.
+Having not received the hardware from our client yet, there was not much we
+could do on the physical side.  We did, however, begin work on our Requirements
+Document, listing out several core requirements, as well as some stretch goals.
+Much of this work was simply listing out each individual piece of the system,
+all the while filling in assumptions with explicit requirements and providing
+examples to ensure the requirements cannot be misconstrued.  For some of the
+aspects that we not yet sure of, we injected a little of our own vision,
+knowing that our client would be able to make the final decisions on details
+later.  For organizational purposes, we decided to break up the requirements
+into three categories:
+
+\begin{enumerate}
+    \item Device control
+    \item User interface
+    \item Rules
+\end{enumerate}
+
+The ``device control'' section includes the bare essentials for booting each
+device, running the control programs, and ensuring that the devices are able to
+communicate with each other wirelessly.  The ``user interface'' section
+includes requirements regarding the user's experience and access through the
+touchscreen and web site interfaces, including how they can view, name, group,
+toggle, and apply rules to lights.  The ``rules'' section, then, describes the
+rules that will be available for users to control their lights with.  These
+include time-based rules (e.g. turning on at 8pm and off at 6am every weekday)
+and of course, the crowning feature, rules for toggling based on the sunset and
+sunrise, obviating the need to manually adjust the system when the sunset and
+sunrise times change with the seasons.
+
+We also included a ``stretch goals'' category following the same 3-section
+layout as described above, where we filled in interesting ideas that we and our
+client had, but were not absolutely necessary for the proper functioning of the
+system and would only be implemented after the core requirements were complete,
+if time allowed.  In the device control section, stretch goals included
+potentially expanding the system to control devices other than lights, such as
+garage door openers, music players, holiday decorations, and sprinklers.  In
+the user interface section, we considered additional usability features, such
+as allowing the web interface to be accessible over the Internet (for remote
+control) or even external "cloud" hosting for the web interface to improve
+uptime and obviate the need for the user to port forward on their router.  The
+rules section included more complex rules, such as toggling based on
+weather/celestial conditions (which might require Internet access) or various
+attachable sensors, such as motion sensors, light sensors, moisture sensors,
+and sound sensors.  These types of rules would require significant additional
+hardware, but would allow the system to, for example, turn on lights when you
+pull into the driveway.  The usefulness of these rules would also greatly
+increase if combined with other stretch goals, like sprinkler system control,
+as the system could then be configured to stop sprinkling if the ground is
+already wet (e.g. due to rain) or to pause temporarily if someone is walking
+by.
 
 \subsection{Week 5}
 
-This week we completed our requirements document and began researching
+This week, we completed our requirements document and began researching
 the hardware once we had it in our hands. We picked up the Raspberry Pi
 and TFTLCD display from Victor and booted the device with the \textit{fbtft} 
 module for the device. This week was otherwise uneventful with everyone working
@@ -81,7 +128,6 @@ on other projects and midterms, but there was still work done with regards to
 group logistics and future planning. When we aren't so busy next week, we will
 continue our proof of concept project to get the firmware and relay online.
 
-% Malcolm
 \subsection{Week 6}
  
 Most of what we did on week 6 of our project involved trying to get a
@@ -110,7 +156,6 @@ requirements by adding more detail and specifying exactly what we meant. We
 also refined our elevator pitch to make it a better fit for the intended
 audience.
 
-% Evan
 \subsection{Week 7}  
 
 After much delay, sweat and tears, we finally have a functional proof 
@@ -139,7 +184,6 @@ advantage of the Pi's DHCP server and to simplify future connections.\\
 
 \includegraphics[scale=0.1]{circuit.jpg}
 
-% sean
 \subsection{Week 8}
  
 Progress since last week: 
@@ -153,7 +197,6 @@ Plans for next week:
 Continue to develop the proof of concept, possibly by adding actual lights to the relay instead of the LED's. 
 Present the elevator pitch 
 
-% Malcolm
 \subsection{Week 9}
  
 On Week 9 we continued to work on testing out our proof of concept. We managed
@@ -176,7 +219,6 @@ There were no documents to turn in this week, and there was only class on
 Tuesday so there is not much else to report. Next week we planned to iron out
 the design document and work on the progress report. 
 
-% Evan
 \subsection{Week 10}
 
 The final week of the capstone project was largely uneventful as our group
