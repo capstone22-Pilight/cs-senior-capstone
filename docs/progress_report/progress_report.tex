@@ -1,5 +1,6 @@
 \documentclass[letterpaper,10pt]{article}
 \usepackage[margin=0.75in]{geometry}
+\usepackage{graphicx}
 
 \title{Not Exactly the Internet of Things for Outdoor Lighting:\\Progress Report}
 \author{Oregon State University CS Senior Capstone Group 22\\Malcolm Diller, Sean Rettig, Evan Steele\\Client: Victor Hsu}
@@ -81,21 +82,7 @@ We tested the devices with various wireless networking methods including ad-hoc 
 In addition to working on the proof of concept, we also made headway on some of the documents that we had due soon. As we continued to develop the Technical Requirements document, we asked the TA to see if he had any comments on it. His advice was to elaborate more on the requirements we already had and make them as specific as possible. Following his advice, we expanded on our current requirements by adding more detail and specifying exactly what we meant. We also refined our elevator pitch to make it a better fit for the intended audience.
 
 % Evan
-\subsection{Week 7}
-
-Progress since last week: 
-We now have a working proof of concept where the Pi is able to wirelessly communicate to the ESPs and cause each of the connections on the relays to be activated individually. 
-Completed technology review and revision of requirements document. 
-Started on expo poster. 
-Problems: 
-No real problems other than having to revise the requirements document to be more detailed and fine-grained. 
-Plans for next week: 
-Finish poster 
-Revise elevator pitch 
-Demonstrate proof of concept to TA 
-Possibly attach actual lights to the relay rather than just using the relay's LEDs to see which switches are enabled. 
-
-Week 7 saw our first bit of prototyping that ended in a successful test. The Raspberry Pi can now send TCP commands to the ESP8266 module. A test program cycles through the command bits and all the lights on the relay turn on in sequence. We continued to develop the prototype  
+\subsection{Week 7}  
 
 Our first week of the capstone project ``Not exactly the Internet of Things for
 Outdoor Lighting'' was relatively uneventful, as we spent most of the time
@@ -124,7 +111,9 @@ including:
 
 In addition, we were able to finish our Problem Statement document, which
 largely involved expanding upon our client's original project proposal with
-additional clarification, focus, technical details, and performance metrics.
+additional clarification, focus, technical details, and performance metrics.\\
+
+\includegraphics[scale=0.1]{circuit.jpg}
 
 % sean
 % Evan
@@ -152,5 +141,30 @@ We also presented our elevator pitch on this week, which went decently well. The
 
 % Evan
 \subsection{Week 10}
+The final week of the capstone project was largely uneventful as our group began working on other final projects and studying for exams. However, we did get some work in with regards to some project details and the work on the design document. This week we took our document to the TA to get some feedback regarding the design elements we focused on for the paper, and he was pleased with the overall result after some vocabulary changes. The hardware project itself didn't get much direct attention this week, but we did wonder about the usability of the final result, from a user perspective. How easy-to-use should set-up be? Should the user have to worry about port forwarding on the home network? According to Victor, our project sponsor, there was no need to design an overly-simplified option. We will continue to investigate more networking options over break.
+
+\begin{itemize}
+    \item Completed: Design Document\\
+	The design document was reviewed by our group and a TA and turned in. 
+	we also had our weekly meeting with the TA at this time.  
+    \item How complicated does the user-setup portion of the project need
+	to be and are there restrictions on what they should be able to do?\\
+        Answer: As of now, having to reconnect to the device to reconfigure 
+	it is acceptable. Victor imagines that we won't have to connect so
+	often that investing time into developing a complex networking option
+	is not necessary.
+    \item What will the project do over break?\\
+        Answer: Evan will be taking the hardware home to use in his network
+	testing bench, which is pretty much just a dozen microcomputers 
+	plugged into an old Cisco 2960x networking together. 
+\end{itemize}
+
+Over break, Evan will be experimenting with some networking strategies and
+working with the web serve to flip the relay. Sean suggested that Flask would
+provide a good framework, but as of now he's the only one with experience in 
+it, so Malcom and Evan will need to study it. An ideal goal for the start of 
+Winter term would be having a working web interface that can flip the relay,
+built with the Yocto build server. Even better if we have the interface
+up on the TFTLCD screen, but we may save that until we get back together.
 
 \end{document}
