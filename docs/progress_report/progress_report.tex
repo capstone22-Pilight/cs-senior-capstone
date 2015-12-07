@@ -12,7 +12,19 @@
 
 \section{Abstract}
 
-abstract goes here
+Our group has made serious progress in the project to turn the Raspberry Pi and
+ESP8266 Wifi module into a "Not exactly IoT" device for controlling 
+binary devices wirelessly. From project assignment to week five, our group
+produced a proof-of-concept for the final project, and planning the final
+software approach in the meantime. Despite all the writing requirements this 
+term, we made excellent progress.\\
+Throughout the term, our team moved between early prototyping and detailed 
+documentation for the project. With regular communication through email and IRC
+our group kept coordinated throughout the term, publishing progress reports to
+the Sharepoint site and code samples to our Github page. We will discuss our 
+weekly progress and describe how the prototype and documentation unfolded over the 
+course of the first term of the capstone project. This should provide an assessment
+on where our groups stands in preparedness to move forward with implementation next term.
 
 \pagebreak
 
@@ -63,14 +75,14 @@ Start to work with the hardware as soon as we get it. This will probably consist
 If we get far enough, work on communication between the Pi and the controllers. 
 
 \subsection{Week 5}
- 
-Progress since last week: 
-We have finished the requirements document after having our client review it. 
-We received our Raspberry Pi and touchscreen hardware. 
-Problems: 
-No problems this week 
-Plans for the coming week: 
-Begin working on the Pi starting with an operating system and then branching out to communication between the devices and touchscreen capabilities. 
+
+This week we completed our requirements document and began researching
+the hardware once we had it in our hands. We picked up the Raspberry Pi
+and TFTLCD display from Victor and booted the device with the \textit{fbtft} 
+module for the device. This week was otherwise uneventful with everyone working
+on other projects and midterms, but there was still work done with regards to 
+group logistics and future planning. When we aren't so busy next week, we will
+continue our proof of concept project to get the firmware and relay online.
 
 % Malcolm
 \subsection{Week 6}
@@ -84,34 +96,26 @@ In addition to working on the proof of concept, we also made headway on some of 
 % Evan
 \subsection{Week 7}  
 
-Our first week of the capstone project ``Not exactly the Internet of Things for
-Outdoor Lighting'' was relatively uneventful, as we spent most of the time
-coordinating group meetings.  At our first group meeting, we brainstormed a
-list of clarifying questions to ask our client, Victor, about the project,
-including:
+After much delay, sweat and tears, we finally have a functional proof 
+of concept to demo and show off. The program is super simple but 
+accomplishes the bare minimum of what we would expect the program to do.
+Sending a basic TCP command to the ESP8266 module will cycle the lights 
+through the device's Lua firmware, and will in turn flip the relays out of
+the board's GPIO once we wire it up too. The TCP commands are sent by the 
+Raspberry Pi using a boot script on lxTerminal, using an execution sequence
+that looks like this:
+\begin{enumerate}
+\item{Pi boots into the TFTLCD module, screen initialized}
+\item{Pi loads lxTerminal, runs startup script in init.d}
+\item{inid.d script connects to the ESP8266 module, gets an IP}
+\item{After the connection is made, the inid.d script starts a Python script}
+\item{The Python script cycles through TCP commands and send them to the device}
+\end{enumerate}
 
-\begin{itemize}
-    \item How is the system going to be controlled by phones?  Is a dedicated
-        app necessary, or can we provide a mobile-friendly website?\\ Answer: A
-        mobile-friendly website is acceptable.
-    \item Are we just going to be controlling lights, or are we going to expand
-        to other devices if we have time (e.g. sprinkler system, music players,
-        garage door openers, alarm systems)?\\
-        Answer: The control of other devices is currently outside the scope of
-        this project, but can be a stretch goal.
-    \item Will the code for this project be open source?\\
-        Answer: Yes!  The entire project is hosted on Github.com in a public
-        repository.
-    \item What hardware will we have access to?\\
-        Answer: In addition to the hardware mentioned in the client's original
-        project proposal, Victor agreed to order a 2.8" TFT Display with
-        Resistive Touchscreen <http://www.adafruit.com/products/1774> for use
-        with the Raspberry Pi in the control unit.
-\end{itemize}
-
-In addition, we were able to finish our Problem Statement document, which
-largely involved expanding upon our client's original project proposal with
-additional clarification, focus, technical details, and performance metrics.\\
+For our next step, we need to make sure that the Pi can reliably perform
+the discovery operation (the IP is hard-coded right now) and that the ESP8266
+module can run as a client in the future, connecting to the Pi to take 
+advantage of the Pi's DHCP server and to simplify future connections.\\
 
 \includegraphics[scale=0.1]{circuit.jpg}
 
@@ -141,7 +145,14 @@ We also presented our elevator pitch on this week, which went decently well. The
 
 % Evan
 \subsection{Week 10}
-The final week of the capstone project was largely uneventful as our group began working on other final projects and studying for exams. However, we did get some work in with regards to some project details and the work on the design document. This week we took our document to the TA to get some feedback regarding the design elements we focused on for the paper, and he was pleased with the overall result after some vocabulary changes. The hardware project itself didn't get much direct attention this week, but we did wonder about the usability of the final result, from a user perspective. How easy-to-use should set-up be? Should the user have to worry about port forwarding on the home network? According to Victor, our project sponsor, there was no need to design an overly-simplified option. We will continue to investigate more networking options over break.
+The final week of the capstone project was largely uneventful as our group began working on other final projects 
+and studying for exams. However, we did get some work in with regards to some project details and the work on the design document. 
+This week we took our document to the TA to get some feedback regarding the design elements we focused on for the paper, 
+and he was pleased with the overall result after some vocabulary changes. 
+The hardware project itself didn't get much direct attention this week, but we did wonder about the usability of the final result, from a user perspective. 
+How easy-to-use should set-up be? Should the user have to worry about port forwarding on the home network? 
+According to Victor, our project sponsor, there was no need to design an overly-simplified option. 
+We will continue to investigate more networking options over break.
 
 \begin{itemize}
     \item Completed: Design Document\\
