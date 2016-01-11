@@ -1,25 +1,8 @@
 {% extends "base.html" %}
 {% block body %}
 <ol class='vertical'>
-  {% for group in groups[0].members %}
-  <li>
-    <input type="checkbox" name="checkbox-group" checked>
-    {{ group.name }}
-    <a href="#" style="float: right;">
-      <span class="glyphicon glyphicon-cog"></span>
-    </a>
-    <ol>
-      {% for light in group.members %}
-      <li>
-        <input type="checkbox" name="checkbox-light" checked>
-        {{ light.name }}
-        <a href="#" style="float: right;">
-          <span class="glyphicon glyphicon-cog"></span>
-        </a>
-      </li>
-      {% endfor %}
-    </ol>
-  </li>
+  {% for e in groups %}
+  {% include "grouplight.html" %}
   {% endfor %}
 </ol>
  <!-- <a href="#" id="edit" data-type="text">superuser</a> -->

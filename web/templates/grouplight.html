@@ -1,0 +1,22 @@
+{% if isLight(e) %}
+<li>
+  <input type="checkbox" name="checkbox-light" checked>
+  {{ e.name }}
+  <a href="#" style="float: right;">
+    <span class="glyphicon glyphicon-cog"></span>
+  </a>
+</li>
+{% else %}
+<li>
+<input type="checkbox" name="checkbox-group" checked>
+{{ e.name }}
+<a href="#" style="float: right;">
+  <span class="glyphicon glyphicon-cog"></span>
+</a>
+<ol>
+  {% for e in e.members %}
+  {% include "grouplight.html" %}
+  {% endfor %}
+</ol>
+</li>
+{% endif %}
