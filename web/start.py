@@ -44,6 +44,40 @@ class Group(object):
     def append(self, light):
         self.members.append(light)
 
+global CURR_STATE
+CURR_STATE = '0000'
+
+AVAILABLE_COMMANDS = {
+    '1 ON': '11000',
+    '2 ON': '10100',
+    '3 ON': '10010',
+    '4 ON': '10001',
+    '1 OFF': '00111',
+    '2 OFF': '01011',
+    '3 OFF': '01101',
+    '4 OFF': '01110',
+}
+
+def enlighten(cmd):
+    new_state = ""
+    if cmd[0] == '0':
+        for count in range(1,5):
+            if cmd[count] == '0':
+                new_state+='0'
+            else:
+                new_state+=CURR_STATE[count-1]
+    else:
+        for count in range(1,5):
+            if cmd[count] == '1':
+                new_state+='1'
+            else:
+                new_state+=CURR_STATE[count-1]
+
+    global CURR_STATE
+    CURR_STATE = new_state
+    # send the new CURR_STATE to TCP here
+    print "The current global state: ", CURR_STATE
+
 # Initialize some dummy groups to start with
 groups = [Group("House")]
 for gi in xrange(3):
@@ -57,6 +91,17 @@ print groups
 @app.route("/")
 def index():
     return render_template('index.html', groups=groups)
+
+@app.route('/buttons')
+def buttons():
+    return render_template('buttons.html', commands=AVAILABLE_COMMANDS)
+
+@app.route('/buttons/<cmd>')
+def command(cmd=None):
+    light_command = cmd
+    response = "Sending to tcp: {}".format(cmd.capitalize())
+    enlighten(light_command)
+    return response, 200, {'Content-Type': 'text/plain'}
 
 @app.route("/advanced")
 def advanced():

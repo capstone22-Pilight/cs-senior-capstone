@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block body %}
+<div>
+{% for label, command in commands.items() %}
+    <button id="command" class="command command-{{ command }}" value="{{ command }}">
+        {{ label }}
+    </button>
+{% endfor %}
+</div>
+{% endblock %}
