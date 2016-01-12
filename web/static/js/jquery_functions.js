@@ -3,17 +3,23 @@ document.addEventListener("DOMContentLoaded", function() {
    for (var i=0, l=commandButtons.length; i<l; i++) {
       var button = commandButtons[i];
       button.addEventListener("click", function(e) {
-         e.preventDefault();
-
          var clickedButton = e.target;
          var command = clickedButton.value;
-
-         var request = new XMLHttpRequest();
-         request.onload = function() {
-            console.log(request.responseText);
+         var sentData = {
+            'command' : command
          };
-         request.open("GET", "/buttons/" + command, true);
-         request.send();
+         $.ajax({
+            type: 'POST',
+            url: '/buttons_proc',
+            data: JSON.stringify(sentData,null,'\t'),
+            contentType: 'application/json;charset=UTF-8',
+            success:function(response){
+               console.log(response);
+            },
+            error: function(error) {
+               console.log(error);
+            }
+         });
       });
    }
 }, true);

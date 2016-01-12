@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 import random as rand
-from flask import Flask, render_template
+import unicodedata
+from flask import Flask, render_template, request
 app = Flask(__name__)
 
 class Light(object):
@@ -96,12 +97,12 @@ def index():
 def buttons():
     return render_template('buttons.html', commands=AVAILABLE_COMMANDS)
 
-@app.route('/buttons/<cmd>')
+@app.route('/buttons_proc',methods=['POST'])
 def command(cmd=None):
-    light_command = cmd
-    response = "Sending to tcp: {}".format(cmd.capitalize())
+    light_command = request.json['command']
+    unicodedata.normalize('NFKD',light_command).encode('ascii','ignore')
     enlighten(light_command)
-    return response, 200, {'Content-Type': 'text/plain'}
+    return light_command, 200, {'Content-Type': 'text/plain'}
 
 @app.route("/advanced")
 def advanced():
