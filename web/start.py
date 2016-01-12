@@ -11,7 +11,7 @@ class Light(object):
         Light.index += 1
 
         if mac is None:
-            self.mac = ":".join([hex(rand.randint(0, 255))[-2:] for n in xrange(6)])
+            self.mac = ":".join(["{:x}".format(rand.randint(0, 255)).zfill(2) for n in xrange(6)])
         else:
             self.mac = mac
 
