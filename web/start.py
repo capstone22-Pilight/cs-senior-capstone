@@ -59,7 +59,7 @@ AVAILABLE_COMMANDS = {
     '4 OFF': '01110',
 }
 
-def enlighten(cmd):
+def enlighten(cmd,mac):
     new_state = ""
     if cmd[0] == '0':
         for count in range(1,5):
@@ -78,6 +78,7 @@ def enlighten(cmd):
     CURR_STATE = new_state
     # send the new CURR_STATE to TCP here
     print "The current global state: ", CURR_STATE
+    print "The destination device: ", mac
 
 # Initialize some dummy groups to start with
 groups = [Group("House")]
@@ -100,9 +101,11 @@ def buttons():
 @app.route('/buttons_proc',methods=['POST'])
 def command(cmd=None):
     light_command = request.json['command']
+    mac = request.json['mac']
     unicodedata.normalize('NFKD',light_command).encode('ascii','ignore')
-    enlighten(light_command)
-    return light_command, 200, {'Content-Type': 'text/plain'}
+    unicodedata.normalize('NFKD',mac).encode('ascii','ignore')
+    enlighten(light_command,mac)
+    return light_command+"@"+mac, 200, {'Content-Type': 'text/plain'}
 
 @app.route("/advanced")
 def advanced():

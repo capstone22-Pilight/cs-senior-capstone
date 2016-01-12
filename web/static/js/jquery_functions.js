@@ -5,8 +5,10 @@ document.addEventListener("DOMContentLoaded", function() {
       button.addEventListener("click", function(e) {
          var clickedButton = e.target;
          var command = clickedButton.value;
+         command = command.split("|");
          var sentData = {
-            'command' : command
+            'command' : command[0],
+            'mac'     : command[1]
          };
          $.ajax({
             type: 'POST',
@@ -23,3 +25,14 @@ document.addEventListener("DOMContentLoaded", function() {
       });
    }
 }, true);
+
+document.addEventListener("DOMContentLoaded", function() {
+   var switches = document.querySelectorAll("checkbox-light");
+   console.log(switches);
+   for (var i=0, l=switches.length; i<l; i++) {
+      var current_switch = switches[i];
+      current_switch.addEventListener('change',function(e) {
+         // something happens when we change a checkbox!
+      });
+   }
+},true);
