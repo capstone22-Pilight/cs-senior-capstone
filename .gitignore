@@ -12,3 +12,5 @@
 Thumbs.db
 docs/group_eval
 **/.sass-cache
+web/db_repository
+web/app.db
