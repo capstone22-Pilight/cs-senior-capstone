@@ -24,6 +24,9 @@
     <![endif]-->
   </head>
   <body>
-    {% block body %}{% endblock %}
+     {% include 'navigation.html' %}
+     <div class="container" style="padding-top:5em">
+     {% block body %}{% endblock %}
+     </div>
   </body>
 </html>
