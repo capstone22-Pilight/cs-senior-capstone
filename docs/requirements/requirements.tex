@@ -107,9 +107,6 @@ system and must be functional prior to the expo in spring term.
                 relays/lights that are connected to it.
             \item Client control program can control the relays to power the
                 lights on/off individually.
-            \item Lights can be toggled over a user-specified period of time,
-                e.g. a light can gradually turn on and grow brighter over the
-                course of 30 seconds.
             \item Server is able to act as a wireless access point that each
                 client can connect to.
             \item Clients can be paired with a server by putting the server
@@ -145,8 +142,6 @@ system and must be functional prior to the expo in spring term.
                 ``nickname'' for easy identification.
             \item The web interface contains buttons for each light that can be
                 used to toggle lights individually.
-            \item The web interface contains sliders for each light that can be
-                used to change the intensity of lights individually.
             \item The web interface contains the ability to put lights into
                 ``groups'' that can be controlled together all at once.
             \item The web interface displays a list of light groups.
@@ -216,10 +211,6 @@ system and must be functional prior to the expo in spring term.
                 light randomly toggle a few seconds before 8pm, then the next a
                 few seconds later, etc. in a random order and with randomized
                 times.
-            \item Lights/groups can be set to gradually dim/brighten over a set
-                period of time.  For example, lights can turn on and gradually
-                brighten from sunset to 30 minutes after sunset, after which
-                they are at full brightness.
         \end{enumerate}
 \end{enumerate}
 
@@ -231,6 +222,9 @@ functionality of the system and may be implemented only if time permits.
 \begin{enumerate}[resume]
     \item Device control
         \begin{enumerate}
+            \item Lights can be toggled over a user-specified period of time,
+                e.g. a light can gradually turn on and grow brighter over the
+                course of 30 seconds.
             \item System also controls devices other than lights
                 \begin{enumerate}
                     \item Garage door openers (e.g. users can program their
@@ -246,6 +240,8 @@ functionality of the system and may be implemented only if time permits.
         \end{enumerate}
     \item User interface
         \begin{enumerate}
+            \item The web interface contains sliders for each light that can be
+                used to change the intensity of lights individually.
             \item The web interface is accessible over the Internet (i.e. the
                 user can control the system from anywhere in the world with an
                 Internet connection, not just at their home)
@@ -305,6 +301,10 @@ functionality of the system and may be implemented only if time permits.
                         noise, or can strobe according to the beat of music
                         that is playing).
                 \end{enumerate}
+            \item Lights/groups can be set to gradually dim/brighten over a set
+                period of time.  For example, lights can turn on and gradually
+                brighten from sunset to 30 minutes after sunset, after which
+                they are at full brightness.
         \end{enumerate}
 \end{enumerate}
 
