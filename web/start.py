@@ -3,7 +3,12 @@
 import random as rand
 import unicodedata
 from flask import Flask, render_template, request
+from flask.ext.sqlalchemy import SQLAlchemy
+
 app = Flask(__name__)
+app.config.from_object('config')
+
+import model
 
 class Light(object):
     index = 0
@@ -45,6 +50,7 @@ class Group(object):
     def append(self, light):
         self.members.append(light)
 
+# The light's current state, move this to the class when ready
 global CURR_STATE
 CURR_STATE = '0000'
 
@@ -58,7 +64,7 @@ AVAILABLE_COMMANDS = {
     '3 OFF': '01101',
     '4 OFF': '01110',
 }
-
+# This function should also be a member of a lights class too
 def enlighten(cmd,mac):
     new_state = ""
     if cmd[0] == '0':
@@ -110,6 +116,11 @@ def command(cmd=None):
 @app.route("/advanced")
 def advanced():
     return render_template('index.html', groups=groups)
+
+@app.route("/devices")
+def devices():
+    all_devices = model.Device.query.all()
+    return render_template('devices.html',devices=all_devices)
 
 def isLight(o):
     return isinstance(o, Light)

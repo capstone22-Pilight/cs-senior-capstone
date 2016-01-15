@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Devices</h1>
+<table class ="table table-striped table-hover">
+   <thead>
+      <tr>
+         <th>Name</th>
+         <th>IP Address</th>
+         <th>MAC Address</th>
+      </tr>
+   </thead>
+   <tbody>
+      {% for row in devices %}
+      <tr>
+         <td>{{ row['name'] }}</td>
+         <td>{{ row['ipaddr'] }}</td>
+         <td>{{ row['mac'] }}</td>
+      </tr>
+      {% endfor %}
+   </tbody>
+</table>
+{% endblock %}
