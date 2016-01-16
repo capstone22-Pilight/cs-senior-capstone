@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
 import random as rand
-import unicodedata
-from flask import Flask, render_template, request
+import unicodedata,socket
+from isc_dhcp_leases.iscdhcpleases import Lease, IscDhcpLeases
+from flask import Flask, render_template, request, jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -121,6 +122,39 @@ def advanced():
 def devices():
     all_devices = model.Device.query.all()
     return render_template('devices.html',devices=all_devices)
+
+@app.route("/devices/search", methods=['POST'])
+def devices_search():
+
+    # Get all DHCP leases currently given out
+    leases = IscDhcpLeases('/var/lib/dhcp/dhcpd.leases')
+    leases = leases.get()
+
+    # No DHCP leases at all, the server is not operating
+    if not leases:
+        return "NODHCP"
+
+    additions = 0
+    # For each lease, first see if it's an ESP8266
+    for iteration,lease in enumerate(leases):
+        if(ESP8266_check(lease.ip)==True):
+            # We have an ESP8266 module!
+            database_check = model.Device.query.filter_by(mac=lease.ethernet).first()
+            if database_check is None:
+            # We have an ESP8266 AND it's not in the database!
+                new_device = model.Device(mac=lease.ethernet,ipaddr=lease.ip,name="ESP8266@"+lease.ethernet)
+                model.db.session.add(new_device)
+                model.db.session.commit()
+                additions = additions + 1
+    return str(additions)
+
+def ESP8266_check(ipaddr):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    result = sock.connect_ex((ipaddr,9999))
+    if result == 0:
+        return True
+    else:
+        return False
 
 def isLight(o):
     return isinstance(o, Light)

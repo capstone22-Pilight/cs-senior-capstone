@@ -36,3 +36,31 @@ document.addEventListener("DOMContentLoaded", function() {
       });
    }
 },true);
+
+document.addEventListener("DOMContentLoaded", function() {
+   $("#add_devices").click(function(){
+      $.ajax({
+         url: "/devices/search",
+         global: false,
+         type: "POST",
+         cache: false,
+         beforeSend: function(){
+            $('#response').remove('#add_devices');
+            $('#response').html('<img id="loading" src="/static/css/search.gif" />');
+         },
+         success: function(response){
+            if (response == "None"){
+               $('img[src*="search.gif"]').remove();
+               $('#response').html('<div class="alert alert-danger"><strong>Error!</strong> No devices connected!</div>');
+            }else if (response == "0"){
+               $('img[src*="search.gif"]').remove();
+               $('#response').html('<div class="alert alert-warning"><strong>Done!</strong> Scan complete. No new devices added</div>');
+            }else{
+               $('img[src*="search.gif"]').remove();
+               $('#response').html('<div class="alert alert-success"><strong>Done!</strong> Scan complete. New devices added</div>');
+
+            }
+         }
+      });
+   });
+},true);
