@@ -1,28 +1,56 @@
 {% extends "base.html" %}
 {% block body %}
-<ol class='vertical'>
-  {% for group in groups %}
-  <li>
-    <input type="checkbox" name="checkbox-group" checked>
-    {{ group }}
-    <a href="#" style="float: right;">
-      <span class="glyphicon glyphicon-cog"></span>
-    </a>
-    <ol>
-      {% for light in groups[group] %}
-      <li>
-        <input type="checkbox" name="checkbox-light" checked>
-        {{ light }}
-        <a href="#" style="float: right;">
-          <span class="glyphicon glyphicon-cog"></span>
-        </a>
-      </li>
-      {% endfor %}
-    </ol>
-  </li>
-  {% endfor %}
-</ol>
- <!-- <a href="#" id="edit" data-type="text">superuser</a> -->
+
+Advanced query:<br>
+<textarea id="query" rows="4" cols="50"></textarea>
+
+<p>
+    <form>
+        <input type="radio" name="day" value="group"> Use the parent group's settings<br>
+        <input type="radio" name="day" value="own"> Override group settings completely<br>
+        <input type="radio" name="day" value="or"> Turn on using the following settings and also with the group's settings<br>
+        <input type="radio" name="day" value="and"> Turn on using the following settings, but only if the group's settings also allow it<br>
+    </form>
+</p>
+
+<p>
+    Turn on at:
+    <form>
+        <input type="radio" name="time_on" value="sunset" checked> Sunset<br>
+        <input type="radio" name="time_on" value="sunrise"> Sunrise<br>
+        <input type="radio" name="time_on" value="other"> Time:
+        <form>
+            <input type="time" name="time_on">
+        </form>
+    </form>
+</p>
+<p>
+    Turn off at:
+    <form>
+        <input type="radio" name="time_on" value="sunset"> Sunset<br>
+        <input type="radio" name="time_on" value="sunrise" checked> Sunrise<br>
+        <input type="radio" name="time_on" value="other"> Time:
+        <form>
+            <input type="time" name="time_on">
+        </form>
+    </form>
+</p>
+
+<p>
+    Only turn on during the following days of the week:
+    <form>
+        {% for i, day in enumerate(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]): %}
+        <input type="checkbox" name="day" value="{{ i }}"> {{ day }}<br>
+        {% endfor %}
+    </form>
+</p>
+
+<p>
+    Only turn on between specific dates:
+    <form>
+        <input type="text" name="day" value="{{ i }}"> {{ day }}<br>
+    </form>
+</p>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -43,5 +71,21 @@
     $("[name='checkbox-group']").bootstrapSwitch('indeterminate', true, true);
 
     //$('#edit').editable();
+</script>
+
+<script>
+$("input[name=day]").on("change", function () {
+    if ($(this).is(":checked")) {
+        $("#query").val($(this).val())
+    } else {
+        $("#query").val("")
+    }
+});
+
+$("input[name=day]").on("change", function () {
+    if ($(this).is(":checked")) {
+        $("input[name=result]").prop("checked", true);
+    }
+});
 </script>
 {% endblock %}

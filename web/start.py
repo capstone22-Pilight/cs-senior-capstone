@@ -116,7 +116,8 @@ def command(cmd=None):
 
 @app.route("/advanced")
 def advanced():
-    return render_template('index.html', groups=groups)
+    gid = request.args.get('gid')
+    return render_template('advanced.html', gid=gid)
 
 @app.route("/devices")
 def devices():
@@ -161,4 +162,5 @@ def isLight(o):
 
 if __name__ == "__main__":
     app.jinja_env.globals.update(isLight=isLight)
+    app.jinja_env.globals.update(enumerate=enumerate)
     app.run(host='0.0.0.0', port=8080, debug=True)
