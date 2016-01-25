@@ -49,7 +49,8 @@ document.addEventListener("DOMContentLoaded", function() {
             $('#response').html('<img id="loading" src="/static/css/search.gif" />');
          },
          success: function(response){
-            if (response == "None"){
+            console.log(response)
+            if (response == "NODHCP"){
                $('img[src*="search.gif"]').remove();
                $('#response').html('<div class="alert alert-danger"><strong>Error!</strong> No devices connected!</div>');
             }else if (response == "0"){

@@ -4,7 +4,7 @@ import sys, imp, getopt
 from migrate.versioning import api
 from config import SQLALCHEMY_DATABASE_URI
 from config import SQLALCHEMY_MIGRATE_REPO
-from model import db
+from model import *
 
 def build():
     db.create_all()
@@ -13,6 +13,9 @@ def build():
         api.version_control(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
     else:
         api.version_control(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO, api.version(SQLALCHEMY_MIGRATE_REPO))
+    first_user = User(username="Pi",password="pilight")
+    db.session.add(first_user)
+    db.session.commit()
 
 def upgrade():
     api.upgrade(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)

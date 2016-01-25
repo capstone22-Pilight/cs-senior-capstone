@@ -3,13 +3,20 @@
 import random as rand
 import unicodedata,socket
 from isc_dhcp_leases.iscdhcpleases import Lease, IscDhcpLeases
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, g, session, flash, url_for, redirect, abort
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.login import LoginManager, login_user, logout_user, current_user, login_required
+
+import model
 
 app = Flask(__name__)
 app.config.from_object('config')
 
-import model
+# Login system initialization
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+app.secret_key = 'super_secret_key'
 
 class Light(object):
     index = 0
@@ -102,6 +109,7 @@ def index():
     return render_template('index.html', groups=groups)
 
 @app.route('/buttons')
+@login_required
 def buttons():
     return render_template('buttons.html', commands=AVAILABLE_COMMANDS)
 
@@ -138,7 +146,7 @@ def devices_search():
     additions = 0
     # For each lease, first see if it's an ESP8266
     for iteration,lease in enumerate(leases):
-        if(ESP8266_check(lease.ip)==True):
+        if(ESP8266_check(lease.ip)):
             # We have an ESP8266 module!
             database_check = model.Device.query.filter_by(mac=lease.ethernet).first()
             if database_check is None:
@@ -159,6 +167,31 @@ def ESP8266_check(ipaddr):
 
 def isLight(o):
     return isinstance(o, Light)
+
+@login_manager.user_loader
+def load_user(id):
+    return model.User.query.get(int(id))
+
+@app.route('/login',methods=['GET','POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+    username = request.form['username']
+    password = request.form['password']
+    registered_user = model.User.query.filter_by(username=username,password=password).first()
+    if registered_user is None:
+        flash('Invalid Credientals','error')
+        return redirect(url_for('login'))
+    login_user(registered_user)
+    flash('Logged in')
+    g.user=registered_user
+    return redirect(request.args.get('next') or url_for('index'))
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    g.user = None
+    return redirect(url_for('login'))
 
 if __name__ == "__main__":
     app.jinja_env.globals.update(isLight=isLight)

@@ -1,4 +1,4 @@
-<nav id="navbar" class="navubar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
+<nav id="navbar" class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
    <div class="container">
       <div class="navbar-header">
          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse">
@@ -11,7 +11,12 @@
       </div>
       <div class="collapse navbar-collapse" id="navbarCollapse">
          <ul class="nav navbar-nav">
-            <li><a href="#">Login</a></li>
+            {% if g.user is none %}
+            <li><a href="login">Login</a></li>
+            {% endif %}
+            {% if g.user is not none %}
+            <li><a href="logout">Logout</a></li>
+            {% endif %}
             <li><a href="#">Advanced</a></li>
             <li><a href="devices">Manage Devices</a></li>
          </ul>
