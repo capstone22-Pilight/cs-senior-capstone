@@ -12,19 +12,39 @@
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="/static/js/bootstrap.min.js"></script>
 <script src='/static/js/bootstrap-switch.js'></script>
-<script src='/static/js/bootstrap-editable.js'></script>
+<script src='/static/js/bootstrap-editable.min.js'></script>
 <script src='/static/js/jquery-sortable.js'></script>
 <script>
     $(function  () {
-      $("ol.vertical").sortable();
+      $("ol.vertical").sortable({
+        handle: "[name='handle']"
+      });
     });
     $.fn.bootstrapSwitch.defaults.size = 'mini';
-/*      $.fn.bootstrapSwitch.defaults.handleWidth = '10';
-    $.fn.bootstrapSwitch.defaults.onText = '';
-    $.fn.bootstrapSwitch.defaults.offText = ' ';*/
+    $.fn.bootstrapSwitch.defaults.handleWidth = '10';
+    $.fn.bootstrapSwitch.defaults.onText = '&nbsp';
+    $.fn.bootstrapSwitch.defaults.offText = '&nbsp';
     $("[name='checkbox-light']").bootstrapSwitch();
     $("[name='checkbox-group']").bootstrapSwitch('indeterminate', true, true);
 
-    //$('#edit').editable();
+    $.fn.editable.defaults.mode = 'inline';
+    $.fn.editable.defaults.showbuttons = false;
+    $.fn.editable.defaults.url = '/change_name';
+    $.fn.editable.defaults.type = 'text';
+    $(".edit").editable({
+      pk: 1,
+      params: function(params) {
+        var data = {};
+        data['name'] = params.value;
+        data['id'] = params.name;
+        /*if(params.name.indexOf("|") != -1){
+          data['mac'] = params.name.split("|")[0];
+          data['port'] = params.name.split("|")[1];
+        } else {
+          data['gid'] = params.name;
+        }*/
+        return data;
+      }
+    });
 </script>
 {% endblock %}
