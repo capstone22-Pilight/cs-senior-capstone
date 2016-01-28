@@ -6,9 +6,15 @@ import unicodedata,socket
 from isc_dhcp_leases.iscdhcpleases import Lease, IscDhcpLeases
 from flask import Flask, render_template, request, jsonify, g, session, flash, url_for, redirect, abort
 from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 from flask.ext.login import LoginManager, login_user, logout_user, current_user, login_required
+from config import SQLALCHEMY_DATABASE_URI
+from model import *
 
-import model
+engine = create_engine(SQLALCHEMY_DATABASE_URI)
+Session = sessionmaker(bind=engine)
+
 
 app = Flask(__name__)
 app.config.from_object('config')

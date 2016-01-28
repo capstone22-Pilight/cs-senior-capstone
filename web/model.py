@@ -33,18 +33,22 @@ class User(db.Model):
 
 class Group(db.Model):
     id = db.Column(db.Integer,primary_key=True)
-    GroupID = db.Column(db.Integer, db.ForeignKey('group.id'))
     name = db.Column(db.String(128))
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
+    group = db.relationship("Group", back_populates="groups", remote_side=[id])
+    groups = db.relationship("Group", back_populates="group")
+    lights = db.relationship("Light", back_populates="parent")
 
 class Light(db.Model):
     id = db.Column(db.Integer,primary_key=True)
-    parent = db.Column(db.Integer, db.ForeignKey('group.id'))
+    parent_id = db.Column(db.Integer, db.ForeignKey('group.id'))
+    parent = db.relationship("Group", back_populates="lights")
     name = db.Column(db.String(128))
-    device = db.Column(db.String(12), db.ForeignKey('device.id'))
+    device_mac = db.Column(db.String(12), db.ForeignKey('device.mac'))
     port = db.Column(db.Integer)
 
 class Rules(db.Model):
     id = db.Column(db.Integer,primary_key = True)
     string = db.Column(db.String(256))
-    lightID = db.Column(db.Integer, db.ForeignKey('light.id'))
-    groupID = db.Column(db.Integer, db.ForeignKey('group.id'))
+    light_id = db.Column(db.Integer, db.ForeignKey('light.id'))
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
