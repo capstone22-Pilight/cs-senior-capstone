@@ -1,15 +1,17 @@
 {% if isLight(e) %}
 <li>
+  <span name="handle" class="glyphicon glyphicon-move"></span>
   <input type="checkbox" name="checkbox-light" checked>
-  {{ e.name }}
+  <span float='left' class="edit" data-name="{{ e.mac }}|{{ e.port }}">{{ e.name }}</span>
   <a href="advanced?mac={{ e.mac }}&port={{ e.port }}" style="float: right;">
     <span class="glyphicon glyphicon-cog"></span>
   </a>
 </li>
 {% else %}
 <li>
+<span name="handle" class="glyphicon glyphicon-move"></span>
 <input type="checkbox" name="checkbox-group" checked>
-{{ e.name }}
+<span float='left' class="edit" data-name="{{ e.gid }}">{{ e.name }}</span>
 <a href="advanced?gid={{ e.gid }}" style="float: right;">
   <span class="glyphicon glyphicon-cog"></span>
 </a>
