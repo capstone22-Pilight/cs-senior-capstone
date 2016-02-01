@@ -1,0 +1,20 @@
+{
+    "hierarchy": "and",
+    "time": {
+        "on": "1800",
+        "off": "sunrise"
+    },
+    "dow": [
+        "monday",
+        "tuesday"
+    ],
+    "dom": {
+        "on": "1",
+        "off": "5"
+    },
+    "doy": {
+        "year": "2016",
+        "month": "2",
+        "day": "1"
+    }
+}
