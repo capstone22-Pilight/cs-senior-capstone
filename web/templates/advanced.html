@@ -6,10 +6,11 @@ Advanced query:<br>
 
 <p>
     <form>
-        <input type="radio" name="day" value="group"> Use the parent group's settings<br>
-        <input type="radio" name="day" value="own"> Override group settings completely<br>
-        <input type="radio" name="day" value="or"> Turn on using the following settings and also with the group's settings<br>
-        <input type="radio" name="day" value="and"> Turn on using the following settings, but only if the group's settings also allow it<br>
+        <input type="radio" name="hierarchy" value="group"> Use the parent group's settings<br>
+        <input type="radio" name="hierarchy" value="own" checked> Override group settings completely<br>
+        <input type="radio" name="hierarchy" value="or"> Turn on using the following settings and also with the group's settings<br>
+        <input type="radio" name="hierarchy" value="and"> Turn on using the following settings, but only if the group's settings also allow it<br>
+        <input type="radio" name="hierarchy" value="manual"> Control this light manually<br>
     </form>
 </p>
 
@@ -27,11 +28,11 @@ Advanced query:<br>
 <p>
     Turn off at:
     <form>
-        <input type="radio" name="time_on" value="sunset"> Sunset<br>
-        <input type="radio" name="time_on" value="sunrise" checked> Sunrise<br>
-        <input type="radio" name="time_on" value="other"> Time:
+        <input type="radio" name="time_off" value="sunset"> Sunset<br>
+        <input type="radio" name="time_off" value="sunrise" checked> Sunrise<br>
+        <input type="radio" name="time_off" value="other"> Time:
         <form>
-            <input type="time" name="time_on">
+            <input type="time" name="time_off">
         </form>
     </form>
 </p>
@@ -39,8 +40,8 @@ Advanced query:<br>
 <p>
     Only turn on during the following days of the week:
     <form>
-        {% for i, day in enumerate(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]): %}
-        <input type="checkbox" name="day" value="{{ i }}"> {{ day }}<br>
+        {% for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]: %}
+        <input type="checkbox" name="day" value="{{ day.lower() }}"> {{ day }}<br>
         {% endfor %}
     </form>
 </p>
@@ -72,20 +73,5 @@ Advanced query:<br>
 
     //$('#edit').editable();
 </script>
-
-<script>
-$("input[name=day]").on("change", function () {
-    if ($(this).is(":checked")) {
-        $("#query").val($(this).val())
-    } else {
-        $("#query").val("")
-    }
-});
-
-$("input[name=day]").on("change", function () {
-    if ($(this).is(":checked")) {
-        $("input[name=result]").prop("checked", true);
-    }
-});
-</script>
+<script src="/static/js/advanced.js"></script>
 {% endblock %}
