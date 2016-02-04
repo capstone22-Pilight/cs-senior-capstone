@@ -10,7 +10,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from flask.ext.login import LoginManager, login_user, logout_user, current_user, login_required
 from config import SQLALCHEMY_DATABASE_URI
-from model import *
+import model as model
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
 Session = sessionmaker(bind=engine)

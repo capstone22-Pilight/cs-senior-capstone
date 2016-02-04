@@ -1,0 +1,70 @@
+\documentclass[oneside,openright]{book}
+\usepackage{listings}
+\usepackage{underscore}
+\usepackage[breaklinks]{hyperref}
+\usepackage{url}
+\usepackage{breakurl}
+\usepackage{atbegshi}% http://ctan.org/pkg/atbegshi
+\AtBeginDocument{\AtBeginShipoutNext{\AtBeginShipoutDiscard}}
+\renewcommand\thesection{\arabic{section}}
+\renewcommand{\bibname}{References}
+\hypersetup{
+    bookmarks=false, % show bookmarks bar?
+    pdftitle={Software Requirement Specification}, % title
+    pdfauthor={Malcom Diller, Evan Steele, Sean Rettig}, % author
+    pdfsubject={Raspberry Pi Outdoor Lighting}, % subject of the document
+    pdfkeywords={TeX, LaTeX, graphics, images}, % list of keywords
+    colorlinks=true, % false: boxed links; true: colored links
+    linkcolor=blue, % color of internal links
+    citecolor=black, % color of links to bibliography
+    filecolor=black, % color of file links
+    urlcolor=blue, % color of external links
+  %linktoc=page % only page is linked
+}
+\def\myversion{1.0 }
+\title{
+	\flushright
+		\rule{16cm}{5pt}\vskip1cm
+		\Huge{MIDTERM REPORT}\\
+	for\\
+		\vspace{2cm}
+	Not Exactly the Internet of Things for Outdoor Lighting\\
+		\vspace{2cm}
+	\LARGE{Progress Report:}
+	\vspace{2cm}
+	\LARGE{Alpha Stage\\}
+	\vspace{2cm}
+	Malcolm Diller, Sean Rettig, and Evan Steele\\
+        Client: Victor Hsu\\
+        OSU CS Senior Capstone Group 22
+		\vfill
+		\rule{16cm}{5pt}
+}
+
+\date{}
+\usepackage{hyperref}
+\renewcommand{\contentsname}{PiLight}
+\begin{document}
+\pagenumbering{gobble}
+\maketitle
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+\section{Introduction}
+
+\section{Status}
+
+\section{Work in Progress}
+
+\section{Problems}
+
+\section{Code}
+
+\section{User Stories}
+
+\newpage
+\Urlmuskip=0mu plus 1mu\relax
+\bibliography{design}{}
+\bibliographystyle{IEEEtran}
+
+\end{document}
