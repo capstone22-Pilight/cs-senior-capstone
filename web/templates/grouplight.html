@@ -1,9 +1,9 @@
 {% if isLight(e) %}
-<li>
+<li style="margin: 10px;">
   <span name="handle" class="glyphicon glyphicon-move"></span>
   <input type="checkbox" name="checkbox-light" checked>
-  <span float='left' class="edit" data-name="{{ e.mac }}|{{ e.port }}">{{ e.name }}</span>
-  <a href="advanced?mac={{ e.mac }}&port={{ e.port }}" style="float: right;">
+  <span float='left' class="edit" data-name="light" data-pk="{{ e.id }}">{{ e.name }}</span>
+  <a href="advanced?id={{ e.id }}&name=light" style="float: right;">
     <span class="glyphicon glyphicon-cog"></span>
   </a>
 </li>
@@ -11,12 +11,18 @@
 <li>
 <span name="handle" class="glyphicon glyphicon-move"></span>
 <input type="checkbox" name="checkbox-group" checked>
-<span float='left' class="edit" data-name="{{ e.gid }}">{{ e.name }}</span>
-<a href="advanced?gid={{ e.gid }}" style="float: right;">
+<span float='left' class="edit" data-name="group" data-pk="{{ e.id }}">{{ e.name }}</span>
+<a href="#" style="float: right; color: red;">
+  <span class="glyphicon glyphicon-remove"></span>
+</a>
+<a href="advanced?id={{ e.id }}&name=group" style="float: right;">
   <span class="glyphicon glyphicon-cog"></span>
 </a>
 <ol>
-  {% for e in e.members %}
+  {% for e in e.groups %}
+  {% include "grouplight.html" %}
+  {% endfor %}
+  {% for e in e.lights %}
   {% include "grouplight.html" %}
   {% endfor %}
 </ol>

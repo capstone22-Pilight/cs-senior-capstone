@@ -5,6 +5,9 @@
   {% include "grouplight.html" %}
   {% endfor %}
 </ol>
+<button onclick="new_group();" type="button" class="btn btn-primary" style="float: right;">
+  <span class="glyphicon glyphicon-plus"></span> New Group
+</button>
  <!-- <a href="#" id="edit" data-type="text">superuser</a> -->
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -31,20 +34,14 @@
     $.fn.editable.defaults.showbuttons = false;
     $.fn.editable.defaults.url = '/change_name';
     $.fn.editable.defaults.type = 'text';
-    $(".edit").editable({
-      pk: 1,
-      params: function(params) {
-        var data = {};
-        data['name'] = params.value;
-        data['id'] = params.name;
-        /*if(params.name.indexOf("|") != -1){
-          data['mac'] = params.name.split("|")[0];
-          data['port'] = params.name.split("|")[1];
-        } else {
-          data['gid'] = params.name;
-        }*/
-        return data;
-      }
-    });
+    $(".edit").editable();
+    function new_group() {
+      var form = document.createElement('form');
+      form.setAttribute('method', 'post');
+      form.setAttribute('action', 'new_group');
+      form.style.display = 'hidden';
+      document.body.appendChild(form)
+      form.submit();
+    }
 </script>
 {% endblock %}

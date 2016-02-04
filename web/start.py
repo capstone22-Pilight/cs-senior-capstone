@@ -25,46 +25,6 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 app.secret_key = 'super_secret_key'
 
-class Light(object):
-    index = 0
-    def __init__(self, mac=None, port=None, name=None):
-        Light.index += 1
-
-        if mac is None:
-            self.mac = ":".join(["{:x}".format(rand.randint(0, 255)).zfill(2) for n in xrange(6)])
-        else:
-            self.mac = mac
-
-        if port is None:
-            self.port = rand.randint(1, 4)
-        else:
-            self.port = port
-
-        if name is None:
-            self.name = "Light {}".format(Light.index)
-        else:
-            self.name = name
-
-    def __repr__(self):
-        return "Light({}, {}, {})".format(self.name, self.mac, self.port)
-
-class Group(object):
-    index = 0
-    def __init__(self, name=None):
-        Group.index += 1
-        self.gid = Group.index
-        self.members = []
-        if name is None:
-            self.name = "Group {}".format(Group.index)
-        else:
-            self.name = name
-
-    def __repr__(self):
-        return "Group({})".format(", ".join(map(str, self.members)))
-
-    def append(self, light):
-        self.members.append(light)
-
 # The light's current state, move this to the class when ready
 global CURR_STATE
 CURR_STATE = '0000'
@@ -79,25 +39,6 @@ AVAILABLE_COMMANDS = {
     '3 OFF': '01101',
     '4 OFF': '01110',
 }
-
-# Returns a linear list of all of the groups within a nested list
-def getGroups(members):
-    result = []
-    for member in members:
-        if type(member) is not Light:
-            result.append(member)
-            result = result + getGroups(member.members)
-    return result
-
-# Returns a linear list of all of the lights within a group of lights or groups
-def getLights(members):
-    result = []
-    for member in members:
-        if type(member) is Light:
-            result.append(member)
-        else:
-            result = result + getLights(member.members)
-    return result
 
 # This function should also be a member of a lights class too
 def enlighten(cmd,mac):
@@ -119,21 +60,11 @@ def enlighten(cmd,mac):
     CURR_STATE = new_state
     # send the new CURR_STATE to TCP here
     print "The current global state: ", CURR_STATE
-    print "The destination device: ", mac
-
-# Initialize some dummy groups to start with
-groups = [Group("House")]
-for gi in xrange(3):
-    g = Group()
-    for li in xrange(rand.randint(1, 5)):
-        g.append(Light())
-    groups[0].append(g)
-
-print groups
+    print "The destination device: ", macs
 
 @app.route("/")
 def index():
-    return render_template('index.html', groups=groups)
+    return render_template('index.html', groups=model.Group.query.filter_by(group_id=None))
 
 @app.route('/buttons')
 @login_required
@@ -151,8 +82,9 @@ def command(cmd=None):
 
 @app.route("/advanced")
 def advanced():
-    gid = request.args.get('gid')
-    return render_template('advanced.html', gid=gid)
+    id = request.args.get('id')
+    isLight = request.args.get('name') == 'light'
+    return render_template('advanced.html', id=id)
 
 @app.route("/devices")
 def devices():
@@ -186,24 +118,26 @@ def devices_search():
 
 @app.route('/change_name', methods=['POST'])
 def change_name():
-    name = request.form['name']
-    id = request.form['id']
-    if "|" in id:
-        # This is a Light
-        mac = id.split("|")[0]
-        port = int(id.split("|")[1])
-        for light in getLights(groups):
-            if light.mac == mac and light.port == port:
-                light.name = name
+    name = request.form['value']
+    pk = request.form['pk']
+    isLight = request.form['name'] == "light"
+    if isLight:
+        light = model.Light.query.filter_by(id=pk).first()
+        light.name = name
     else:
-        # This is a Group
-        gid = int(id)
-        for group in getGroups(groups):
-            if group.gid == gid:
-                group.name = name
+        group = model.Group.query.filter_by(id=pk).first()
+        group.name = name
 
+    model.db.session.commit()
 
     return "SUCCESSFUL THINGS WERE DONE"
+
+@app.route('/new_group', methods=['POST'])
+def new_group():
+    group = model.Group(name="New Group", id=None, group_id=None)
+    model.db.session.add(group)
+    model.db.session.commit()
+    return index()
 
 def ESP8266_check(ipaddr):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -214,7 +148,7 @@ def ESP8266_check(ipaddr):
         return False
 
 def isLight(o):
-    return isinstance(o, Light)
+    return isinstance(o, model.Light)
 
 @login_manager.user_loader
 def load_user(id):
