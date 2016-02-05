@@ -6,7 +6,7 @@ Advanced query:<br>
 
 <p>
     <form>
-        <input type="radio" name="hierarchy" value="group"> Use the parent group's settings<br>
+        <input type="radio" name="hierarchy" value="parent"> Use the parent group's settings<br>
         <input type="radio" name="hierarchy" value="own" checked> Override group settings completely<br>
         <input type="radio" name="hierarchy" value="or"> Turn on using the following settings and also with the group's settings<br>
         <input type="radio" name="hierarchy" value="and"> Turn on using the following settings, but only if the group's settings also allow it<br>
@@ -38,20 +38,23 @@ Advanced query:<br>
 </p>
 
 <p>
-    Only turn on during the following days of the week:
+    During the following days of the week:
     <form>
-        {% for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]: %}
-        <input type="checkbox" name="day" value="{{ day.lower() }}"> {{ day }}<br>
+        {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']: %}
+        <input type="checkbox" name="dow" value="{{ day.lower() }}" {% if day == 'Monday': %}checked{% endif %}> {{ day }}<br>
         {% endfor %}
     </form>
 </p>
 
 <p>
-    Only turn on between specific dates:
+    During the given day of the month (or day range, inclusive):
     <form>
-        <input type="text" name="day" value="{{ i }}"> {{ day }}<br>
+        Turn on from day: <input type="text" name="dom_on"><br>
+        Through day: <input type="text" name="dom_off"> (only stays on for one day if left blank)
     </form>
 </p>
+
+<button type="submit" class="btn btn-success">Signin</button>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

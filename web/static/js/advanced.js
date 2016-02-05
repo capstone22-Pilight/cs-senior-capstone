@@ -1,48 +1,60 @@
+function buildquerydata() {
+    query = {
+        "hierarchy": $("input[name=hierarchy]:checked").val(),
+        "time": {}
+    };
+
+    // Get the on time
+    if ($("input[name=time_on][value=other]")[0].checked) {
+        query.time.on = $("input[name=time_on][type=time]").val();
+    } else {
+        query.time.on = $("input[name=time_on]:checked").val();
+    }
+
+    // Get the off time
+    if ($("input[name=time_off][value=other]")[0].checked) {
+        query.time.off = $("input[name=time_off][type=time]").val();
+    } else {
+        query.time.off = $("input[name=time_off]:checked").val();
+    }
+
+    // Get the days of the week
+    if ($("input[name=dow]:checked")) {
+        query.dow = $("input[name=dow]:checked");
+    }
+
+    return query;
+}
+
 function buildquery() {
-    hierarchy = $("input[name=hierarchy]:checked").val();
-    hierquery = ""
-    query = "((" + buildquery_time() + ") AND (" + buildquery_dow() + "))";
-    if (hierarchy == 'group') {
-        hierquery = "PARENT";
-    } else if (hierarchy == 'own') {
-        hierquery = query;
-    } else if (hierarchy == 'or') {
-        hierquery = query + " OR PARENT";
-    } else if (hierarchy == 'and') {
-        hierquery = query + " AND PARENT";
-    } else {
-        hierquery = "MANUAL";
+    data = buildquerydata();
+    query = "time > " + data.time.on + " and time < " + data.time.off;
+
+    dayqueries = [];
+    if ("dow" in data) {
+        dayqueries.push(Array.prototype.join.call(data.dow.map(function(e) { return "dow == " + e; }, " or ")));
     }
-    return hierquery;
-}
-
-function buildquery_dow() {
-    var elements = [];
-    $("input[name=day]:checked").each(function()
-    {
-        elements.push("day == '" + $(this).val() + "'");
-    });
-    return elements.join(" OR ");
-}
-
-function buildquery_time() {
-    time_on = $("input[name=time_on]:checked");
-    if (time_on.val() == "other") {
-        time_on = $("input[type=time][name=time_on]").val()
-    } else {
-        time_on = time_on.val()
+    if ("dom" in data) {
+        if ("off" in data.dom) {
+            dayqueries.push("(dom >= " + data.dom.on + " and dom <= " + data.dom.off + ")")
+        } else { // Only work for the "on" day
+            dayqueries.append("dom == " + data.dom.on)
+        }
     }
 
-    time_off = $("input[name=time_off]:checked");
-    if (time_off.val() == "other") {
-        time_off = $("input[type=time][name=time_off]").val()
-    } else {
-        time_off = time_off.val()
+    if (data.hierarchy == 'manual') {
+        query = "manual";
+    } else if (data.hierarchy == 'parent') {
+        query = "parent";
+    } else if (data.hierarchy == 'or') {
+        query = "(" + query + ") or parent";
+    } else if (data.hierarchy == 'and') {
+        query = "(" + query + ") and parent";
     }
+    // If the type is 'own', no changes are made to the query.
 
-    return "time > " + time_on + " AND time < " + time_off;
+    return query;
 }
-
 
 $("input").on("change", function () {
     $("#query").val(buildquery())
