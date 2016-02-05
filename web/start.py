@@ -137,7 +137,7 @@ def new_group():
     group = model.Group(name="New Group", id=None, group_id=None)
     model.db.session.add(group)
     model.db.session.commit()
-    return index()
+    return "Complete!"
 
 def ESP8266_check(ipaddr):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
