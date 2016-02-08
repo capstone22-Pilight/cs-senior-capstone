@@ -109,3 +109,20 @@ $("input[name=advanced_override]").on("change", function () {
         $("#leftside").addClass("box-en");
     }
 });
+
+$("#create").on("click", function(event) {
+    baserule = $(".baserule");
+    newrule = baserule.clone();
+    newrule.removeClass("baserule");
+    newrule.find(".rulename").text($("input[name=name]")[0].value);
+    newrule.appendTo(baserule.parent());
+});
+
+$(".deleterule").on("click", function() {
+    event.preventDefault();
+    this.parent().remove();
+});
+
+$(".editrule").on("click", function() {
+    event.preventDefault();
+});

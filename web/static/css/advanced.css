@@ -28,3 +28,12 @@
 .rule {
     width: 300%;
 }
+ol.vertical li.baserule {
+    display: none;
+}
+.deleterule, .editrule {
+    float: right;
+}
+.deleterule {
+    color: red;
+}
