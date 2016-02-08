@@ -17,11 +17,6 @@
         </h4>
         <p>
             <form>
-                Rule name: <input type="text" name="name" placeholder="e.g. 'Turn patio lights on at night'">
-            </form>
-        </p>
-        <p>
-            <form>
                 <input type="radio" name="hierarchy" value="parent"> Use the parent group's settings<br>
                 <input type="radio" name="hierarchy" value="own" checked> Override group settings completely<br>
                 <input type="radio" name="hierarchy" value="or"> Turn on using the following settings and also with the group's settings<br>
@@ -80,8 +75,6 @@
             </form>
 
         </p>
-
-        <button type="submit" class="btn btn-success" id="create">Create rule</button>
     </div>
 
     <div id="rightside" class="box">
@@ -94,6 +87,16 @@
                 <input type="checkbox" name="advanced_override"> Create an advanced query manually
             </form>
         </div>
+
+        <div id="submit" class="box">
+            <p>
+                <form>
+                    Rule name: <input type="text" name="name" id="rulename" placeholder="e.g. 'Turn patio lights on at night'">
+                </form>
+            </p>
+
+            <button type="submit" class="btn btn-success" id="create">Create rule</button>
+        </div>
         <br>
         <div id="rules">
             <h4>
@@ -101,9 +104,9 @@
             </h4>
             <ol class='vertical'>
                 <li class="rule baserule" style="margin: 10px;">
-                    <span float='left' class="rulename">Rule 1</span>
+                    <span float='left' class="rulename">Base rule</span>
                     <a href="#" class="deleterule">
-                        <span class="glyphicon glyphicon-remove"></span>
+                        <span class="glyphicon glyphicon-remove">Test</span>
                     </a>
                     <a href="#" class="editrule">
                         <span class="glyphicon glyphicon-cog"></span>

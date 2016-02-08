@@ -99,30 +99,37 @@ $(window).on("load", function () {
 $("input[name=advanced_override]").on("change", function () {
     if (this.checked) {
         $("#query").attr("disabled", false);
-        $("#rightside").addClass("box-en");
+        $("#advanced").addClass("box-en");
         $("#leftside").find("input").attr("disabled", true);
         $("#leftside").removeClass("box-en");
     } else {
         $("#query").attr("disabled", true);
-        $("#rightside").removeClass("box-en");
+        $("#advanced").removeClass("box-en");
         $("#leftside").find("input").attr("disabled", false);
         $("#leftside").addClass("box-en");
     }
 });
 
-$("#create").on("click", function(event) {
+$("#create").on("click", function() {
+    name = $("input[name=name]").val();
+    $("input[name=name]").val("");
+    // Use the query itself as the default name if none is specified
+    if (!name) {
+        name = $("#query").val();
+    }
     baserule = $(".baserule");
     newrule = baserule.clone();
     newrule.removeClass("baserule");
-    newrule.find(".rulename").text($("input[name=name]")[0].value);
+    newrule.find(".rulename").text(name);
     newrule.appendTo(baserule.parent());
 });
 
-$(".deleterule").on("click", function() {
+// Triggering on document is necessary to catch newly-created elements
+$(document).on("click", ".deleterule", function(event) {
     event.preventDefault();
-    this.parent().remove();
+    this.parentNode.parentNode.removeChild(this.parentNode);
 });
 
-$(".editrule").on("click", function() {
+$(document).on("click", ".editrule", function(event) {
     event.preventDefault();
 });
