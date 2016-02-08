@@ -1,57 +1,121 @@
 {% extends "base.html" %}
 {% block body %}
 
-Advanced query:<br>
-<textarea id="query" rows="4" cols="50"></textarea>
+<link href="/static/css/advanced.css" rel="stylesheet">
 
-<p>
-    <form>
-        <input type="radio" name="hierarchy" value="group"> Use the parent group's settings<br>
-        <input type="radio" name="hierarchy" value="own" checked> Override group settings completely<br>
-        <input type="radio" name="hierarchy" value="or"> Turn on using the following settings and also with the group's settings<br>
-        <input type="radio" name="hierarchy" value="and"> Turn on using the following settings, but only if the group's settings also allow it<br>
-        <input type="radio" name="hierarchy" value="manual"> Control this light manually<br>
-    </form>
-</p>
+<div id="main" class="clear">
+    <h2>
+        {% if lid != None: %}
+            Light {{ lid }}
+        {% else %}
+            Group {{ gid }}
+        {% endif %}
+    </h2>
+    <div id="leftside" class="box box-en">
+        <h4>
+            Rule builder:
+        </h4>
+        <p>
+            <form>
+                <input type="radio" name="hierarchy" value="parent"> Use the parent group's settings<br>
+                <input type="radio" name="hierarchy" value="own" checked> Override group settings completely<br>
+                <input type="radio" name="hierarchy" value="or"> Turn on using the following settings and also with the group's settings<br>
+                <input type="radio" name="hierarchy" value="and"> Turn on using the following settings, but only if the group's settings also allow it<br>
+                <input type="radio" name="hierarchy" value="manual"> Control this light manually<br>
+            </form>
+        </p>
 
-<p>
-    Turn on at:
-    <form>
-        <input type="radio" name="time_on" value="sunset" checked> Sunset<br>
-        <input type="radio" name="time_on" value="sunrise"> Sunrise<br>
-        <input type="radio" name="time_on" value="other"> Time:
-        <form>
-            <input type="time" name="time_on">
-        </form>
-    </form>
-</p>
-<p>
-    Turn off at:
-    <form>
-        <input type="radio" name="time_off" value="sunset"> Sunset<br>
-        <input type="radio" name="time_off" value="sunrise" checked> Sunrise<br>
-        <input type="radio" name="time_off" value="other"> Time:
-        <form>
-            <input type="time" name="time_off">
-        </form>
-    </form>
-</p>
+        <p>
+            Turn on at:
+            <form>
+                <input type="radio" name="time_on" value="sunset" checked> Sunset<br>
+                <input type="radio" name="time_on" value="sunrise"> Sunrise<br>
+                <input type="radio" name="time_on" value="other"> Time:
+                <form>
+                    <input type="time" name="time_on" value="18:00">
+                </form>
+            </form>
+        </p>
+        <p>
+            Turn off at:
+            <form>
+                <input type="radio" name="time_off" value="sunset"> Sunset<br>
+                <input type="radio" name="time_off" value="sunrise" checked> Sunrise<br>
+                <input type="radio" name="time_off" value="other"> Time:
+                <form>
+                    <input type="time" name="time_off" value="08:00">
+                </form>
+            </form>
+        </p>
 
-<p>
-    Only turn on during the following days of the week:
-    <form>
-        {% for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]: %}
-        <input type="checkbox" name="day" value="{{ day.lower() }}"> {{ day }}<br>
-        {% endfor %}
-    </form>
-</p>
+        <p>
+            During the following days of the week:
+            <form>
+                {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']: %}
+                <input type="checkbox" name="dow" value="{{ day.lower() }}"> {{ day }}<br>
+                {% endfor %}
+            </form>
+        </p>
 
-<p>
-    Only turn on between specific dates:
-    <form>
-        <input type="text" name="day" value="{{ i }}"> {{ day }}<br>
-    </form>
-</p>
+        <p>
+            During the given day of the month (or day range, inclusive):
+            <form>
+                Turn on at day <input type="text" name="dom_on" size="2" placeholder="1"> of the month and<br />
+                Turn off at day <input type="text" name="dom_off" size="2" placeholder="20"> (only stays on for one day if left blank)
+            </form>
+
+        </p>
+
+        <p>
+            <form>
+                During the given year/month/day:
+                <input class="doy" type="text" name="year" size="4" placeholder="2016">
+                <input class="doy" type="text" name="month" size="2" placeholder="5">
+                <input class="doy" type="text" name="day" size="2" placeholder="23">
+            </form>
+
+        </p>
+    </div>
+
+    <div id="rightside" class="box">
+        <div id="advanced">
+            <h4>
+                Advanced query:
+            </h4>
+            <textarea id="query" rows="4" disabled></textarea>
+            <form>
+                <input type="checkbox" name="advanced_override"> Create an advanced query manually
+            </form>
+        </div>
+
+        <div id="submit" class="box">
+            <p>
+                <form>
+                    Rule name: <input type="text" name="name" id="rulename" placeholder="e.g. 'Turn patio lights on at night'">
+                </form>
+            </p>
+
+            <button type="submit" class="btn btn-success" id="create">Create rule</button>
+        </div>
+        <br>
+        <div id="rules">
+            <h4>
+                All rules:
+            </h4>
+            <ol class='vertical'>
+                <li class="rule baserule" style="margin: 10px;">
+                    <span float='left' class="rulename">Base rule</span>
+                    <a href="#" class="deleterule">
+                        <span class="glyphicon glyphicon-remove">Test</span>
+                    </a>
+                    <a href="#" class="editrule">
+                        <span class="glyphicon glyphicon-cog"></span>
+                    </a>
+                </li>
+            </ol>
+        </div>
+    </div>
+</div>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -60,18 +124,5 @@ Advanced query:<br>
 <script src='/static/js/bootstrap-switch.js'></script>
 <script src='/static/js/bootstrap-editable.js'></script>
 <script src='/static/js/jquery-sortable.js'></script>
-<script>
-    $(function  () {
-      $("ol.vertical").sortable();
-    });
-    $.fn.bootstrapSwitch.defaults.size = 'mini';
-/*      $.fn.bootstrapSwitch.defaults.handleWidth = '10';
-    $.fn.bootstrapSwitch.defaults.onText = '';
-    $.fn.bootstrapSwitch.defaults.offText = ' ';*/
-    $("[name='checkbox-light']").bootstrapSwitch();
-    $("[name='checkbox-group']").bootstrapSwitch('indeterminate', true, true);
-
-    //$('#edit').editable();
-</script>
 <script src="/static/js/advanced.js"></script>
 {% endblock %}

@@ -1,0 +1,42 @@
+#main {
+    margin: 0 auto;
+    width: 100%;
+}
+#leftside {
+    float: left;
+    width: 50%;
+}
+#rightside {
+    float: right;
+    width: 42%;
+}
+.clear:after {
+    clear: both;
+    display: table;
+    content: "";
+}
+.box-en {
+    background-color: #f8f8ff;
+}
+.box {
+    margin: 2%;
+    padding: 1%;
+}
+#query {
+    width: 150%;
+}
+#rulename {
+    width: 100%;
+}
+.rule {
+    width: 100%;
+}
+ol.vertical li.baserule {
+    display: none;
+}
+.deleterule, .editrule {
+    float: right;
+}
+.deleterule {
+    color: red;
+}
