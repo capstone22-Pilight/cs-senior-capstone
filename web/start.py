@@ -82,9 +82,13 @@ def command(cmd=None):
 
 @app.route("/advanced")
 def advanced():
-    id = request.args.get('id')
-    isLight = request.args.get('name') == 'light'
-    return render_template('advanced.html', id=id)
+    isLight = 'lid' in request.args
+    if isLight:
+        id = request.args.get('lid')
+        return render_template('advanced.html', lid=id)
+    else:
+        id = request.args.get('gid')
+        return render_template('advanced.html', gid=id)
 
 @app.route("/devices")
 def devices():
