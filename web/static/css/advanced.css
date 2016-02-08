@@ -14,9 +14,6 @@
     display: table;
     content: "";
 }
-.dom {
-    size: 5;
-}
 .box-en {
     background-color: #f8f8ff;
 }

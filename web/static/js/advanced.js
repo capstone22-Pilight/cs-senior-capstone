@@ -24,8 +24,27 @@ function buildquerydata() {
     }
 
     // Get the days of the month
-    if ($("input[name=dow]:checked")) {
-        query.dow = $("input[name=dow]:checked");
+    dom_on = $("input[name=dom_on]").val();
+    if (dom_on) {
+        query.dom = [];
+        query.dom.on = dom_on;
+        dom_off = $("input[name=dom_off]").val();
+        if (dom_off) {
+            query.dom.off = dom_off;
+        }
+    }
+
+    // Get the day of the year
+    doy = {};
+    $("input.doy").each(function() {
+        if (this.value != "") {
+            console.log(this.name);
+            console.log(this.value);
+            doy[this.name] = this.value;
+        }
+    });
+    if (Object.keys(doy).length > 0) {
+        query.doy = doy;
     }
 
     return query;
@@ -43,11 +62,11 @@ function buildquery() {
         if ("off" in data.dom) {
             dayqueries.push("(dom >= " + data.dom.on + " and dom <= " + data.dom.off + ")")
         } else { // Only work for the "on" day
-            dayqueries.append("dom == " + data.dom.on)
+            dayqueries.push("dom == " + data.dom.on)
         }
     }
     if ("doy" in data) {
-        dayqueries.push(Array.prototype.join.call(data.doy.map(function(k, v) { return k + " == " + v; }), " and "));
+        dayqueries.push("(" + Array.prototype.join.call(Object.keys(data.doy).map(function(k) { return k + " == " + data.doy[k]; }), " and ") + ")");
     }
     query = "(" + query + ") and (" + dayqueries.join(" or ") + ")"
 
