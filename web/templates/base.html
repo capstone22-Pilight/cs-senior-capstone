@@ -13,7 +13,7 @@
     <!-- Personal css -->
     <link href="/static/css/sortable.css" rel="stylesheet">
     <link href="/static/css/bootstrap-switch.css" rel="stylesheet">
-    <link href="/static/css/bootstrap-editable.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-editable.css" rel="stylesheet">
     <link href="/static/css/custom-style.css" rel="stylesheet">
     <script src="/static/js/jquery_functions.js"></script>
     <script src="/static/js/jquery.min.js"></script>
@@ -26,7 +26,7 @@
   </head>
   <body>
      {% include 'navigation.html' %}
-     <div class="container" style="padding-top:5em">
+     <div class="container" id="main" style="padding-top:5em">
      {% block body %}{% endblock %}
      </div>
   </body>
