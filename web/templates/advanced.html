@@ -1,60 +1,74 @@
 {% extends "base.html" %}
 {% block body %}
 
-Advanced query:<br>
-<textarea id="query" rows="4" cols="50"></textarea>
+<link href="/static/css/advanced.css" rel="stylesheet">
 
-<p>
-    <form>
-        <input type="radio" name="hierarchy" value="parent"> Use the parent group's settings<br>
-        <input type="radio" name="hierarchy" value="own" checked> Override group settings completely<br>
-        <input type="radio" name="hierarchy" value="or"> Turn on using the following settings and also with the group's settings<br>
-        <input type="radio" name="hierarchy" value="and"> Turn on using the following settings, but only if the group's settings also allow it<br>
-        <input type="radio" name="hierarchy" value="manual"> Control this light manually<br>
-    </form>
-</p>
+<div id="main" class="clear">
+    <div id="leftside" class="box box-en">
+        <p>
+            <form>
+                <input type="radio" name="hierarchy" value="parent"> Use the parent group's settings<br>
+                <input type="radio" name="hierarchy" value="own" checked> Override group settings completely<br>
+                <input type="radio" name="hierarchy" value="or"> Turn on using the following settings and also with the group's settings<br>
+                <input type="radio" name="hierarchy" value="and"> Turn on using the following settings, but only if the group's settings also allow it<br>
+                <input type="radio" name="hierarchy" value="manual"> Control this light manually<br>
+            </form>
+        </p>
 
-<p>
-    Turn on at:
-    <form>
-        <input type="radio" name="time_on" value="sunset" checked> Sunset<br>
-        <input type="radio" name="time_on" value="sunrise"> Sunrise<br>
-        <input type="radio" name="time_on" value="other"> Time:
-        <form>
-            <input type="time" name="time_on">
-        </form>
-    </form>
-</p>
-<p>
-    Turn off at:
-    <form>
-        <input type="radio" name="time_off" value="sunset"> Sunset<br>
-        <input type="radio" name="time_off" value="sunrise" checked> Sunrise<br>
-        <input type="radio" name="time_off" value="other"> Time:
-        <form>
-            <input type="time" name="time_off">
-        </form>
-    </form>
-</p>
+        <p>
+            Turn on at:
+            <form>
+                <input type="radio" name="time_on" value="sunset" checked> Sunset<br>
+                <input type="radio" name="time_on" value="sunrise"> Sunrise<br>
+                <input type="radio" name="time_on" value="other"> Time:
+                <form>
+                    <input type="time" name="time_on" value="18:00">
+                </form>
+            </form>
+        </p>
+        <p>
+            Turn off at:
+            <form>
+                <input type="radio" name="time_off" value="sunset"> Sunset<br>
+                <input type="radio" name="time_off" value="sunrise" checked> Sunrise<br>
+                <input type="radio" name="time_off" value="other"> Time:
+                <form>
+                    <input type="time" name="time_off" value="08:00">
+                </form>
+            </form>
+        </p>
 
-<p>
-    During the following days of the week:
-    <form>
-        {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']: %}
-        <input type="checkbox" name="dow" value="{{ day.lower() }}" {% if day == 'Monday': %}checked{% endif %}> {{ day }}<br>
-        {% endfor %}
-    </form>
-</p>
+        <p>
+            During the following days of the week:
+            <form>
+                {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']: %}
+                <input type="checkbox" name="dow" value="{{ day.lower() }}" {% if day == 'Monday': %}checked{% endif %}> {{ day }}<br>
+                {% endfor %}
+            </form>
+        </p>
 
-<p>
-    During the given day of the month (or day range, inclusive):
-    <form>
-        Turn on from day: <input type="text" name="dom_on"><br>
-        Through day: <input type="text" name="dom_off"> (only stays on for one day if left blank)
-    </form>
-</p>
+        <p>
+            During the given day of the month (or day range, inclusive):
+            <form>
+                Turn on at day <input class="dom" type="text" name="dom_on" placeholder="1"> of the month and<br />
+                Turn off at day <input class="dom" type="text" name="dom_off" placeholder="20"> (only stays on for one day if left blank)
+            </form>
 
-<button type="submit" class="btn btn-success">Signin</button>
+        </p>
+
+        <button type="submit" class="btn btn-success">Submit</button>
+    </div>
+
+    <div id="rightside" class="box">
+        <div id="advanced">
+            Advanced query:<br>
+            <textarea id="query" rows="4" disabled></textarea>
+            <form>
+                <input type="checkbox" name="advanced_override"> Create an advanced query manually
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

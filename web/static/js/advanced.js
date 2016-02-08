@@ -23,6 +23,11 @@ function buildquerydata() {
         query.dow = $("input[name=dow]:checked");
     }
 
+    // Get the days of the month
+    if ($("input[name=dow]:checked")) {
+        query.dow = $("input[name=dow]:checked");
+    }
+
     return query;
 }
 
@@ -32,7 +37,7 @@ function buildquery() {
 
     dayqueries = [];
     if ("dow" in data) {
-        dayqueries.push(Array.prototype.join.call(data.dow.map(function(e) { return "dow == " + e; }, " or ")));
+        dayqueries.push(Array.prototype.join.call(data.dow.map(function(e) { return "dow == " + e; }), " or "));
     }
     if ("dom" in data) {
         if ("off" in data.dom) {
@@ -41,6 +46,10 @@ function buildquery() {
             dayqueries.append("dom == " + data.dom.on)
         }
     }
+    if ("doy" in data) {
+        dayqueries.push(Array.prototype.join.call(data.doy.map(function(k, v) { return k + " == " + v; }), " and "));
+    }
+    query = "(" + query + ") and (" + dayqueries.join(" or ") + ")"
 
     if (data.hierarchy == 'manual') {
         query = "manual";
@@ -62,4 +71,18 @@ $("input").on("change", function () {
 
 $(window).on("load", function () {
     $("#query").val(buildquery())
+});
+
+$("input[name=advanced_override]").on("change", function () {
+    if (this.checked) {
+        $("#query").attr("disabled", false);
+        $("#rightside").addClass("box-en");
+        $("#leftside").find("input").attr("disabled", true);
+        $("#leftside").removeClass("box-en");
+    } else {
+        $("#query").attr("disabled", true);
+        $("#rightside").removeClass("box-en");
+        $("#leftside").find("input").attr("disabled", false);
+        $("#leftside").addClass("box-en");
+    }
 });

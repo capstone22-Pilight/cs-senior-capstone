@@ -1,0 +1,29 @@
+#main {
+    margin: 0 auto;
+}
+#leftside {
+    float: left;
+    width: 50%;
+}
+#rightside {
+    float: right;
+    width: 42%;
+}
+.clear:after {
+    clear: both;
+    display: table;
+    content: "";
+}
+.dom {
+    size: 5;
+}
+.box-en {
+    background-color: #f8f8ff;
+}
+.box {
+    margin: 2%;
+    padding: 1%;
+}
+#query {
+    width: 200%;
+}
