@@ -1,5 +1,6 @@
 #main {
     margin: 0 auto;
+    width: 100%;
 }
 #leftside {
     float: left;
@@ -22,5 +23,8 @@
     padding: 1%;
 }
 #query {
-    width: 200%;
+    width: 150%;
+}
+.rule {
+    width: 300%;
 }

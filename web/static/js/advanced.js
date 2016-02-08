@@ -19,8 +19,12 @@ function buildquerydata() {
     }
 
     // Get the days of the week
-    if ($("input[name=dow]:checked")) {
-        query.dow = $("input[name=dow]:checked");
+    dow = [];
+    $("input[name=dow]:checked").each(function() {
+        dow.push(this.value);
+    });
+    if (dow.length > 0) {
+        query.dow = dow;
     }
 
     // Get the days of the month
@@ -38,8 +42,6 @@ function buildquerydata() {
     doy = {};
     $("input.doy").each(function() {
         if (this.value != "") {
-            console.log(this.name);
-            console.log(this.value);
             doy[this.name] = this.value;
         }
     });
@@ -62,13 +64,15 @@ function buildquery() {
         if ("off" in data.dom) {
             dayqueries.push("(dom >= " + data.dom.on + " and dom <= " + data.dom.off + ")")
         } else { // Only work for the "on" day
-            dayqueries.push("dom == " + data.dom.on)
+            dayqueries.push("dom == " + data.dom.on);
         }
     }
     if ("doy" in data) {
         dayqueries.push("(" + Array.prototype.join.call(Object.keys(data.doy).map(function(k) { return k + " == " + data.doy[k]; }), " and ") + ")");
     }
-    query = "(" + query + ") and (" + dayqueries.join(" or ") + ")"
+    if (dayqueries.length > 0) {
+        query = "(" + query + ") and (" + dayqueries.join(" or ") + ")";
+    }
 
     if (data.hierarchy == 'manual') {
         query = "manual";
@@ -85,11 +89,11 @@ function buildquery() {
 }
 
 $("input").on("change", function () {
-    $("#query").val(buildquery())
+    $("#query").val(buildquery());
 });
 
 $(window).on("load", function () {
-    $("#query").val(buildquery())
+    $("#query").val(buildquery());
 });
 
 $("input[name=advanced_override]").on("change", function () {

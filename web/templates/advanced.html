@@ -4,7 +4,22 @@
 <link href="/static/css/advanced.css" rel="stylesheet">
 
 <div id="main" class="clear">
+    <h2>
+        {% if lid != None: %}
+            Light {{ lid }}
+        {% else %}
+            Group {{ gid }}
+        {% endif %}
+    </h2>
     <div id="leftside" class="box box-en">
+        <h4>
+            Rule builder:
+        </h4>
+        <p>
+            <form>
+                Rule name: <input type="text" name="name" placeholder="e.g. 'Turn patio lights on at night'">
+            </form>
+        </p>
         <p>
             <form>
                 <input type="radio" name="hierarchy" value="parent"> Use the parent group's settings<br>
@@ -42,7 +57,7 @@
             During the following days of the week:
             <form>
                 {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']: %}
-                <input type="checkbox" name="dow" value="{{ day.lower() }}" {% if day == 'Monday': %}checked{% endif %}> {{ day }}<br>
+                <input type="checkbox" name="dow" value="{{ day.lower() }}"> {{ day }}<br>
                 {% endfor %}
             </form>
         </p>
@@ -57,8 +72,8 @@
         </p>
 
         <p>
-            During the given year/month/day:
             <form>
+                During the given year/month/day:
                 <input class="doy" type="text" name="year" size="4" placeholder="2016">
                 <input class="doy" type="text" name="month" size="2" placeholder="5">
                 <input class="doy" type="text" name="day" size="2" placeholder="23">
@@ -66,16 +81,35 @@
 
         </p>
 
-        <button type="submit" class="btn btn-success">Submit</button>
+        <button type="submit" class="btn btn-success">Create rule</button>
     </div>
 
     <div id="rightside" class="box">
         <div id="advanced">
-            Advanced query:<br>
+            <h4>
+                Advanced query:
+            </h4>
             <textarea id="query" rows="4" disabled></textarea>
             <form>
                 <input type="checkbox" name="advanced_override"> Create an advanced query manually
             </form>
+        </div>
+        <br>
+        <div id="rules">
+            <h4>
+                All rules:
+            </h4>
+            <ol class='vertical'>
+                <li class="rule" style="margin: 10px;">
+                    <span float='left' class="edit">Rule 1</span>
+                    <a href="" style="float: right; color: red;">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </a>
+                    <a href="" style="float: right;">
+                        <span class="glyphicon glyphicon-cog"></span>
+                    </a>
+                </li>
+            </ol>
         </div>
     </div>
 </div>
@@ -87,18 +121,5 @@
 <script src='/static/js/bootstrap-switch.js'></script>
 <script src='/static/js/bootstrap-editable.js'></script>
 <script src='/static/js/jquery-sortable.js'></script>
-<script>
-    $(function  () {
-      $("ol.vertical").sortable();
-    });
-    $.fn.bootstrapSwitch.defaults.size = 'mini';
-/*      $.fn.bootstrapSwitch.defaults.handleWidth = '10';
-    $.fn.bootstrapSwitch.defaults.onText = '';
-    $.fn.bootstrapSwitch.defaults.offText = ' ';*/
-    $("[name='checkbox-light']").bootstrapSwitch();
-    $("[name='checkbox-group']").bootstrapSwitch('indeterminate', true, true);
-
-    //$('#edit').editable();
-</script>
 <script src="/static/js/advanced.js"></script>
 {% endblock %}
