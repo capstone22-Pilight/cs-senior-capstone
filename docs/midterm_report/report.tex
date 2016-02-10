@@ -75,6 +75,17 @@
 
 \section{Status}
 
+At this point in the project, all alpha-level features have been implemented;
+all planned user interface pages and their corresponding elements have been
+created and at least stubbed; not all elements are fully functional yet.
+However, many of the elements are already at beta-level functionality:
+
+\begin{itemize}
+    \item The ESP firmware has been written and can automatically connect to the Pi wirelessly.
+    \item The Pi is loaded with our custom build of Yocto Linux and can act as a wireless router for the ESPs to connect to.
+    \item The Pi is set up to run our Flask web site, and it can be connected to by wireless devices and viewed in a browser.
+\end{itemize}
+
 \section{Work in Progress}
 \subsection{Device Communication}
 One of the current post-Alpha goals is to complete the communication mechanism between the Raspberry Pi and the ESP8266 modules. We are working on finalizing our logical evaluation subsystem and determining what do to in the case of manual user override. The databases and communication parameters have been completed, as in we know what the function that will flip the lights themselves expects, but we don't know how to perform our Python-based evaluations yet. We expect that it will come shortly after finishing up the advanced query editor, at which point we expect to have a format and value range locked down for the queries to be evaluated.\\
