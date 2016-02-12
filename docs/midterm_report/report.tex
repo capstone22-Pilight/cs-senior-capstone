@@ -85,10 +85,14 @@ However, many of the elements are already at beta-level functionality:
         the Pi wirelessly.
     \item The Pi is loaded with our custom build of Yocto Linux and can act as
         a wireless router for the ESPs to connect to.
-    \item The Pi is loaded with our custom build of Yocto Linux and can act as
-        a wireless router for the ESPs to connect to.
+    \item The Pi is set up to run our Flask web site, and it can be connected 
+        to by wireless devices and viewed in a browser.
+    \item The flask website has an sql database that stores information about 
+        the lights, groups, devices, and users
     \item The web interface has a main page that lists all available lights,
         where lights can be renamed and sorted into groups.
+    \item Groups in the main page can also be created, renamed, nested into 
+        each other, and deleted, though deletion has not been fully implemented yet.
     \item The web interface has an advanced page for each light/group where
         rules for when to automatically toggle on/off can be created.
     \item All types of rules (including time of day, day of week, day of month,
