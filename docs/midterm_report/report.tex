@@ -4,7 +4,7 @@
 \usepackage[breaklinks]{hyperref}
 \usepackage{url}
 \usepackage{breakurl}
-\usepackage{atbegshi}% http://ctan.org/pkg/atbegshi
+\usepackage{atbegshi} % http://ctan.org/pkg/atbegshi
 \AtBeginDocument{\AtBeginShipoutNext{\AtBeginShipoutDiscard}}
 \renewcommand\thesection{\arabic{section}}
 \renewcommand{\bibname}{References}
@@ -87,7 +87,7 @@ However, many of the elements are already at beta-level functionality:
         a wireless router for the ESPs to connect to.
     \item The Pi is set up to run our Flask web site, and it can be connected 
         to by wireless devices and viewed in a browser.
-    \item The flask website has an sql database that stores information about 
+    \item The flask website has an SQL database that stores information about 
         the lights, groups, devices, and users
     \item The web interface has a main page that lists all available lights,
         where lights can be renamed and sorted into groups.
@@ -114,7 +114,17 @@ We had an issue early on with how we planned to connect to the ESP8266 modules u
 To fix the issue, we reconfigured the Raspberry Pi so we could connect wirelessly. We needed to first recompile \textit{hostapd} to run with a version of our USB wireless driver that could broadcast an SSID. After recompiling we confirmed that we could connect using a wireless device such as a smartphone. The other task was to change the firmware on the ESP8266 so that it behaves like a client instead of a host. In addition to flashing the new firmware, a startup file was added so that it automatically connects to the nearest Raspberry Pi with "Pilight" in the SSID. We will likely change this later to better incorporate new devices.
 
 \subsection{Pulse Width Modulation}
-We had the idea that a device managable via the Raspberry Pi would be able to controll the brightness of the lights using PWM. Unfortuantely the 10A gates on our relay just can't flip fast enough for any desired pulses. Our group contacted our client to see if it was worth the trouble of acquiring a relay unit that could do PWM, but his response was that he was only concered with turning the devices on and off. We also considered a software-defined PWM solution, but were again affected by the speed of the relay itself not being sufficient.
+We had the idea that a device managable via the Raspberry Pi would be able to control the brightness of the lights using PWM. Unfortunately the 10A gates on our relay just can't flip fast enough for any desired pulses. Our group contacted our client to see if it was worth the trouble of acquiring a relay unit that could do PWM, but his response was that he was only concerned with turning the devices on and off. We also considered a software-defined PWM solution, but were again affected by the speed of the relay itself not being sufficient.
+
+\subsection{Behavior of On/Off Switches}
+Before starting to implement the rules, we had not put much thought into what the behavior should be for the On/Off switches of the lights and groups. After we began to implement more of the project we realized that there are a few ways that the behavior could be implemented:
+\begin{enumerate}
+  \item Toggling the switch would change the state of the light until the user chose to resume automated control
+  \item Toggling the switch would change the state of the light for a preset amount of time before resuming automated control.
+  \item Toggling the switch would change the state of the light until the next time that the rules determined the light should change, upon which automated control would resume.
+\end{enumerate}
+The are benefits to each implementation and it was a difficult decision to figure out which path we should take. The first option makes sense because the user is never overridden by the system. The second option is useful because the user most likely is turning on the light for a temporary purpose, and probably will not want to have to go into the advanced settings all the time. We decided to go with the third option, as it provided the benifits of the second option, but more cleanly eases back into the pattern of automated control.
+
 \section{Code}
 \subsection{Acquire New Devices}
 This code, upon user request, scans currently connected devices for a new ESP8266 device that does not already exist in the devices database.
@@ -141,8 +151,23 @@ This code, upon user request, scans currently connected devices for a new ESP826
             additions = additions + 1
       return str(additions)
    \end{lstlisting}
-\section{User Stories}
-
+\subsection{Editing Lights and Groups}
+We decided to use the X-editable library for executing inline edits to the names of groups and lights. This involved creating a span element to represent the name with information about the light or group embedded in it. We then included a few lines of javascript to specify where to send the post request and setup the editable span element. When submitted, a post request would be sent to the flask server. Below is the flask function that handles the post request and changes the name of a light or group in the database.
+\begin{lstlisting}
+@app.route('/change_name', methods=['POST'])
+def change_name():
+    name = request.form['value']
+    pk = request.form['pk']
+    isLight = request.form['name'] == "light"
+    if isLight:
+        light = model.Light.query.filter_by(id=pk).first()
+        light.name = name
+    else:
+        group = model.Group.query.filter_by(id=pk).first()
+        group.name = name
+    model.db.session.commit()
+    return "Success!"
+\end{lstlisting}
 \newpage
 \Urlmuskip=0mu plus 1mu\relax
 \bibliography{design}{}
