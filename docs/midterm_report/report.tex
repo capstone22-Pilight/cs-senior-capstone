@@ -4,7 +4,7 @@
 \usepackage[breaklinks]{hyperref}
 \usepackage{url}
 \usepackage{breakurl}
-\usepackage{atbegshi} % http://ctan.org/pkg/atbegshi
+\usepackage{atbegshi}% http://ctan.org/pkg/atbegshi
 \AtBeginDocument{\AtBeginShipoutNext{\AtBeginShipoutDiscard}}
 \renewcommand\thesection{\arabic{section}}
 \renewcommand{\bibname}{References}
@@ -107,6 +107,10 @@ However, many of the elements are already at beta-level functionality:
 One of the current post-Alpha goals is to complete the communication mechanism between the Raspberry Pi and the ESP8266 modules. We are working on finalizing our logical evaluation subsystem and determining what do to in the case of manual user override. The databases and communication parameters have been completed, as in we know what the function that will flip the lights themselves expects, but we don't know how to perform our Python-based evaluations yet. We expect that it will come shortly after finishing up the advanced query editor, at which point we expect to have a format and value range locked down for the queries to be evaluated.\\
 
 The devices are already prepared in a database to draw from, using the MAC address as the unique key to locate the IP address from the table. We don't anticipate the ISC DHCP server flipping addresses around, but by using the physical hardware addresses we are eliminating any possibility of sending the code to the wrong device. The Python ISC DHCP library provides us with a mechanism for determining if a device's IP has changed, and we will write that change to the devices table.
+
+\subsection{User Interface/Website}
+Much of the functionality that we need for Beta is already built in. There are only a few buttons that don't do anything and need to be implemented in order to get Beta functionality up and running for the website. The database has been created and much of the website already uses it, but there are a few parts of the interface that have not been tied in. 
+
 \section{Problems}
 \subsection{Wireless}
 We had an issue early on with how we planned to connect to the ESP8266 modules using our Raspberry Pi. Our proof-of-concept had the client connecting to the wireless module itself to make changes, but we wanted remote management to work from the Pi and have it be reachable from the internet. We began looking into ways to perform local routing so that the device could play with the end-user's home network, but ran into more snags trying to configure multiple wireless network devices on the same Pi. We contacted our client who suggested that we not worry about external connectivity for the project. His expectations were that users would directly connect to the Pi to make configuration changes. The project title was "not \textit{exactly} the Internet-of-Things", after all.\\
@@ -168,6 +172,55 @@ def change_name():
     model.db.session.commit()
     return "Success!"
 \end{lstlisting}
+\section{First User Study}
+\subsection{Usability}
+After exploring the interface for a time, the user was asked to perform a series of tasks, and the following is a description of what the user did when asked to perform each task.
+\begin{itemize}
+  \item Login \\
+    The user clicked on the Username box, entered a username, clicked on the password box, entered a password, and then clicked on the SignIn button.
+  \item Logout \\
+    The user clicked on the Logout link in the top menu bar.
+  \item Adding a device \\
+    The user clicked on the Add Devices button. The were confused by the loading animation and suggested that there should be text to indicate what is going on.
+  \item Change the name of a group or a light \\
+    The user clicked on the name of the light, typed in the new name, and pressed enter.
+  \item Identify how the group/light heirarchy functioned \\
+    The user noted that the groups appeared to own other groups, and that all of the lights were owned by a group. They were also able to determine that the groups could be used to control all of the lights within that group.
+  \item Manually toggle a light off \\
+    The user clicked on the switch to turn the light off.
+  \item Deleting a group \\
+    The user clicked on the red "x" at the right of one of the group rows.
+  \item Move a light to a different group \\
+    The user identified the move icon as the correct tool for moving rows, but had difficulty clicking on it, as the spaces inbetween the arrows do not register a click. Once they had grabbed it and were moving it, they were then slightly confused because there was no preview of the destination, and instead the light was attached to the mouse. They did drop it and move the light correctly, but they noted that the task was slightly less intuitive than the previous ones.
+  \item Adding a group \\
+    The user clicked on the New Group button.
+  \item Navigating to the place where one could change the settings or rules of a light or group \\
+    The user clicked on the gear at the right of a row to bring them to the advanced page.
+  \item Set the light to turn on at sunset and turn off at sunrise \\
+    The user clicked the radio button for sunset under the Turn On At category, and the button for sunrise in the Turn Off At category. The user then noted that they were not sure whether they needed to do anything else to save what they had done. They felt like they should click a "Save Changes" or "Submit" button
+  \item Set the light to turn off at four in the morning \\
+    The user clicked on the Time radio button under the Turn Off At category, and entered in the time 4:00 AM.
+  \item Set the light to turn off at sunset and on at sunrise for every day of the week, with the exception of making it turn on at 4:00 PM on Monday. \\
+    The user was unable to do this as it was not obvious to them how the rule system worked. After it was explained to them, they suggested that the New Rule and rules controls should be at the bottom of the page, and that the wording should be changed to something other than "Rule.".
+\end{itemize}
+\subsection{Suggested Improvements}
+The user made the following suggestions on how they thought the user interface could be improved.
+\begin{itemize}
+  \item Switches should be green/red, not blue/gray.
+  \item Switches are too slow, should be twice the speed.
+  \item Switches should show "On" and "Off" text.
+  \item When adding a new group, the switch should be set to Off.
+  \item Groups should have two on and off buttons instead of switches, and should not have a state. The intermediate state of the switch does not make sense.
+  \item Menu bar should have greater contrast so it is more noticable.
+  \item While waiting after hitting the Add Device button, there should be "searching" text to give the user a reason for waiting.
+  \item SignIn in the login page should be Sign In
+  \item When dragging and dropping lights or groups, there should be a preview of the destination while the user is holding it.
+  \item Advanced query box should be moved to bottom of page or hidden in something like an expanding box, as most users will not want to see or understand it.
+  \item There should be a more clear way to submit the changes made to a rule.
+  \item There should be a preview of the rules for a group or light when hovering over the name or the link leading to the advanced page.
+  \item The wording "Rule" should be changed to something that represents the idea more clearly.
+\end{itemize}
+As we conducted this user study near the end of Alpha stage, we have yet to decide whether to implement the suggested changes and have yet to make any changes as a result of the usability tests. We will go over these in the future and make judgements about what changes should be made then.
 \newpage
 \Urlmuskip=0mu plus 1mu\relax
 \bibliography{design}{}
