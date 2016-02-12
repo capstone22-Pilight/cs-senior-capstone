@@ -127,10 +127,8 @@ def change_name():
     else:
         group = model.Group.query.filter_by(id=pk).first()
         group.name = name
-
     model.db.session.commit()
-
-    return "SUCCESSFUL THINGS WERE DONE"
+    return "Success!"
 
 @app.route('/new_group', methods=['POST'])
 def new_group():
