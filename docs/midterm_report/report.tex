@@ -242,6 +242,69 @@ After exploring the interface for a time, the user was asked to perform a series
     \end{itemize}
 \end{itemize}
 As we conducted this user study near the end of Alpha stage, we have yet to decide whether to implement the suggested changes and have yet to make any changes as a result of the usability tests. We will go over these in the future and make judgements about what changes should be made then.
+
+\section{User Study B}
+
+\begin{itemize}
+    \item User had no issues with the login page.
+    \item User attempted to rename a light, but clicked away when done editing
+        rather than hitting enter, causing the rename to not be saved.
+        \begin{itemize}
+            \item Suggestion: Clicking away should also save a rename.
+        \end{itemize}
+    \item User noticed that it was not obvious which features were available on
+        the front page.
+        \begin{itemize}
+            \item User suggested that a small blurb or tutorial should pop up
+                on the first use that tells the user about renaming, moving,
+                creating, deleting, and editing lights/groups.
+        \end{itemize}
+    \item User was not sure whether lights were on or off.
+        \begin{itemize}
+            \item User suggested that the switches should use actual "on/off"
+                text and maybe more obvious colors than blue and gray.
+                Possibly gray out the entire light's box if it's off.
+        \end{itemize}
+    \item User was not sure how to create a new group.
+        \begin{itemize}
+            \item User suggested that the "create group" button be made more
+                obvious.
+        \end{itemize}
+    \item When asked to add a device to the system, the user was stumped
+        because they did not notice the "manage devices" tab.
+        \begin{itemize}
+            \item User suggested that the area for adding devices be displayed
+                more prominently.
+        \end{itemize}
+    \item On the advanced page, the user felt that there were too many elements
+        in general.
+        \begin{itemize}
+            \item The user suggested that only the most basic and commonly used
+                elements of the rule builder should be shown by default.  The
+                more complex settings and the advanced query should only show
+                up if the user clicks a "show more options" button or the like.
+        \end{itemize}
+    \item On the advanced page, the user found it confusing that they had to
+        click the "create rule" to finalize the rule and that there could be
+        multiple rules for one light.
+        \begin{itemize}
+            \item This could possibly be alleviated by only allowing one rule
+                for each light.  This would help simplify the UI, and most
+                users probably won't want multiple rules for each light anyway.
+                Advanced users would still have the option to manually edit the
+                advanced query in order to achieve the effect of having
+                multiple rules.
+        \end{itemize}
+    \item The user found it difficult to edit the settings for groups of lights
+        due to the clumsiness of having to navigate back to the front page in
+        order to view the other lights.
+        \begin{itemize}
+            \item The user suggested that something like "next light" and
+                "previous light" buttons or the like be added to the advanced
+                page in order to improve ease of navigation.
+        \end{itemize}
+\end{itemize}
+
 \newpage
 \Urlmuskip=0mu plus 1mu\relax
 \bibliography{design}{}
