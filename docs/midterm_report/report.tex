@@ -76,24 +76,25 @@
 The system will consist of a wireless network of tiny ``client'' computers that
 each control up to 4 sets of lights and are controlled by a central ``server''
 computer, which will automatically send out commands to the clients when it's
-time to turn on or off.  The central node will run a control program that can 
+time to turn on or off.  The central node will run a control program that can
 be easily accessed via a touch screen, a web browser, or a mobile device, where
-the user can locally or remotely control each light individually. The control interface 
-will allow users to easily set ``rules'' for what their 
-lights do and when, depending on the time of day, the sun/moon position, and 
-potentially even triggers such as weather conditions or calendar dates. 
+the user can locally or remotely control each light individually. The control
+interface will allow users to easily set ``rules'' for what their lights do and
+when, depending on the time of day, the sun/moon position, and potentially even
+triggers such as weather conditions or calendar dates.\\
 
-Through the last term and a half, our team moved through the concepts,
-the documentation, and have produced an alpha-level
-deliverable for the project. With regular communication through email and
-IRC, our group kept coordinated throughout the term, publishing progress
-reports to the Sharepoint site and code samples to our Github page. We will
-discuss our weekly progress and describe how the prototype and documentation
-unfolded over the course of the first term of the capstone project. This should
-provide an assessment on where our groups stands in preparedness to move
-forward with increased functionality in preperation for a beta presentation.
+Through the last term and a half, our team moved through the concepts, the
+documentation, and have produced an alpha-level deliverable for the project.
+With regular communication through email and IRC, our group kept coordinated
+throughout the term, publishing progress reports to the Sharepoint site and
+code samples to our Github page. We will discuss our weekly progress and
+describe how the prototype and documentation unfolded over the course of the
+first term of the capstone project. This should provide an assessment on where
+our groups stands in preparedness to move forward with increased functionality
+in preparation for a beta presentation.
 
 \pagebreak
+
 \section{Status}
 
 At this point in the project, all alpha-level features have been implemented;
@@ -112,8 +113,9 @@ However, many of the elements are already at beta-level functionality:
         the lights, groups, devices, and users
     \item The web interface has a main page that lists all available lights,
         where lights can be renamed and sorted into groups.
-    \item Groups in the main page can also be created, renamed, nested into 
-        each other, and deleted, though deletion has not been fully implemented yet.
+    \item Groups in the main page can also be created, renamed, nested into
+        each other, and deleted, though deletion has not been fully implemented
+        yet.
     \item The web interface has an advanced page for each light/group where
         rules for when to automatically toggle on/off can be created.
     \item All types of rules (including time of day, day of week, day of month,
@@ -124,35 +126,103 @@ However, many of the elements are already at beta-level functionality:
 \end{itemize}
 
 \section{Work in Progress}
-\subsection{Device Communication}
-One of the current post-Alpha goals is to complete the communication mechanism between the Raspberry Pi and the ESP8266 modules. We are working on finalizing our logical evaluation subsystem and determining what do to in the case of manual user override. The databases and communication parameters have been completed, as in we know what the function that will flip the lights themselves expects, but we don't know how to perform our Python-based evaluations yet. We expect that it will come shortly after finishing up the advanced query editor, at which point we expect to have a format and value range locked down for the queries to be evaluated.\\
 
-The devices are already prepared in a database to draw from, using the MAC address as the unique key to locate the IP address from the table. We don't anticipate the ISC DHCP server flipping addresses around, but by using the physical hardware addresses we are eliminating any possibility of sending the code to the wrong device. The Python ISC DHCP library provides us with a mechanism for determining if a device's IP has changed, and we will write that change to the devices table.
+\subsection{Device Communication}
+
+One of the current post-Alpha goals is to complete the communication mechanism
+between the Raspberry Pi and the ESP8266 modules. We are working on finalizing
+our logical evaluation subsystem and determining what do to in the case of
+manual user override. The databases and communication parameters have been
+completed, as in we know what the function that will flip the lights themselves
+expects, but we don't know how to perform our Python-based evaluations yet. We
+expect that it will come shortly after finishing up the advanced query editor,
+at which point we expect to have a format and value range locked down for the
+queries to be evaluated.\\
+
+The devices are already prepared in a database to draw from, using the MAC
+address as the unique key to locate the IP address from the table. We don't
+anticipate the ISC DHCP server flipping addresses around, but by using the
+physical hardware addresses we are eliminating any possibility of sending the
+code to the wrong device. The Python ISC DHCP library provides us with a
+mechanism for determining if a device's IP has changed, and we will write that
+change to the devices table.
 
 \subsection{User Interface/Website}
-Much of the functionality that we need for Beta is already built in. There are only a few buttons that don't do anything and need to be implemented in order to get Beta functionality up and running for the website. The database has been created and much of the website already uses it, but there are a few parts of the interface that have not been tied in. 
+
+Much of the functionality that we need for Beta is already built in. There are
+only a few buttons that don't do anything and need to be implemented in order
+to get Beta functionality up and running for the website. The database has been
+created and much of the website already uses it, but there are a few parts of
+the interface that have not been tied in.
 
 \section{Problems}
-\subsection{Wireless}
-We had an issue early on with how we planned to connect to the ESP8266 modules using our Raspberry Pi. Our proof-of-concept had the client connecting to the wireless module itself to make changes, but we wanted remote management to work from the Pi and have it be reachable from the internet. We began looking into ways to perform local routing so that the device could play with the end-user's home network, but ran into more snags trying to configure multiple wireless network devices on the same Pi. We contacted our client who suggested that we not worry about external connectivity for the project. His expectations were that users would directly connect to the Pi to make configuration changes. The project title was "not \textit{exactly} the Internet-of-Things", after all.\\
 
-To fix the issue, we reconfigured the Raspberry Pi so we could connect wirelessly. We needed to first recompile \textit{hostapd} to run with a version of our USB wireless driver that could broadcast an SSID. After recompiling we confirmed that we could connect using a wireless device such as a smartphone. The other task was to change the firmware on the ESP8266 so that it behaves like a client instead of a host. In addition to flashing the new firmware, a startup file was added so that it automatically connects to the nearest Raspberry Pi with "Pilight" in the SSID. We will likely change this later to better incorporate new devices.
+\subsection{Wireless}
+
+We had an issue early on with how we planned to connect to the ESP8266 modules
+using our Raspberry Pi. Our proof-of-concept had the client connecting to the
+wireless module itself to make changes, but we wanted remote management to work
+from the Pi and have it be reachable from the internet. We began looking into
+ways to perform local routing so that the device could play with the end-user's
+home network, but ran into more snags trying to configure multiple wireless
+network devices on the same Pi. We contacted our client who suggested that we
+not worry about external connectivity for the project. His expectations were
+that users would directly connect to the Pi to make configuration changes. The
+project title was "not \textit{exactly} the Internet-of-Things", after all.\\
+
+To fix the issue, we reconfigured the Raspberry Pi so we could connect
+wirelessly. We needed to first recompile \textit{hostapd} to run with a version
+of our USB wireless driver that could broadcast an SSID. After recompiling we
+confirmed that we could connect using a wireless device such as a smartphone.
+The other task was to change the firmware on the ESP8266 so that it behaves
+like a client instead of a host. In addition to flashing the new firmware, a
+startup file was added so that it automatically connects to the nearest
+Raspberry Pi with "Pilight" in the SSID. We will likely change this later to
+better incorporate new devices.
 
 \subsection{Pulse Width Modulation}
-We had the idea that a device managable via the Raspberry Pi would be able to control the brightness of the lights using PWM. Unfortunately the 10A gates on our relay just can't flip fast enough for any desired pulses. Our group contacted our client to see if it was worth the trouble of acquiring a relay unit that could do PWM, but his response was that he was only concerned with turning the devices on and off. We also considered a software-defined PWM solution, but were again affected by the speed of the relay itself not being sufficient.
+
+We had the idea that a device managable via the Raspberry Pi would be able to
+control the brightness of the lights using PWM. Unfortunately the 10A gates on
+our relay just can't flip fast enough for any desired pulses. Our group
+contacted our client to see if it was worth the trouble of acquiring a relay
+unit that could do PWM, but his response was that he was only concerned with
+turning the devices on and off. We also considered a software-defined PWM
+solution, but were again affected by the speed of the relay itself not being
+sufficient.
 
 \subsection{Behavior of On/Off Switches}
-Before starting to implement the rules, we had not put much thought into what the behavior should be for the On/Off switches of the lights and groups. After we began to implement more of the project we realized that there are a few ways that the behavior could be implemented:
+
+Before starting to implement the rules, we had not put much thought into what
+the behavior should be for the On/Off switches of the lights and groups. After
+we began to implement more of the project we realized that there are a few ways
+that the behavior could be implemented:
+
 \begin{enumerate}
-  \item Toggling the switch would change the state of the light until the user chose to resume automated control
-  \item Toggling the switch would change the state of the light for a preset amount of time before resuming automated control.
-  \item Toggling the switch would change the state of the light until the next time that the rules determined the light should change, upon which automated control would resume.
+  \item Toggling the switch would change the state of the light until the user
+      chose to resume automated control
+  \item Toggling the switch would change the state of the light for a preset
+      amount of time before resuming automated control.
+  \item Toggling the switch would change the state of the light until the next
+      time that the rules determined the light should change, upon which
+      automated control would resume.
 \end{enumerate}
-The are benefits to each implementation and it was a difficult decision to figure out which path we should take. The first option makes sense because the user is never overridden by the system. The second option is useful because the user most likely is turning on the light for a temporary purpose, and probably will not want to have to go into the advanced settings all the time. We decided to go with the third option, as it provided the benifits of the second option, but more cleanly eases back into the pattern of automated control.
+
+The are benefits to each implementation and it was a difficult decision to
+figure out which path we should take. The first option makes sense because the
+user is never overridden by the system. The second option is useful because the
+user most likely is turning on the light for a temporary purpose, and probably
+will not want to have to go into the advanced settings all the time. We decided
+to go with the third option, as it provided the benifits of the second option,
+but more cleanly eases back into the pattern of automated control.
 
 \section{Code}
+
 \subsection{Acquire New Devices}
-This code, upon user request, scans currently connected devices for a new ESP8266 device that does not already exist in the devices database.
+
+This code, upon user request, scans currently connected devices for a new
+ESP8266 device that does not already exist in the devices database.
+
 \begin{lstlisting}
    // Get all DHCP leases currently given out
    leases = IscDhcpLeases('/var/lib/dhcp/dhcpd.leases')
@@ -176,8 +246,17 @@ This code, upon user request, scans currently connected devices for a new ESP826
             additions = additions + 1
       return str(additions)
    \end{lstlisting}
+
 \subsection{Editing Lights and Groups}
-We decided to use the X-editable library for executing inline edits to the names of groups and lights. This involved creating a span element to represent the name with information about the light or group embedded in it. We then included a few lines of javascript to specify where to send the post request and setup the editable span element. When submitted, a post request would be sent to the flask server. Below is the flask function that handles the post request and changes the name of a light or group in the database.
+
+We decided to use the X-editable library for executing inline edits to the
+names of groups and lights. This involved creating a span element to represent
+the name with information about the light or group embedded in it. We then
+included a few lines of javascript to specify where to send the post request
+and setup the editable span element. When submitted, a post request would be
+sent to the flask server. Below is the flask function that handles the post
+request and changes the name of a light or group in the database.
+
 \begin{lstlisting}
 @app.route('/change_name', methods=['POST'])
 def change_name():
@@ -198,53 +277,96 @@ def change_name():
 
 \subsection{User Study A}
 
-After exploring the interface for a time, the user was asked to perform a series of tasks, and the following is a description of what the user did when asked to perform each task.
+After exploring the interface for a time, the user was asked to perform a
+series of tasks, and the following is a description of what the user did when
+asked to perform each task.
+
 \begin{itemize}
-  \item The user had no problems with the login system, but they disagreed with the text on one of the buttons.
-    \begin{itemize}
-      \item The SignIn text on the button should be changed to Sign In
-    \end{itemize}
-  \item There was a slight issue with the Add Devices button, as the user was confused by the loading animation, and had a suggestion for how to fix it.
-    \begin{itemize}
-      \item There should be text to indicate what is going on during the loading animation for adding devices.
-    \end{itemize}
-  \item The user had no problems changing the name of a light
-  \item The user was able to correctly identify that the group/light system was a heirarchy where lights were owned by groups and groups were owned by parent groups.
-  \item The user was able to toggle the light on and off, however they thought that the switches were not very intuitive, and they had a few suggestions for improvement.
-    \begin{itemize}
-      \item The switches should be green/red, not blue/gray.
-      \item The switches are too slow, and should be twice the speed.
-      \item The switches should show "On" and "Off" text.
-      \item The groups should have two on and off buttons instead of switches, and should not have a state. The intermediate state of the switch does not make sense.
-    \end{itemize}
-  \item The user was able to correctly identify that the red "x" was the intended button for deleting a group.
-  \item There was a slight problem when the user attempted to move a light to a different group. The user identified the move icon as the correct tool for moving rows, but had difficulty clicking on it, as the spaces inbetween the arrows do not register a click. Once they had grabbed it and were moving it, they were then slightly confused because there was no preview of the destination, and instead the light was attached to the mouse. They did drop it and move the light correctly, but they noted that the task was slightly less intuitive than the previous ones.
-    \begin{itemize}
-      \item When dragging and dropping lights or groups, there should be a preview of the destination while the user is holding it.
-    \end{itemize}
-  \item The user had no problems adding a new group, but they disagreed with how the new group was set.
-    \begin{itemize}
-      \item When adding a new group, the switch should be set to Off.
-    \end{itemize}
-  \item The user was able to navigate to the advanced page for a light by clicking on the gear.
-  \item When asked to set the light to turn on at sunset and turn off at sunrise, the user was able to find the correct radio buttons. The user then noted that they were not sure whether they needed to do anything else to save what they had done.
-    \begin{itemize}
-      \item There should be a "Save Changes" or "Submit" button
-    \end{itemize}
-  \item The user was able to correctly set the light to turn on at a specifig time of the day.
-  \item The user was unable to set multiple rules, as it was not obvious to them how the rule system worked, they made a few suggestions for how the system could be improved.
-    \begin{itemize}
-      \item The New Rule and rules controls should be at the bottom of the page, and that the wording should be changed to something other than "Rule.".
-      \item Advanced query box should be moved to bottom of page or hidden in something like an expanding box, as most users will not want to see or understand it.
-      \item There should be a preview of the rules for a group or light when hovering over the name or the link leading to the advanced page.
-      \item The wording "Rule" should be changed to something that represents the idea more clearly.
-    \end{itemize}
-  \item The user was able to identify the purpose of the menu bar but thought that it was not very noticable.
-    \begin{itemize}
-      \item Menu bar should have greater contrast so it is more noticable.
-    \end{itemize}
+    \item The user had no problems with the login system, but they disagreed
+        with the text on one of the buttons.
+        \begin{itemize}
+            \item The SignIn text on the button should be changed to Sign In
+        \end{itemize}
+    \item There was a slight issue with the Add Devices button, as the user was
+        confused by the loading animation, and had a suggestion for how to fix
+        it.
+        \begin{itemize}
+            \item There should be text to indicate what is going on during the
+                loading animation for adding devices.
+        \end{itemize}
+    \item The user had no problems changing the name of a light
+    \item The user was able to correctly identify that the group/light system
+        was a heirarchy where lights were owned by groups and groups were owned
+        by parent groups.
+    \item The user was able to toggle the light on and off, however they
+        thought that the switches were not very intuitive, and they had a few
+        suggestions for improvement.
+        \begin{itemize}
+            \item The switches should be green/red, not blue/gray.
+            \item The switches are too slow, and should be twice the speed.
+            \item The switches should show "On" and "Off" text.
+            \item The groups should have two on and off buttons instead of
+                switches, and should not have a state. The intermediate state
+                of the switch does not make sense.
+        \end{itemize}
+    \item The user was able to correctly identify that the red "x" was the
+        intended button for deleting a group.
+    \item There was a slight problem when the user attempted to move a light to
+        a different group. The user identified the move icon as the correct
+        tool for moving rows, but had difficulty clicking on it, as the spaces
+        inbetween the arrows do not register a click. Once they had grabbed it
+        and were moving it, they were then slightly confused because there was
+        no preview of the destination, and instead the light was attached to
+        the mouse. They did drop it and move the light correctly, but they
+        noted that the task was slightly less intuitive than the previous ones.
+        \begin{itemize}
+            \item When dragging and dropping lights or groups, there should be
+                a preview of the destination while the user is holding it.
+        \end{itemize}
+    \item The user had no problems adding a new group, but they disagreed with
+        how the new group was set.
+        \begin{itemize}
+            \item When adding a new group, the switch should be set to Off.
+        \end{itemize}
+    \item The user was able to navigate to the advanced page for a light by
+        clicking on the gear.
+    \item When asked to set the light to turn on at sunset and turn off at
+        sunrise, the user was able to find the correct radio buttons. The user
+        then noted that they were not sure whether they needed to do anything
+        else to save what they had done.
+        \begin{itemize}
+            \item There should be a "Save Changes" or "Submit" button
+        \end{itemize}
+    \item The user was able to correctly set the light to turn on at a specifig
+        time of the day.
+    \item The user was unable to set multiple rules, as it was not obvious to
+        them how the rule system worked, they made a few suggestions for how
+        the system could be improved.
+        \begin{itemize}
+            \item The New Rule and rules controls should be at the bottom of
+                the page, and that the wording should be changed to something
+                other than "Rule.".
+            \item Advanced query box should be moved to bottom of page or
+                hidden in something like an expanding box, as most users will
+                not want to see or understand it.
+            \item There should be a preview of the rules for a group or light
+                when hovering over the name or the link leading to the advanced
+                page.
+            \item The wording "Rule" should be changed to something that
+                represents the idea more clearly.
+        \end{itemize}
+    \item The user was able to identify the purpose of the menu bar but thought
+        that it was not very noticable.
+        \begin{itemize}
+            \item Menu bar should have greater contrast so it is more
+                noticable.
+        \end{itemize}
 \end{itemize}
-As we conducted this user study near the end of Alpha stage, we have yet to decide whether to implement the suggested changes and have yet to make any changes as a result of the usability tests. We will go over these in the future and make judgements about what changes should be made then.
+
+As we conducted this user study near the end of Alpha stage, we have yet to
+decide whether to implement the suggested changes and have yet to make any
+changes as a result of the usability tests. We will go over these in the future
+and make judgements about what changes should be made then.
 
 \subsection{User Study B}
 
