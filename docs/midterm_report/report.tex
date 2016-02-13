@@ -112,8 +112,8 @@ However, many of the elements are already at beta-level functionality:
       \includegraphics[width=1.0\textwidth]{pi-screen.png}
     \item The Pi is set up to run our Flask web site, and it can be connected 
         to by wireless devices and viewed in a browser.
-    \item The flask website has an SQL database that stores information about 
-        the lights, groups, devices, and users
+    \item The Flask web site has a SQL database that stores information about
+        the lights, groups, devices, rules, and users.
     \item The web interface has a main page that lists all available lights,
         where lights can be renamed and sorted into groups. \\ \\
       \includegraphics[width=1.0\textwidth]{main-page.png}
@@ -185,17 +185,17 @@ We had an issue early on with how we planned to connect to the ESP8266 modules
 using our Raspberry Pi. Our proof-of-concept had the client connecting to the
 wireless module itself to make changes, but we wanted remote management to work
 from the Pi and have it be reachable from the internet. We began looking into
-ways to perform local routing so that the device could play with the end-user's
+ways to perform local routing so that the device could play with the end user's
 home network, but ran into more snags trying to configure multiple wireless
-network devices on the same Pi. We contacted our client who suggested that we
+network devices on the same Pi. We contacted our client, who suggested that we
 not worry about external connectivity for the project. His expectations were
 that users would directly connect to the Pi to make configuration changes. The
 project title was "not \textit{exactly} the Internet-of-Things", after all.\\
 
 To fix the issue, we reconfigured the Raspberry Pi so we could connect
 wirelessly. We needed to first recompile \textit{hostapd} to run with a version
-of our USB wireless driver that could broadcast an SSID. After recompiling we
-confirmed that we could connect using a wireless device such as a smartphone.
+of our USB wireless driver that could broadcast an SSID. After recompiling, we
+confirmed that we could connect using a wireless device, such as a smartphone.
 The other task was to change the firmware on the ESP8266 so that it behaves
 like a client instead of a host. In addition to flashing the new firmware, a
 startup file was added so that it automatically connects to the nearest
@@ -217,12 +217,12 @@ sufficient.
 
 Before starting to implement the rules, we had not put much thought into what
 the behavior should be for the On/Off switches of the lights and groups. After
-we began to implement more of the project we realized that there are a few ways
-that the behavior could be implemented:
+we began to implement more of the project, we realized that there are a few
+ways that the behavior could be implemented:
 
 \begin{enumerate}
   \item Toggling the switch would change the state of the light until the user
-      chose to resume automated control
+      chose to resume automated control.
   \item Toggling the switch would change the state of the light for a preset
       amount of time before resuming automated control.
   \item Toggling the switch would change the state of the light until the next
@@ -236,7 +236,11 @@ user is never overridden by the system. The second option is useful because the
 user most likely is turning on the light for a temporary purpose, and probably
 will not want to have to go into the advanced settings all the time. We decided
 to go with the third option, as it provided the benifits of the second option,
-but more cleanly eases back into the pattern of automated control.
+but more cleanly eases back into the pattern of automated control.  However,
+this solution does require extra state tracking on the server side to know when
+a light is being toggled by the re-evaluation of a rule, as the original design
+was to have the rule evaluation happen independently of the current state of
+the light.
 
 \section{Code}
 
@@ -274,9 +278,9 @@ ESP8266 device that does not already exist in the devices database.
 We decided to use the X-editable library for executing inline edits to the
 names of groups and lights. This involved creating a span element to represent
 the name with information about the light or group embedded in it. We then
-included a few lines of javascript to specify where to send the post request
-and setup the editable span element. When submitted, a post request would be
-sent to the flask server. Below is the flask function that handles the post
+included a few lines of JavaScript to specify where to send the POST request
+and set up the editable span element. When submitted, a POST request would be
+sent to the Flask server. Below is the Flask function that handles the POST
 request and changes the name of a light or group in the database.
 
 \begin{lstlisting}
@@ -300,14 +304,16 @@ def change_name():
 \subsection{User Study A}
 
 After exploring the interface for a time, the user was asked to perform a
-series of tasks, and the following is a description of what the user did when
-asked to perform each task.
+series of tasks to replicate common use cases for the system, including logging
+in, toggling lights/groups, renaming lights/groups, reorganizing lights/groups,
+creating additional groups, connecting additional client modules to the server,
+and creating advanced rules for lights/groups.
 
 \begin{itemize}
     \item The user had no problems with the login system, but they disagreed
         with the text on one of the buttons.
         \begin{itemize}
-            \item The SignIn text on the button should be changed to Sign In
+            \item The SignIn text on the button should be changed to Sign In.
         \end{itemize}
     \item There was a slight issue with the Add Devices button, as the user was
         confused by the loading animation, and had a suggestion for how to fix
@@ -316,7 +322,7 @@ asked to perform each task.
             \item There should be text to indicate what is going on during the
                 loading animation for adding devices.
         \end{itemize}
-    \item The user had no problems changing the name of a light
+    \item The user had no problems changing the name of a light.
     \item The user was able to correctly identify that the group/light system
         was a heirarchy where lights were owned by groups and groups were owned
         by parent groups.
@@ -457,20 +463,20 @@ and make judgements about what changes should be made then.
 \begin{itemize}
     \item User did not understand the multi-state light switch.
         \begin{itemize}
-            \item Suggestion: Add a tooltip (maybe only for the first time?) or 
-            add a hover element to the button indicating the current state.
+            \item Suggestion: Add a tooltip (maybe only for the first time?) or
+                add a hover element to the button indicating the current state.
         \end{itemize}
     \item User did not understand what the group symbols meant.
         \begin{itemize}
-            \item Suggestion: This one could just be "read the documentation" that
-            we will include in the final project. It will probably be a PDF attachment
-            or a Github wiki page.
+            \item Suggestion: This one could just be "read the documentation"
+                that we will include in the final project. It will probably be
+                a PDF attachment or a Github wiki page.
         \end{itemize}
     \item User did not know if a custom query was running
         \begin{itemize}
-            \item Suggestion: We'll add a note next to a light if it is currently
-            controlled by a query. We can have a hover element to display the specific
-            query.
+            \item Suggestion: We'll add a note next to a light if it is
+                currently controlled by a query. We can have a hover element to
+                display the specific query.
         \end{itemize}
 \end{itemize}
 
