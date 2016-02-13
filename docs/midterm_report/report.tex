@@ -133,7 +133,7 @@ One of the current post-Alpha goals is to complete the communication mechanism
 between the Raspberry Pi and the ESP8266 modules. We are working on finalizing
 our logical evaluation subsystem and determining what do to in the case of
 manual user override. The databases and communication parameters have been
-completed, as in we know what the function that will flip the lights themselves
+completed; we know what the function that will flip the lights themselves
 expects, but we don't know how to perform our Python-based evaluations yet. We
 expect that it will come shortly after finishing up the advanced query editor,
 at which point we expect to have a format and value range locked down for the
@@ -149,11 +149,26 @@ change to the devices table.
 
 \subsection{User Interface/Website}
 
-Much of the functionality that we need for Beta is already built in. There are
-only a few buttons that don't do anything and need to be implemented in order
-to get Beta functionality up and running for the website. The database has been
-created and much of the website already uses it, but there are a few parts of
-the interface that have not been tied in.
+Much of the functionality that we need for Beta has already been completed.
+The database has been created and the main page is currently able to persist
+user-submitted data, such as the names of groups and lights.  The advanced page
+has yet to actually perform any server communication for persistence of
+user-submitted data, but the implementation of this will be similar to the
+front page.  There are also a few UI elements that are currently not
+implemented, such as group deletion on the main page, but none of these require
+new knowledge in order to implement and should be completed soon.
+
+\subsection{Scheduling System}
+
+The scheduling system is what ties together the website with the hardware
+communication; it periodically evaluates all rules for all lights/groups and
+initiates the sending of signals to the ESP8266 modules based on which lights
+are to be turned on/off.  The scheduling system is also in charge of parsing
+the group/light rules that are stored in JSON format into boolean logic
+expressions that can be evaluated, including replacing keywords such as
+"sunset" and "sunrise" with actual times based on the user's location and the
+time of the year.  So far, the basic JSON to boolean expression conversion has
+been implemented.
 
 \section{Problems}
 
