@@ -189,7 +189,7 @@ been implemented.
 We had an issue early on with how we planned to connect to the ESP8266 modules
 using our Raspberry Pi. Our proof-of-concept had the client connecting to the
 wireless module itself to make changes, but we wanted remote management to work
-from the Pi and have it be reachable from the internet. We began looking into
+from the Pi and have it be reachable from the Internet. We began looking into
 ways to perform local routing so that the device could play with the end user's
 home network, but ran into more snags trying to configure multiple wireless
 network devices on the same Pi. We contacted our client, who suggested that we
@@ -209,7 +209,7 @@ better incorporate new devices.
 
 \subsection{Pulse Width Modulation}
 
-We had the idea that a device managable via the Raspberry Pi would be able to
+We had the idea that a device manageable via the Raspberry Pi would be able to
 control the brightness of the lights using PWM. Unfortunately the 10A gates on
 our relay just can't flip fast enough for any desired pulses. Our group
 contacted our client to see if it was worth the trouble of acquiring a relay
@@ -240,7 +240,7 @@ figure out which path we should take. The first option makes sense because the
 user is never overridden by the system. The second option is useful because the
 user most likely is turning on the light for a temporary purpose, and probably
 will not want to have to go into the advanced settings all the time. We decided
-to go with the third option, as it provided the benifits of the second option,
+to go with the third option, as it provided the benefits of the second option,
 but more cleanly eases back into the pattern of automated control.  However,
 this solution does require extra state tracking on the server side to know when
 a light is being toggled by the re-evaluation of a rule, as the original design
@@ -329,7 +329,7 @@ and creating advanced rules for lights/groups.
         \end{itemize}
     \item The user had no problems changing the name of a light.
     \item The user was able to correctly identify that the group/light system
-        was a heirarchy where lights were owned by groups and groups were owned
+        was a hierarchy where lights were owned by groups and groups were owned
         by parent groups.
     \item The user was able to toggle the light on and off, however they
         thought that the switches were not very intuitive, and they had a few
@@ -347,7 +347,7 @@ and creating advanced rules for lights/groups.
     \item There was a slight problem when the user attempted to move a light to
         a different group. The user identified the move icon as the correct
         tool for moving rows, but had difficulty clicking on it, as the spaces
-        inbetween the arrows do not register a click. Once they had grabbed it
+        in between the arrows do not register a click. Once they had grabbed it
         and were moving it, they were then slightly confused because there was
         no preview of the destination, and instead the light was attached to
         the mouse. They did drop it and move the light correctly, but they
@@ -370,7 +370,7 @@ and creating advanced rules for lights/groups.
         \begin{itemize}
             \item There should be a "Save Changes" or "Submit" button
         \end{itemize}
-    \item The user was able to correctly set the light to turn on at a specifig
+    \item The user was able to correctly set the light to turn on at a specific
         time of the day.
     \item The user was unable to set multiple rules, as it was not obvious to
         them how the rule system worked, they made a few suggestions for how
@@ -389,17 +389,17 @@ and creating advanced rules for lights/groups.
                 represents the idea more clearly.
         \end{itemize}
     \item The user was able to identify the purpose of the menu bar but thought
-        that it was not very noticable.
+        that it was not very noticeable.
         \begin{itemize}
             \item Menu bar should have greater contrast so it is more
-                noticable.
+                noticeable.
         \end{itemize}
 \end{itemize}
 
 As we conducted this user study near the end of Alpha stage, we have yet to
 decide whether to implement the suggested changes and have yet to make any
 changes as a result of the usability tests. We will go over these in the future
-and make judgements about what changes should be made then.
+and make judgments about what changes should be made then.
 
 \subsection{User Study B}
 
