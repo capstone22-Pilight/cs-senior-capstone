@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block body %}
-<ol class='vertical'>
+<ol class='vertical grouplights'>
   {% for e in groups %}
   {% include "grouplight.html" %}
   {% endfor %}
@@ -35,5 +35,6 @@
     $.fn.editable.defaults.url = '/change_name';
     $.fn.editable.defaults.type = 'text';
     $(".edit").editable();
+    
 </script>
 {% endblock %}

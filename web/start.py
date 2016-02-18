@@ -135,6 +135,19 @@ def new_group():
     group = model.Group(name="New Group", id=None, group_id=None)
     model.db.session.add(group)
     model.db.session.commit()
+    return render_template('grouplight.html', e=group)
+
+@app.route('/delete_group', methods=['POST'])
+def delete_group():
+    id = request.form['id']
+    old_group = model.Group.query.filter_by(id=id).first()
+    for light in old_group.lights:
+        light.parent_id = old_group.group.id
+    for group in old_group.groups:
+        group.group_id = old_group.group.id
+    model.db.session.commit()
+    model.Group.query.filter_by(id=id).delete()
+    model.db.session.commit()
     return "Complete!"
 
 def ESP8266_check(ipaddr):

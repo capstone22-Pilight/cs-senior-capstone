@@ -75,9 +75,28 @@ document.addEventListener("DOMContentLoaded", function() {
          cache: false,
          success: function(response){
             console.log(response);
-            var newElement = '<li><span name="handle" class="glyphicon glyphicon-move"></span><div class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-on bootstrap-switch-mini bootstrap-switch-indeterminate bootstrap-switch-animate" style="width: 42px;"><div class="bootstrap-switch-container" style="width: 60px; margin-left: -10px;"><span class="bootstrap-switch-handle-on bootstrap-switch-primary" style="width: 20px;">&nbsp;</span><span class="bootstrap-switch-label" style="width: 20px;">&nbsp;</span><span class="bootstrap-switch-handle-off bootstrap-switch-default" style="width: 20px;">&nbsp;</span><input type="checkbox" name="checkbox-group" checked=""></div></div><span float="left" class="edit editable editable-click" data-name="group" data-pk="' + $('.vertical li').length + '">New Group</span><a href="#" style="float: right; color: red;"><span class="glyphicon glyphicon-remove"></span></a><a href="advanced?id=0&amp;name=group" style="float: right;"><span class="glyphicon glyphicon-cog"></span></a><ol></ol></li>';
-            $('.vertical').append(newElement);
+            $('.vertical').append(response);
+            $(".edit").editable();
+            $("[name='checkbox-group']").bootstrapSwitch('indeterminate', true, true);
          }
       });
    });
 },true);
+
+function delete_group(id) {
+   $.ajax({
+         url: "/delete_group",
+         global: false,
+         type: "POST",
+         cache: false,
+         data: 'id=' + id,
+         success: function(response){
+            console.log(response);
+            // Lights appear at top of list
+            //$("[gid='" + id + "']").parent().prepend($("[gid='" + id + "'] li"));
+            // Lights appear where group was
+            $("[gid='" + id + "']").before($("[gid='" + id + "'] li"));
+            $("[gid='" + id + "']").remove()
+         }
+   });
+}
