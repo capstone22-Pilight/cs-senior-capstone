@@ -64,7 +64,7 @@ def enlighten(cmd,mac):
 
 @app.route("/")
 def index():
-    return render_template('index.html', groups=model.Group.query.filter_by(group_id=None))
+    return render_template('index.html', groups=model.Group.query.filter_by(group_id=None), lights=model.Light.query.filter_by(parent_id=None))
 
 @app.route('/buttons')
 @login_required
@@ -136,6 +136,20 @@ def new_group():
     model.db.session.add(group)
     model.db.session.commit()
     return render_template('grouplight.html', e=group)
+
+@app.route('/change_parent', methods=['POST'])
+def change_parent():
+    parent_id = request.form['parent_id'];
+    if parent_id == 'undefined':
+        parent_id = None;
+    if 'gid' in request.form:
+        group = model.Group.query.filter_by(id=request.form['gid']).first()
+        group.group_id = parent_id;
+    else:
+        light = model.Light.query.filter_by(id=request.form['lid']).first()
+        light.parent_id = parent_id;
+    model.db.session.commit()
+    return "Complete!"
 
 @app.route('/delete_group', methods=['POST'])
 def delete_group():

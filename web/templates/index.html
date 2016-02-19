@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block body %}
 <ol class='vertical grouplights'>
+  {% for e in lights %}
+  {% include "grouplight.html" %}
+  {% endfor %}
   {% for e in groups %}
   {% include "grouplight.html" %}
   {% endfor %}
@@ -20,7 +23,28 @@
 <script>
     $(function  () {
       $("ol.vertical").sortable({
-        handle: "[name='handle']"
+        handle: "[name='handle']",
+        onDrop: function(item, container, _super) {
+          data_str = 'parent_id=' + item.parent().parent().attr('gid');
+          if(item[0].hasAttribute('gid')) {
+            data_str += '&gid=' + item.attr('gid');
+          }
+          else {
+            data_str += '&lid=' + item.attr('lid');
+          }
+
+          $.ajax({
+              url: "/change_parent",
+              global: false,
+              type: "POST",
+              cache: false,
+              data: data_str,
+              success: function(response){
+                console.log(response);
+              }
+          });
+          _super(item, container);
+        }
       });
     });
     $.fn.bootstrapSwitch.defaults.size = 'mini';
