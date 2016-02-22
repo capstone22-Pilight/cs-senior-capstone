@@ -46,6 +46,7 @@ class Light(db.Model):
     name = db.Column(db.String(128))
     device_mac = db.Column(db.String(12), db.ForeignKey('device.mac'))
     port = db.Column(db.Integer)
+    status = db.Column(db.Boolean())
 
 class Rules(db.Model):
     id = db.Column(db.Integer,primary_key = True)
