@@ -64,7 +64,7 @@ def enlighten(cmd,mac):
 
 @app.route("/")
 def index():
-    return render_template('index.html', groups=model.Group.query.filter_by(group_id=None), lights=model.Light.query.filter_by(parent_id=None))
+    return render_template('index.html', groups=model.Group.query.filter_by(parent_id=None), lights=model.Light.query.filter_by(parent_id=None))
 
 @app.route('/buttons')
 @login_required
@@ -132,7 +132,7 @@ def change_name():
 
 @app.route('/new_group', methods=['POST'])
 def new_group():
-    group = model.Group(name="New Group", id=None, group_id=None)
+    group = model.Group(name="New Group", id=None, parent_id=model.Group.query.filter_by(parent_id=None).first().id)
     model.db.session.add(group)
     model.db.session.commit()
     return render_template('grouplight.html', e=group)
@@ -144,7 +144,7 @@ def change_parent():
         parent_id = None;
     if 'gid' in request.form:
         group = model.Group.query.filter_by(id=request.form['gid']).first()
-        group.group_id = parent_id;
+        group.parent_id = parent_id;
     else:
         light = model.Light.query.filter_by(id=request.form['lid']).first()
         light.parent_id = parent_id;
@@ -156,9 +156,9 @@ def delete_group():
     id = request.form['id']
     old_group = model.Group.query.filter_by(id=id).first()
     for light in old_group.lights:
-        light.parent_id = old_group.group.id
+        light.parent_id = old_group.parent_id
     for group in old_group.groups:
-        group.group_id = old_group.group.id
+        group.parent_id = old_group.parent_id
     model.db.session.commit()
     model.Group.query.filter_by(id=id).delete()
     model.db.session.commit()

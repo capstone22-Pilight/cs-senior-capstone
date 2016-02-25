@@ -34,9 +34,9 @@ class User(db.Model):
 class Group(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     name = db.Column(db.String(128))
-    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
-    group = db.relationship("Group", back_populates="groups", remote_side=[id])
-    groups = db.relationship("Group", back_populates="group")
+    parent_id = db.Column(db.Integer, db.ForeignKey('group.id'))
+    parent = db.relationship("Group", back_populates="groups", remote_side=[id])
+    groups = db.relationship("Group", back_populates="parent")
     lights = db.relationship("Light", back_populates="parent")
 
 class Light(db.Model):

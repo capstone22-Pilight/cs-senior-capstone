@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function() {
          cache: false,
          success: function(response){
             console.log(response);
-            $('.vertical').append(response);
+            $(".vertical ol").first().append(response);
             $(".edit").editable();
             $("[name='checkbox-group']").bootstrapSwitch('indeterminate', true, true);
          }

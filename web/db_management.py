@@ -16,10 +16,10 @@ def build():
     device1 = Device(mac='913a8d11f5c5', ipaddr='151.13.80.15', name='Device 1')
     device2 = Device(mac='45a4feaaceb3', ipaddr='159.19.22.90', name='Device 2')
 
-    groups = [Group(id=1, name="Group 1", group_id=None),
-              Group(id=2, name="Group 2", group_id=1),
-              Group(id=3, name="Group 3", group_id=1),
-              Group(id=4, name="Group 4", group_id=1)]
+    groups = [Group(id=1, name="All Lights", parent_id=None),
+              Group(id=2, name="Group 2", parent_id=1),
+              Group(id=3, name="Group 3", parent_id=1),
+              Group(id=4, name="Group 4", parent_id=1)]
 
     lights = [Light(id=1, parent_id=2, name='Light 1', device_mac='913a8d11f5c5', port=1),
               Light(id=2, parent_id=2, name='Light 2', device_mac='913a8d11f5c5', port=2),

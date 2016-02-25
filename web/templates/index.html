@@ -22,7 +22,7 @@
 <script src='/static/js/jquery-sortable.js'></script>
 <script>
     $(function  () {
-      $("ol.vertical").sortable({
+      $("ol.vertical ol:first").sortable({
         handle: "[name='handle']",
         onDrop: function(item, container, _super) {
           data_str = 'parent_id=' + item.parent().parent().attr('gid');
@@ -47,7 +47,14 @@
         }
       });
     });
+
+    $("ol.vertical li [name='handle']:first").remove()
+    $("ol.vertical li [name='delete-button']:first").remove()
+
+
     $.fn.bootstrapSwitch.defaults.size = 'mini';
+/*    $.fn.bootstrapSwitch.defaults.onColor = 'success';
+    $.fn.bootstrapSwitch.defaults.offColor = 'danger';*/
     $.fn.bootstrapSwitch.defaults.handleWidth = '10';
     $.fn.bootstrapSwitch.defaults.onText = '&nbsp';
     $.fn.bootstrapSwitch.defaults.offText = '&nbsp';
@@ -59,6 +66,5 @@
     $.fn.editable.defaults.url = '/change_name';
     $.fn.editable.defaults.type = 'text';
     $(".edit").editable();
-    
 </script>
 {% endblock %}

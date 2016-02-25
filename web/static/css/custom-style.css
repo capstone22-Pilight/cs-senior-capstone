@@ -1,3 +1,11 @@
-div {
+ol.vertical ol, ol.vertical {
+	margin: 0;
+	padding: 0;
+	margin-left: 10px;
+}
+.editable-container div{
   display: inline-block;
+}
+li.droppable {
+	/*min-height: 42px;*/
 }
