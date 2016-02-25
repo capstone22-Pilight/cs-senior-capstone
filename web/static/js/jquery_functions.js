@@ -92,10 +92,7 @@ function delete_group(id) {
          data: 'id=' + id,
          success: function(response){
             console.log(response);
-            // Lights appear at top of list
-            //$("[gid='" + id + "']").parent().prepend($("[gid='" + id + "'] li"));
-            // Lights appear where group was
-            $("[gid='" + id + "']").before($("[gid='" + id + "'] li"));
+            $("[gid='" + id + "']").before($("[gid='" + id + "'] ol:first").children());
             $("[gid='" + id + "']").remove()
          }
    });
