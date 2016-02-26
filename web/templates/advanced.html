@@ -4,27 +4,17 @@
 <link href="/static/css/advanced.css" rel="stylesheet">
 
 <div id="advancedpage" class="clear">
-    <h2>
-        {% if lid != None: %}
-            Light {{ lid }}
-        {% else %}
-            Group {{ gid }}
-        {% endif %}
+    {% if lid != None: %}
+    <h2 id="title" lid="{{ lid }}">
+        Light {{ lid }}
     </h2>
-    <div id="leftside" class="box box-en">
-        <h4>
-            Rule builder:
-        </h4>
-        <p>
-            <form>
-                <input type="radio" name="hierarchy" value="parent"> Use the parent group's settings<br>
-                <input type="radio" name="hierarchy" value="own" checked> Override group settings completely<br>
-                <input type="radio" name="hierarchy" value="or"> Turn on using the following settings and also with the group's settings<br>
-                <input type="radio" name="hierarchy" value="and"> Turn on using the following settings, but only if the group's settings also allow it<br>
-                <input type="radio" name="hierarchy" value="manual"> Control this light manually<br>
-            </form>
-        </p>
+    {% else %}
+    <h2 id="title" gid="{{ gid }}">
+        Group {{ gid }}
+    </h2>
+    {% endif %}
 
+    <div id="leftside" class="box box-en">
         <p>
             Turn on at:
             <form>
@@ -75,9 +65,17 @@
                 Note: It is possible to only specify certain fields, e.g. start in May and end in July, or start on the 1st of the month and end on the 20th.
             </form>
         </p>
-    </div>
 
-    <div id="rightside" class="box">
+        <p>
+            <form>
+                <input type="radio" name="hierarchy" value="parent"> Use the parent group's settings<br>
+                <input type="radio" name="hierarchy" value="own" checked> Use custom settings<br>
+                <input type="radio" name="hierarchy" value="or"> Turn on with both custom settings and parent group's settings<br>
+                <input type="radio" name="hierarchy" value="and"> Turn on with the custom settings only if the parent group allows it<br>
+                <input type="radio" name="hierarchy" value="manual"> Control this light manually<br>
+            </form>
+        </p>
+
         <div id="advanced">
             <h4>
                 Advanced query:
@@ -86,34 +84,6 @@
             <form>
                 <input type="checkbox" name="advanced_override"> Create an advanced query manually
             </form>
-        </div>
-
-        <div id="submit" class="box">
-            <p>
-                <form>
-                    Rule name: <input type="text" name="name" id="rulename" placeholder="e.g. 'Turn patio lights on at night'">
-                </form>
-            </p>
-
-            <button type="submit" class="btn btn-success" id="create">Create rule</button>
-        </div>
-        <br>
-        <div id="rules">
-            <h4>
-                All rules:
-            </h4>
-            <ol class='vertical'>
-                <li class="rule baserule" style="margin: 10px;">
-                    <input type="checkbox" class="togglerule" checked>
-                    <span float='left' class="rulename">Base rule</span>
-                    <a href="#" class="deleterule">
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </a>
-                    <a href="#" class="editrule">
-                        <span class="glyphicon glyphicon-cog"></span>
-                    </a>
-                </li>
-            </ol>
         </div>
     </div>
 </div>

@@ -164,6 +164,14 @@ def delete_group():
     model.db.session.commit()
     return "Complete!"
 
+@app.route('/advanced_update', methods=['POST'])
+def advanced_update():
+    d = request.json
+    #group = model.Group(name="New Group", id=None, group_id=None)
+    #model.db.session.add(group)
+    #model.db.session.commit()
+    return 'Update successful'
+
 def ESP8266_check(ipaddr):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     result = sock.connect_ex((ipaddr,9999))
