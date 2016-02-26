@@ -167,9 +167,12 @@ def delete_group():
 @app.route('/advanced_update', methods=['POST'])
 def advanced_update():
     d = request.json
-    #group = model.Group(name="New Group", id=None, group_id=None)
-    #model.db.session.add(group)
-    #model.db.session.commit()
+    if 'lid' in d: # We are updating a light
+        grouplight = model.Light.query.filter_by(id=int(d['lid'])).first()
+    else: # We are updating a group
+        grouplight = model.Group.query.filter_by(id=int(d['gid'])).first()
+    grouplight.querydata = str(d['querydata'])
+    model.db.session.commit()
     return 'Update successful'
 
 def ESP8266_check(ipaddr):
