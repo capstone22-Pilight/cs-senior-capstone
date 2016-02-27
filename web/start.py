@@ -10,10 +10,12 @@ from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import sessionmaker
 from flask.ext.login import LoginManager, login_user, logout_user, current_user, login_required
 from config import SQLALCHEMY_DATABASE_URI
+from astral import Astral
 import model as model
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
 Session = sessionmaker(bind=engine)
+geo = Astral().geocoder
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -27,6 +29,10 @@ app.secret_key = 'super_secret_key'
 @app.route("/")
 def index():
     return render_template('index.html', groups=model.Group.query.filter_by(parent_id=None), lights=model.Light.query.filter_by(parent_id=None))
+
+@app.route("/settings")
+def settings():
+    return render_template('settings.html', geo=sorted(geo))
 
 @app.route('/buttons')
 @login_required
@@ -168,6 +174,20 @@ def delete_group():
     model.Group.query.filter_by(id=id).delete()
     model.db.session.commit()
     return "Complete!"
+
+@app.route('/select_region', methods=['POST'])
+def select_region():
+    region = request.form['region']
+    location_string = ""
+    for location in sorted(getattr(geo, region).locations):
+        location_string += "<option>" + location + "</option>"
+    return location_string
+
+@app.route('/select_city', methods=['POST'])
+def select_city():
+    city = request.form['city']
+    #DO THINGS WITH CITY HERE
+    return city
 
 @app.route('/advanced_update', methods=['POST'])
 def advanced_update():

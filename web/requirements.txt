@@ -9,3 +9,4 @@ Flask-SQLAlchemy==2.1
 SQLAlchemy-migrate>=0.10.0
 isc_dhcp_leases==0.5.3
 flask-login>=0.3.2
+astral>=0.9

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="form-group">
+  <label for="region">Region:</label>
+  <select class="form-control" id="region">
+    {% for region in geo %}
+    <option value="{{ region }}">{{ region.title() }}</option>
+    {% endfor %}
+  </select>
+</div>
+<div class="form-group">
+  <label for="city">City:</label>
+  <select class="form-control" id="city" disabled>
+  </select>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/static/js/bootstrap.min.js"></script>
+<script src='/static/js/bootstrap-switch.js'></script>
+<script src='/static/js/bootstrap-editable.min.js'></script>
+<script src='/static/js/jquery-sortable.js'></script>
+<script>
+  $("#region").change(function(){
+    $.ajax({
+        url: "/select_region",
+        global: false,
+        type: "POST",
+        data: "region=" + $("#region option:selected").val(),
+        cache: false,
+        success: function(response){
+           console.log(response);
+           $("#city").prop('disabled', false);
+           $("#city").empty();
+           $("#city").append(response);
+           $("#city").change()
+        }
+    });
+  });
+  $("#city").change(function(){
+    $.ajax({
+        url: "/select_city",
+        global: false,
+        type: "POST",
+        data: "city=" + $("#city option:selected").val(),
+        cache: false,
+        success: function(response){
+           console.log(response);
+        }
+    });
+  });
+</script>
+{% endblock %}
