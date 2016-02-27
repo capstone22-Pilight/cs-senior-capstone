@@ -1,0 +1,92 @@
+\documentclass[oneside,openright]{book}
+\usepackage{listings}
+\usepackage{underscore}
+\usepackage[breaklinks]{hyperref}
+\usepackage{url}
+\usepackage{breakurl}
+\usepackage{graphicx}
+\usepackage{atbegshi}% http://ctan.org/pkg/atbegshi
+\AtBeginDocument{\AtBeginShipoutNext{\AtBeginShipoutDiscard}}
+\renewcommand\thesection{\arabic{section}}
+\renewcommand{\bibname}{References}
+\lstset{ %
+   language=Python,                % choose the language of the code
+   basicstyle=\small,        % the size of the fonts that are used for the code
+   keywordstyle=\color{blue},
+   stringstyle=\color{red},
+   commentstyle=\color{green},
+   numbers=left,                   % where to put the line-numbers
+   numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+   stepnumber=1,                   % the step between two line-numbers. If it is 1 e ach line will be numbered
+   numbersep=5pt,                  % how far the line-numbers are from the code
+   backgroundcolor=\color{white},  % choose the background color. You must add \usep ackage{color}
+   showspaces=false,               % show spaces adding particular underscores
+   showstringspaces=false,         % underline spaces within strings
+   showtabs=false,                 % show tabs within strings adding particular unde rscores
+   frame=single,           % adds a frame around the code
+   tabsize=2,          % sets default tabsize to 2 spaces
+   captionpos=b,           % sets the caption-position to bottom
+   breaklines=true,        % sets automatic line breaking
+   breakatwhitespace=false,    % sets if automatic breaks should only happen at whitespace
+   escapeinside={\%*}{*)}          % if you want to add a comment within your codey
+   }
+\hypersetup{
+    bookmarks=false, % show bookmarks bar?
+    pdftitle={Software Requirement Specification}, % title
+    pdfauthor={Malcom Diller, Evan Steele, Sean Rettig}, % author
+    pdfsubject={Raspberry Pi Outdoor Lighting}, % subject of the document
+    pdfkeywords={TeX, LaTeX, graphics, images}, % list of keywords
+    colorlinks=true, % false: boxed links; true: colored links
+    linkcolor=blue, % color of internal links
+    citecolor=black, % color of links to bibliography
+    filecolor=black, % color of file links
+    urlcolor=blue, % color of external links
+  %linktoc=page % only page is linked
+}
+\def\myversion{1.0 }
+\title{
+	\flushright
+		\rule{16cm}{5pt}\vskip1cm
+		\Huge{Not Exactly the Internet of Things for Outdoor Lighting}\\
+	a\\
+		\vspace{2cm}
+	Raspberry Pi Lighting Project\\
+		\vspace{2cm}
+	\LARGE{Winter Report:}
+	\vspace{2cm}
+	\LARGE{Beta Stage\\}
+	\vspace{2cm}
+	Malcolm Diller, Sean Rettig, and Evan Steele\\
+        Client: Victor Hsu\\
+        OSU CS Senior Capstone Group 22
+		\vfill
+		\rule{16cm}{5pt}
+}
+
+\date{}
+\usepackage{hyperref}
+\renewcommand{\contentsname}{PiLight}
+\begin{document}
+\pagenumbering{gobble}
+\maketitle
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+\section{Abstract}
+
+\pagebreak
+
+\section{Status}
+
+\section{Work in Progress}
+
+\section{Problems}
+
+\section{Code}
+
+\newpage
+\Urlmuskip=0mu plus 1mu\relax
+\bibliography{design}{}
+\bibliographystyle{IEEEtran}
+
+\end{document}
