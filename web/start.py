@@ -6,7 +6,7 @@ import unicodedata,socket
 from isc_dhcp_leases.iscdhcpleases import Lease, IscDhcpLeases
 from flask import Flask, render_template, request, jsonify, g, session, flash, url_for, redirect, abort
 from flask.ext.sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import sessionmaker
 from flask.ext.login import LoginManager, login_user, logout_user, current_user, login_required
 from config import SQLALCHEMY_DATABASE_URI
@@ -14,7 +14,6 @@ import model as model
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
 Session = sessionmaker(bind=engine)
-
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -24,43 +23,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 app.secret_key = 'super_secret_key'
-
-# The light's current state, move this to the class when ready
-global CURR_STATE
-CURR_STATE = '0000'
-
-AVAILABLE_COMMANDS = {
-    '1 ON': '11000',
-    '2 ON': '10100',
-    '3 ON': '10010',
-    '4 ON': '10001',
-    '1 OFF': '00111',
-    '2 OFF': '01011',
-    '3 OFF': '01101',
-    '4 OFF': '01110',
-}
-
-# This function should also be a member of a lights class too
-def enlighten(cmd,mac):
-    new_state = ""
-    if cmd[0] == '0':
-        for count in range(1,5):
-            if cmd[count] == '0':
-                new_state+='0'
-            else:
-                new_state+=CURR_STATE[count-1]
-    else:
-        for count in range(1,5):
-            if cmd[count] == '1':
-                new_state+='1'
-            else:
-                new_state+=CURR_STATE[count-1]
-
-    global CURR_STATE
-    CURR_STATE = new_state
-    # send the new CURR_STATE to TCP here
-    print "The current global state: ", CURR_STATE
-    print "The destination device: ", macs
 
 @app.route("/")
 def index():
@@ -80,6 +42,49 @@ def command(cmd=None):
     enlighten(light_command,mac)
     return light_command+"@"+mac, 200, {'Content-Type': 'text/plain'}
 
+def str2bool(st):
+    try:
+        return ['false', 'true'].index(st.lower())
+    except (ValueError, AttributeError):
+        raise ValueError('no Valid Conversion Possible')
+
+def send_command(light,action):
+    print "Sending command to ", light.device.ipaddr, " on ", light.port, " turning it to ", action
+    ip = str(light.device.ipaddr)
+    tcp_port = 9999
+    command = ""
+    for lights in range(0,4):
+        print light.device.lights[lights].status
+        if light.device.lights[lights].port == light.port:
+            print "SEND TO ", light.port
+            command += str(str2bool(action))
+            lightUpdate = model.Light.query.filter_by(id=light.device.lights[lights].id).first()
+            lightUpdate.status = int(str2bool(action))
+            model.db.session.commit()
+        elif light.device.lights[lights].status is None:
+            command += '0'
+        else:
+            command += str(light.device.lights[lights].status)
+    print command
+    #sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    #result = sock.connect_ex((ip,tcp_port))
+    #sock.send(command)
+    return "OK"
+
+@app.route('/enlighten',methods=['POST'])
+def enlighten():
+    light_type = request.form['type']
+    action = request.form['state']
+    if light_type == 'group':
+        group = model.Group.query.filter_by(id=request.form['group']).first()
+        print group.groups, " with ", len(group.groups) , " children"
+        for item in xrange(0,len(group.lights)):
+            result = send_command(group.lights[item],action)
+    if light_type == 'light':
+        light = model.Light.query.filter_by(id=request.form['light']).first()
+        print "Light at ", light.device_mac
+        result = send_command(light,action)
+    return result
 @app.route("/advanced")
 def advanced():
     lid = request.args.get('lid')

@@ -67,6 +67,50 @@ document.addEventListener("DOMContentLoaded", function() {
 },true);
 
 document.addEventListener("DOMContentLoaded", function() {
+   $('input[name="checkbox-group"]').on('switchChange.bootstrapSwitch', function(event, state) {
+      data = {
+         type: "group",
+         group: $(this).closest('li').attr('gid'),
+         state: state
+      };
+      $.ajax({
+         url: "/enlighten",
+         global: false,
+         type: "POST",
+         data:  data,
+         cache: "false",
+         success: function(response){
+            console.log(response);
+            console.log(data.group);
+            var c = $("[gid='" + data.group + "'] li ");
+            for (var i = 0; i < c.length; i++){
+               console.log(c);
+               c.find('span').addClass('checked');
+            }
+         }
+      });
+   });
+
+   $('input[name="checkbox-light"]').on('switchChange.bootstrapSwitch', function(event, state) {
+      data = {
+         type: "light",
+         light: $(this).closest('li').attr('lid'),
+         state: state
+      };
+      $.ajax({
+         url: "/enlighten",
+         global: false,
+         type: "POST",
+         data:  data,
+         cache: "false",
+         success: function(response){
+            console.log(response);
+         }
+      });
+   });
+},true);
+
+document.addEventListener("DOMContentLoaded", function() {
    $("#add_group").click(function(){
       $.ajax({
          url: "/new_group",
@@ -88,15 +132,15 @@ function delete_group(id) {
    if(!window.confirm("Are you sure you want to delete group '" + group_name + "'?"))
       return;
    $.ajax({
-         url: "/delete_group",
-         global: false,
-         type: "POST",
-         cache: false,
-         data: 'id=' + id,
-         success: function(response){
-            console.log(response);
-            $("[gid='" + id + "']").before($("[gid='" + id + "'] ol:first").children());
-            $("[gid='" + id + "']").remove()
-         }
+      url: "/delete_group",
+      global: false,
+      type: "POST",
+      cache: false,
+      data: 'id=' + id,
+      success: function(response){
+         console.log(response);
+         $("[gid='" + id + "']").before($("[gid='" + id + "'] ol:first").children());
+         $("[gid='" + id + "']").remove()
+      }
    });
 }

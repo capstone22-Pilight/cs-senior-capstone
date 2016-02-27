@@ -7,6 +7,7 @@ class Device(db.Model):
     mac = db.Column(db.String(12),primary_key=True)
     ipaddr = db.Column(db.String(12),index=True,unique=True) # better datatype for IP address? Consult Sean and Malcom
     name = db.Column(db.String(128),index=True,unique=True)
+    lights = db.relationship("Light", back_populates="device")
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -47,5 +48,6 @@ class Light(db.Model):
     name = db.Column(db.String(128))
     device_mac = db.Column(db.String(12), db.ForeignKey('device.mac'))
     port = db.Column(db.Integer)
-    status = db.Column(db.Boolean())
+    device = db.relationship("Device", back_populates="lights")
+    status = db.Column(db.Integer)
     querydata = db.Column(db.String(4096))
