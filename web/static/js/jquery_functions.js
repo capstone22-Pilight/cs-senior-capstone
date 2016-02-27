@@ -84,6 +84,9 @@ document.addEventListener("DOMContentLoaded", function() {
 },true);
 
 function delete_group(id) {
+   group_name = $("[gid='" + id + "'] span.edit:first").text();
+   if(!window.confirm("Are you sure you want to delete group '" + group_name + "'?"))
+      return;
    $.ajax({
          url: "/delete_group",
          global: false,
