@@ -31,6 +31,7 @@ def build():
               Light(id=8, parent_id=4, name='Light 8', device_mac='45a4feaaceb3', port=4)]
 
     first_user = User(username="Pi",password="pilight")
+    city = Setting(name='city', value='Portland')
     db.session.add(first_user)
     db.session.add(device1)
     db.session.add(device2)

@@ -51,3 +51,7 @@ class Light(db.Model):
     device = db.relationship("Device", back_populates="lights")
     status = db.Column(db.Integer)
     querydata = db.Column(db.String(4096))
+
+class Setting(db.Model):
+    name = db.Column(db.String(128), primary_key=True)
+    value = db.Column(db.String(256))
