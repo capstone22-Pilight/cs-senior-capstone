@@ -82,11 +82,7 @@ document.addEventListener("DOMContentLoaded", function() {
          success: function(response){
             console.log(response);
             console.log(data.group);
-            var c = $("[gid='" + data.group + "'] li ");
-            for (var i = 0; i < c.length; i++){
-               console.log(c);
-               c.find('span').addClass('checked');
-            }
+            $("[gid='" + data.group + "'] li input").bootstrapSwitch('state', data.state);
          }
       });
    });
@@ -105,6 +101,7 @@ document.addEventListener("DOMContentLoaded", function() {
          cache: "false",
          success: function(response){
             console.log(response);
+            
          }
       });
    });
