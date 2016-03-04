@@ -1,5 +1,6 @@
 {
     "hierarchy": "and",
+    "custom_query": "",
     "time": {
         "on": "1800",
         "off": "sunrise"

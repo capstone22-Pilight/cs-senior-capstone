@@ -1,7 +1,12 @@
 #!/usr/bin/env python
 
-import sys
+import datetime
+import json
 import random as rand
+import sys
+from threading import Thread
+import time
+
 import unicodedata,socket
 from isc_dhcp_leases.iscdhcpleases import Lease, IscDhcpLeases
 from flask import Flask, render_template, request, jsonify, g, session, flash, url_for, redirect, abort
@@ -12,9 +17,12 @@ from flask.ext.login import LoginManager, login_user, logout_user, current_user,
 from config import SQLALCHEMY_DATABASE_URI
 from astral import Astral
 import model as model
+import schedule
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
 Session = sessionmaker(bind=engine)
+
+a = Astral()
 geo = Astral().geocoder
 
 app = Flask(__name__)
@@ -196,7 +204,7 @@ def advanced_update():
         grouplight = model.Light.query.filter_by(id=int(d['lid'])).first()
     else: # We are updating a group
         grouplight = model.Group.query.filter_by(id=int(d['gid'])).first()
-    grouplight.querydata = str(d['querydata'])
+    grouplight.querydata = json.dumps(d['querydata'])
     model.db.session.commit()
     return 'Update successful'
 
@@ -236,7 +244,97 @@ def logout():
     g.user = None
     return redirect(url_for('login'))
 
+# Given a query data structure in JSON format, returns a query in the form of a boolean expression.
+def gen_query(data):
+
+    # If the query isn't valid JSON (or is empty), just return a "False" query.
+    try:
+        data = json.loads(data)
+    except TypeError:
+        return "False"
+
+    # If a custom query is defined, just return that.
+    custom = data.get('custom_query', "")
+    if custom != "":
+        return custom
+    else:
+        query = "time > {} and time < {}".format(data['time']['on'],
+                                                 data['time']['off'])
+
+        dayqueries = []
+        if 'dow' in data:
+            dayqueries.append(" or ".join(["dow == {}".format(d) for d in data['dow']]))
+        if 'dom' in data:
+            if 'off' in data['dom']:
+                dayqueries.append("(dom >= {} and dom <= {})".format(data['dom']['on'],
+                                                                   data['dom']['off']))
+            else: # Only work for the 'on' day
+                dayqueries.append("dom == {}".format(data['dom']['on']))
+        if 'doy' in data:
+            dayqueries.append("(" + " and ".join(["{} == {}".format(k, v) for k, v in data['doy'].iteritems()]) + ")")
+        if len(dayqueries) > 0:
+            query = "({}) and ({})".format(query, " or ".join(dayqueries))
+
+        if data['hierarchy'] == 'manual':
+            query = "manual"
+        elif data['hierarchy'] == 'parent':
+            query = "parent"
+        elif data['hierarchy'] == 'or':
+            query = "({}) or parent".format(query)
+        elif data['hierarchy'] == 'and':
+            query = "({}) and parent".format(query)
+        # If the type is 'own', no changes are made to the query.
+        return query
+
+# Evaluate all light/group queries and send updates to client nodes
+def run_queries():
+    print "Running all queries"
+
+    # Set up Astral
+    city_name = 'Seattle'
+    city = a[city_name]
+    now = datetime.datetime.now()
+    sun = city.sun(date=now, local=True)
+    sunrise = sun['sunrise']
+    sunset = sun['sunset']
+    now = now.replace(tzinfo=sunrise.tzinfo)
+
+    # Generate variables, such as "time", "sunset", etc.
+    inputs = {
+        "time": now,
+        "sunrise": sunrise,
+        "sunset": sunset
+    }
+    print now
+    print sunrise
+    print now.__repr__()
+    print sunrise.__repr__()
+
+    lights = model.Light.query
+    for l in lights:
+        # Evaluate query using no global vars and with local vars from above
+        query = gen_query(l.querydata)
+        print query
+        state = eval(query, {}, inputs)
+        print "Light {} on? {}. Query: '{}'".format(l.id, state, query)
+
+        # Send update to light
+
+        # Update state in database for website to read
+
+# Thread for schedule module to run scheduled tasks
+def run_schedule():
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
 if __name__ == "__main__":
+    # Spin off a scheduler thread to run the queries periodically
+    schedule.every(5).seconds.do(run_queries)
+    t = Thread(target=run_schedule)
+    t.daemon = True # Makes the thread stop when the parent does
+    t.start()
+
     app.jinja_env.globals.update(isLight=isLight)
     app.jinja_env.globals.update(enumerate=enumerate)
     app.run(host='0.0.0.0', port=8080, debug=True)
