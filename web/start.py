@@ -289,28 +289,50 @@ def run_queries():
     sunset = sun['sunset']
     now = now.replace(tzinfo=sunrise.tzinfo)
 
-    # Generate variables, such as "time", "sunset", etc.
-    inputs = {
-        "time": now,
-        "sunrise": sunrise,
-        "sunset": sunset
-    }
+    # Evaluate groups and lights in top-down order since parents need to be
+    # evaluated first in case their state is referenced by their children.
+    root = model.Group.query.filter_by(parent_id=None).first()
+    eval_order = traverse_tree(root)
+    for e in eval_order:
+        # Set variables for query evaluation, such as "time", "sunset", etc.
+        inputs = {
+            "time": now,
+            "sunrise": sunrise,
+            "sunset": sunset
+        }
+        # Also set the parent variable unless this is the root group, which has no parent
+        if e.parent != None:
+            inputs["parent"] = e.parent.status
 
-    lights = model.Light.query
-    for l in lights:
         # Evaluate query using no global vars and with local vars from above
-        query = gen_query(l.querydata)
+        query = gen_query(e.querydata)
         state = eval(query, {}, inputs)
-        print "Light {} on? {}. Query: '{}'".format(l.id, state, query)
-
         intstate = 1 if state else 0
 
-        # Send update to light
-        send_command(l, intstate)
+        if isinstance(e, model.Light):
+            print "Light '{}' on? {}. Query: '{}'".format(e.name, state, query)
+
+            # Send update to light
+            send_command(e, intstate)
+        else:
+            print "Group '{}' on? {}. Query: '{}'".format(e.name, state, query)
 
         # Update state in database for website to read
-        l.status = intstate
+        e.status = intstate
         model.db.session.commit()
+
+# Given a root group/light, returns a list of all tree elements in the order
+# they should be evaluated, i.e. top down.
+def traverse_tree(root):
+    sublist = [root]
+    # If the given node is a light, return a list with just itself.
+    if isinstance(root, model.Light):
+        return sublist
+    else:
+        sublist.extend(list(root.lights))
+        for g in root.groups:
+            sublist.extend(traverse_tree(g))
+        return sublist
 
 # Thread for schedule module to run scheduled tasks
 def run_schedule():
