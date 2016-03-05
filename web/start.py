@@ -90,7 +90,11 @@ def send_command(light, action):
 def advanced():
     lid = request.args.get('lid')
     gid = request.args.get('gid')
-    return render_template('advanced.html', lid=lid, gid=gid)
+    if lid != None:
+        name = model.Light.query.filter_by(id=int(lid)).first().name
+    else:
+        name = model.Group.query.filter_by(id=int(gid)).first().name
+    return render_template('advanced.html', lid=lid, gid=gid, name=name)
 
 @app.route("/devices")
 def devices():
