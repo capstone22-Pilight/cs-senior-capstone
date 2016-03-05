@@ -42,6 +42,21 @@ def index():
 def settings():
     return render_template('settings.html', geo=sorted(geo))
 
+@app.route('/enlighten',methods=['POST'])
+def enlighten():
+    light_type = request.form['type']
+    action = request.form['state']
+    if light_type == 'group':
+        group = model.Group.query.filter_by(id=request.form['group']).first()
+        print group.groups, " with ", len(group.groups) , " children"
+        for item in xrange(0,len(group.lights)):
+            result = send_command(group.lights[item],action)
+    if light_type == 'light':
+        light = model.Light.query.filter_by(id=request.form['light']).first()
+        print "Light at ", light.device_mac
+        result = send_command(light,action)
+    return result
+
 def send_command(light, action):
     print "Sending command to ", light.device.ipaddr, " on ", light.port, " turning it to ", action
     ip = str(light.device.ipaddr)
@@ -95,13 +110,19 @@ def devices_search():
             database_check = model.Device.query.filter_by(mac=lease.ethernet).first()
             if database_check is None:
             # We have an ESP8266 AND it's not in the database!
-                add_light(lease.ethernet,lease.ip,"ESP8266@"+lease.ethernet)
+                add_device(lease.ethernet,lease.ip,"ESP8266@"+lease.ethernet)
                 additions = additions + 1
     return str(additions)
 
-def add_light(new_mac,new_ipaddr,new_name):
+def add_device(new_mac,new_ipaddr,new_name):
     new_device = model.Device(mac=new_mac,ipaddr=new_ipaddr,name=new_name)
     model.db.session.add(new_device)
+    new_group = model.Group(name = "Group for " + new_mac, parent_id=1)
+    model.db.session.add(new_group)
+    model.db.session.commit()
+    for i in range(1,5):
+        new_light = model.Light(parent_id = new_group.id, name="Light " + str(i) + " on " + new_mac, device_mac = new_mac, port=i)
+        model.db.session.add(new_light)
     model.db.session.commit()
 
 @app.route('/change_name', methods=['POST'])
