@@ -23,7 +23,7 @@ import schedule
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
 Session = sessionmaker(bind=engine)
 
-a = Astral()
+ast = Astral()
 geo = Astral().geocoder
 
 app = Flask(__name__)
@@ -262,7 +262,7 @@ def run_queries():
 
     # Set up Astral
     city_name = 'Seattle'
-    city = a[city_name]
+    city = ast[city_name]
     now = datetime.datetime.now()
     sun = city.sun(date=now, local=True)
     sunrise = sun['sunrise']
@@ -310,8 +310,8 @@ def add_device(new_mac,new_ipaddr,new_name):
     model.db.session.commit()
 
 def init_debug():
-    print 'initiating debug devices'
-    # add_device()
+    add_device("913a8d11f5c5", "151.13.80.15", "Device 1")
+    add_device("45a4feaaceb3", "159.19.22.90", "Device 2")
 
 if __name__ == "__main__":
     debug = False
