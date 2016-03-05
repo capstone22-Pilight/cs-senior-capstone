@@ -95,11 +95,14 @@ def devices_search():
             database_check = model.Device.query.filter_by(mac=lease.ethernet).first()
             if database_check is None:
             # We have an ESP8266 AND it's not in the database!
-                new_device = model.Device(mac=lease.ethernet,ipaddr=lease.ip,name="ESP8266@"+lease.ethernet)
-                model.db.session.add(new_device)
-                model.db.session.commit()
+                add_light(lease.ethernet,lease.ip,"ESP8266@"+lease.ethernet)
                 additions = additions + 1
     return str(additions)
+
+def add_light(new_mac,new_ipaddr,new_name):
+    new_device = model.Device(mac=new_mac,ipaddr=new_ipaddr,name=new_name)
+    model.db.session.add(new_device)
+    model.db.session.commit()
 
 @app.route('/change_name', methods=['POST'])
 def change_name():
