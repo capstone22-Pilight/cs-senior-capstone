@@ -42,20 +42,6 @@ def index():
 def settings():
     return render_template('settings.html', geo=sorted(geo))
 
-@app.route('/buttons')
-@login_required
-def buttons():
-    return render_template('buttons.html', commands=AVAILABLE_COMMANDS)
-
-@app.route('/buttons_proc',methods=['POST'])
-def command(cmd=None):
-    light_command = request.json['command']
-    mac = request.json['mac']
-    unicodedata.normalize('NFKD',light_command).encode('ascii','ignore')
-    unicodedata.normalize('NFKD',mac).encode('ascii','ignore')
-    enlighten(light_command,mac)
-    return light_command+"@"+mac, 200, {'Content-Type': 'text/plain'}
-
 def str2bool(st):
     try:
         return ['false', 'true'].index(st.lower())
@@ -85,20 +71,6 @@ def send_command(light,action):
     #sock.send(command)
     return "OK"
 
-@app.route('/enlighten',methods=['POST'])
-def enlighten():
-    light_type = request.form['type']
-    action = request.form['state']
-    if light_type == 'group':
-        group = model.Group.query.filter_by(id=request.form['group']).first()
-        print group.groups, " with ", len(group.groups) , " children"
-        for item in xrange(0,len(group.lights)):
-            result = send_command(group.lights[item],action)
-    if light_type == 'light':
-        light = model.Light.query.filter_by(id=request.form['light']).first()
-        print "Light at ", light.device_mac
-        result = send_command(light,action)
-    return result
 @app.route("/advanced")
 def advanced():
     lid = request.args.get('lid')
