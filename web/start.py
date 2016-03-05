@@ -298,6 +298,17 @@ def run_schedule():
         schedule.run_pending()
         time.sleep(1)
 
+def add_device(new_mac,new_ipaddr,new_name):
+    new_device = model.Device(mac=new_mac,ipaddr=new_ipaddr,name=new_name)
+    model.db.session.add(new_device)
+    new_group = model.Group(name = "Group for " + new_mac, parent_id=1)
+    model.db.session.add(new_group)
+    model.db.session.commit()
+    for i in range(1,5):
+        new_light = model.Light(parent_id = new_group.id, name="Light " + str(i) + " on " + new_mac, device_mac = new_mac, port=i)
+        model.db.session.add(new_light)
+    model.db.session.commit()
+
 def init_debug():
     print 'initiating debug devices'
     # add_device()
