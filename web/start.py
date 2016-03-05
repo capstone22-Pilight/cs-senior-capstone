@@ -42,6 +42,12 @@ def index():
 def settings():
     return render_template('settings.html', geo=sorted(geo))
 
+def str2bool(st):
+    try:
+        return ['false', 'true'].index(st.lower())
+    except (ValueError, AttributeError):
+        raise ValueError('no Valid Conversion Possible')
+
 @app.route('/enlighten',methods=['POST'])
 def enlighten():
     light_type = request.form['type']
@@ -50,11 +56,11 @@ def enlighten():
         group = model.Group.query.filter_by(id=request.form['group']).first()
         print group.groups, " with ", len(group.groups) , " children"
         for item in xrange(0,len(group.lights)):
-            result = send_command(group.lights[item],action)
+            result = send_command(group.lights[item],str2bool(action))
     if light_type == 'light':
         light = model.Light.query.filter_by(id=request.form['light']).first()
         print "Light at ", light.device_mac
-        result = send_command(light,action)
+        result = send_command(light,str2bool(action))
     return result
 
 def send_command(light, action):
@@ -66,18 +72,18 @@ def send_command(light, action):
         print light.device.lights[lights].status
         if light.device.lights[lights].port == light.port:
             print "SEND TO ", light.port
-            command += str(action)
+            command += str(str(action))
             lightUpdate = model.Light.query.filter_by(id=light.device.lights[lights].id).first()
-            lightUpdate.status = action
+            lightUpdate.status = int(action)
             model.db.session.commit()
         elif light.device.lights[lights].status is None:
             command += '0'
         else:
             command += str(light.device.lights[lights].status)
     print command
-    #sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    #result = sock.connect_ex((ip,tcp_port))
-    #sock.send(command)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    result = sock.connect_ex((ip,tcp_port))
+    sock.send(command)
     return "OK"
 
 @app.route("/advanced")
