@@ -80,8 +80,6 @@ document.addEventListener("DOMContentLoaded", function() {
          data:  data,
          cache: "false",
          success: function(response){
-            console.log(response);
-            console.log(data.group);
             $("[gid='" + data.group + "'] li input").bootstrapSwitch('state', data.state);
          }
       });
@@ -99,13 +97,35 @@ document.addEventListener("DOMContentLoaded", function() {
          type: "POST",
          data:  data,
          cache: "false",
-         success: function(response){
-            console.log(response);
-            
+         success: function(response) {
+            parents = $("li[lid='" + data.light + "']").parents("li[gid]");
+            for (var i = 0; i < parents.length; i++) {
+               refresh_group_state(parents[i]);
+            }
          }
       });
    });
 },true);
+
+function refresh_group_state(group) {
+   switch_button = $(group).find("input[name='checkbox-group']:first");
+
+   lights = $(group).find("input[name='checkbox-light']");
+   off_count = 0
+   on_count = lights.length
+   for (var i = 0; i < lights.length; i++) {
+      if(!$(lights[i]).bootstrapSwitch('state')){
+         off_count += 1;
+         on_count -= 1;
+      }
+   }
+   if(on_count != 0 && off_count == 0)
+      switch_button.bootstrapSwitch('state', true);
+   else if (off_count != 0 && on_count == 0)
+      switch_button.bootstrapSwitch('state', false);
+   else
+      switch_button.bootstrapSwitch('indeterminate', true);
+}
 
 document.addEventListener("DOMContentLoaded", function() {
    $("#add_group").click(function(){
