@@ -42,13 +42,7 @@ def index():
 def settings():
     return render_template('settings.html', geo=sorted(geo))
 
-def str2bool(st):
-    try:
-        return ['false', 'true'].index(st.lower())
-    except (ValueError, AttributeError):
-        raise ValueError('no Valid Conversion Possible')
-
-def send_command(light,action):
+def send_command(light, action):
     print "Sending command to ", light.device.ipaddr, " on ", light.port, " turning it to ", action
     ip = str(light.device.ipaddr)
     tcp_port = 9999
@@ -57,9 +51,9 @@ def send_command(light,action):
         print light.device.lights[lights].status
         if light.device.lights[lights].port == light.port:
             print "SEND TO ", light.port
-            command += str(str2bool(action))
+            command += str(action)
             lightUpdate = model.Light.query.filter_by(id=light.device.lights[lights].id).first()
-            lightUpdate.status = int(str2bool(action))
+            lightUpdate.status = action
             model.db.session.commit()
         elif light.device.lights[lights].status is None:
             command += '0'
@@ -277,22 +271,22 @@ def run_queries():
         "sunrise": sunrise,
         "sunset": sunset
     }
-    print now
-    print sunrise
-    print now.__repr__()
-    print sunrise.__repr__()
 
     lights = model.Light.query
     for l in lights:
         # Evaluate query using no global vars and with local vars from above
         query = gen_query(l.querydata)
-        print query
         state = eval(query, {}, inputs)
         print "Light {} on? {}. Query: '{}'".format(l.id, state, query)
 
+        intstate = 1 if state else 0
+
         # Send update to light
+        send_command(l, intstate)
 
         # Update state in database for website to read
+        l.status = intstate
+        model.db.session.commit()
 
 # Thread for schedule module to run scheduled tasks
 def run_schedule():
