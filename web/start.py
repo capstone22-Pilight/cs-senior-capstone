@@ -4,6 +4,7 @@ import datetime
 import json
 import random as rand
 import sys
+import getopt
 from threading import Thread
 import time
 
@@ -297,13 +298,34 @@ def run_schedule():
         schedule.run_pending()
         time.sleep(1)
 
+def init_debug():
+    print 'initiating debug devices'
+    # add_device()
+
 if __name__ == "__main__":
+    debug = False
+    try:
+        opts, args = getopt.getopt(sys.argv[1:],"hd",["help", "debug"])
+    except getopt.GetoptError as err:
+        print str(err)
+        exit(2)
+    for o,a in opts:
+        if o in ("-h", "--help"):
+            print "--debug to run in debug mode"
+            sys.exit(0)
+        elif o in ("-d", "--debug"):
+            debug = True
+        else:
+            assert False, "Unhandled Option!"
+
+    if(debug and len(model.Device.query.all()) == 0):
+        init_debug()
+
     # Spin off a scheduler thread to run the queries periodically
-    schedule.every(5).seconds.do(run_queries)
+    schedule.every(5 if debug else 60).seconds.do(run_queries)
     t = Thread(target=run_schedule)
     t.daemon = True # Makes the thread stop when the parent does
     t.start()
-
     app.jinja_env.globals.update(isLight=isLight)
     app.jinja_env.globals.update(enumerate=enumerate)
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=debug)
