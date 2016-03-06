@@ -1,18 +1,28 @@
 {% extends "base.html" %}
 {% block body %}
-<div class="form-group">
-  <label for="region">Region:</label>
-  <select class="form-control" id="region">
-    {% for region in geo %}
-    <option value="{{ region }}">{{ region.title() }}</option>
-    {% endfor %}
-  </select>
-</div>
-<div class="form-group">
-  <label for="city">City:</label>
-  <select class="form-control" id="city" disabled>
-  </select>
-</div>
+<table class='table table-bordered'>
+  <tr>
+    <td><label for="region">Region:</label></td>
+    <td>
+      <select class="form-control" id="region">
+        {% for region in regions %}
+        <option value="{{ region }}">{{ region.title() }}</option>
+        {% endfor %}
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td><label for="city">City:</label></td>
+    <td>
+      <select class="form-control setting" id="city"></select></td>
+  </tr>
+  <tr>
+    <td><label for="overridetime">Override Time Period:</label></td>
+    <td>
+      <input class="form-control setting" type="text" id="overridetime" placeholder="hh:mm">
+    </td>
+  </tr>
+</table>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -30,20 +40,30 @@
         data: "region=" + $("#region option:selected").val(),
         cache: false,
         success: function(response){
-           console.log(response);
-           $("#city").prop('disabled', false);
            $("#city").empty();
            $("#city").append(response);
            $("#city").change()
         }
     });
   });
-  $("#city").change(function(){
+  $("select.setting").change(function(){
     $.ajax({
-        url: "/select_city",
+        url: "/save_setting",
         global: false,
         type: "POST",
-        data: "city=" + $("#city option:selected").val(),
+        data: "name=" + $(this).attr("id") + "&value=" + $(this).find("option:selected").val(),
+        cache: false,
+        success: function(response){
+           console.log(response);
+        }
+    });
+  });
+  $("input.setting").change(function(){
+    $.ajax({
+        url: "/save_setting",
+        global: false,
+        type: "POST",
+        data: "name=" + $(this).attr("id") + "&value=" + $(this).val(),
         cache: false,
         success: function(response){
            console.log(response);
@@ -52,6 +72,10 @@
   });
   $('#region').val("{{ region }}")
   $('#region').change()
-  $('#city').val("{{ city }}")
+
+  for (var i = 0; i < $('.setting').length; i++){
+    setting = $($('.setting')[i])
+    setting.val({{ settings|tojson }}[setting.attr('id')])
+  }
 </script>
 {% endblock %}

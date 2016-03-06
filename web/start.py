@@ -43,11 +43,15 @@ def index():
 
 @app.route("/settings")
 def settings():
-    city = model.Setting.query.filter_by(name='city').first().value
+    model.Setting.query.filter_by(name='city').first().value
+    settings = {}
+    for s in model.Setting.query.all():
+        settings[s.name] = s.value
+
     for region in geo:
-        if city in getattr(geo, region).locations:
+        if settings['city'] in getattr(geo, region).locations:
             break
-    return render_template('settings.html', geo=sorted(geo), city=city, region=region)
+    return render_template('settings.html', regions=sorted(geo), region=region, settings=settings)
 
 def str2bool(st):
     try:
@@ -212,12 +216,13 @@ def select_region():
             city_string += "<option>" + city + "</option>"
     return city_string
 
-@app.route('/select_city', methods=['POST'])
-def select_city():
-    city = request.form['city']
-    model.Setting.query.filter_by(name='city').first().value = city
+@app.route('/save_setting', methods=['POST'])
+def save_setting():
+    name = request.form['name']
+    value = request.form['value']
+    model.Setting.query.filter_by(name=name).first().value = value
     model.db.session.commit()
-    return city
+    return name + "," + value
 
 @app.route('/advanced_update', methods=['POST'])
 def advanced_update():
