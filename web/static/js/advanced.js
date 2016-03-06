@@ -4,6 +4,11 @@ function buildquerydata() {
         "time": {}
     };
 
+    // Get the custom query if one is set
+    if ($("input[name=custom_query_override]")[0].checked) {
+        querydata.custom_query = $("#query").val();
+    }
+
     // Get the on time
     if ($("input[name=time_on][value=other]")[0].checked) {
         querydata.time.on = $("input[name=time_on][type=time]").val();
@@ -119,13 +124,7 @@ function buildquery(data) {
     return query;
 }
 
-// When the form is edited...
-$("input").on("change", function () {
-    // Rebuild the query data structure
-    querydata = buildquerydata();
-    // Update the advanced query box with the new query
-    $("#query").val(buildquery(querydata));
-    // Send the updated query info to the server
+function sendupdate(querydata) {
     title = $("#title");
     postdata = {
         "querydata": querydata,
@@ -144,6 +143,23 @@ $("input").on("change", function () {
                 console.log(response);
             }
     });
+}
+
+// When the form is edited...
+$("input").on("change", function () {
+    // Rebuild the query data structure
+    querydata = buildquerydata();
+    // Update the advanced query box with the new query
+    $("#query").val(buildquery(querydata));
+    // Send the updated query info to the server
+    sendupdate(querydata);
+});
+$("#query").on("change", function () {
+    // Rebuild the query data structure
+    querydata = buildquerydata();
+    // We don't update the advanced query box since it has custom data now
+    // Send the updated query info to the server
+    sendupdate(querydata);
 });
 
 $(window).on("load", function () {
@@ -153,7 +169,7 @@ $(window).on("load", function () {
     $("#query").val(buildquery(querydata));
 });
 
-$("input[name=advanced_override]").on("change", function () {
+$("input[name=custom_query_override]").on("change", function () {
     if (this.checked) {
         $("#query").attr("disabled", false);
         $("#custom_query").addClass("box-en");
