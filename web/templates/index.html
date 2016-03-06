@@ -54,7 +54,13 @@
 
     $.fn.bootstrapSwitch.defaults.size = 'small';
     $("[name='checkbox-light']").bootstrapSwitch();
-    $("[name='checkbox-group']").bootstrapSwitch('indeterminate', true, true);
+    $("[name='checkbox-group']").bootstrapSwitch();
+    groups = $("li[gid]")
+    for (var i = 0; i < groups.length; i++) {
+       refresh_group_state(groups[i]);
+       console.log("hi")
+    }
+
 
     $.fn.editable.defaults.mode = 'inline';
     $.fn.editable.defaults.showbuttons = false;

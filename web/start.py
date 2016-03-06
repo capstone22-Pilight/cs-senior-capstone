@@ -20,6 +20,8 @@ from astral import Astral
 import model as model
 import schedule
 
+debug = False
+
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
 Session = sessionmaker(bind=engine)
 
@@ -82,9 +84,10 @@ def send_command(light, action):
         else:
             command += str(light.device.lights[lights].status)
     print command
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    result = sock.connect_ex((ip,tcp_port))
-    sock.send(command)
+    if not debug:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        result = sock.connect_ex((ip,tcp_port))
+        sock.send(command)
     return "OK"
 
 @app.route("/advanced")
@@ -367,7 +370,6 @@ def init_debug():
     add_device("45a4feaaceb3", "159.19.22.90", "Device 2")
 
 if __name__ == "__main__":
-    debug = False
     try:
         opts, args = getopt.getopt(sys.argv[1:],"hd",["help", "debug"])
     except getopt.GetoptError as err:
