@@ -156,13 +156,13 @@ $(window).on("load", function () {
 $("input[name=advanced_override]").on("change", function () {
     if (this.checked) {
         $("#query").attr("disabled", false);
-        $("#advanced").addClass("box-en");
-        $("#leftside").find("input").attr("disabled", true);
-        $("#leftside").removeClass("box-en");
+        $("#custom_query").addClass("box-en");
+        $("#basic_settings,#advanced_settings").find("input").attr("disabled", true);
+        $("#basic_settings,#advanced_settings").removeClass("box-en");
     } else {
         $("#query").attr("disabled", true);
-        $("#advanced").removeClass("box-en");
-        $("#leftside").find("input").attr("disabled", false);
-        $("#leftside").addClass("box-en");
+        $("#custom_query").removeClass("box-en");
+        $("#basic_settings,#advanced_settings").find("input").attr("disabled", false);
+        $("#basic_settings,#advanced_settings").addClass("box-en");
     }
 });

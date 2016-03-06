@@ -14,26 +14,52 @@
     </h2>
     {% endif %}
 
-    <div id="leftside" class="box box-en">
+    <div id="basic_settings" class="box box-en">
+        <h3>Basic Settings</h3>
         <p>
-            Turn on at:
+            <h4>Turn on at:</h4>
             <form>
                 <input type="radio" name="time_on" value="none"> None<br>
                 <input type="radio" name="time_on" value="sunset"> Sunset<br>
                 <input type="radio" name="time_on" value="sunrise"> Sunrise<br>
                 <input type="radio" name="time_on" value="other"> Time: <input type="time" name="time_on" value="18:00"><br>
-                Toggle early: <input type="text" name="time_on_early" placeholder="hh:mm:ss"><br>
-                Toggle late: <input type="text" name="time_on_late" placeholder="hh:mm:ss"><br>
-                <input type="checkbox" name="time_on_random"> Randomize in early/late period
             </form>
         </p>
+
         <p>
-            Turn off at:
+            <h4>Turn off at:</h4>
             <form>
                 <input type="radio" name="time_off" value="none"> None<br>
                 <input type="radio" name="time_off" value="sunset"> Sunset<br>
                 <input type="radio" name="time_off" value="sunrise"> Sunrise<br>
                 <input type="radio" name="time_off" value="other"> Time: <input type="time" name="time_off" value="08:00"><br>
+            </form>
+        </p>
+
+        <p>
+            <h4>Turn on during:</h4>
+            <form>
+                {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']: %}
+                <input type="checkbox" name="dow" value="{{ day.lower() }}"> {{ day }}<br>
+                {% endfor %}
+            </form>
+        </p>
+    </div>
+
+    <div id="advanced_settings" class="box box-en">
+        <h3>Advanced Settings</h3>
+        <p>
+            <h4>On time:</h4>
+            <form>
+                Toggle early: <input type="text" name="time_on_early" placeholder="hh:mm:ss"><br>
+                Toggle late: <input type="text" name="time_on_late" placeholder="hh:mm:ss"><br>
+                <input type="checkbox" name="time_on_random"> Randomize in early/late period
+            </form>
+        </p>
+
+        <p>
+            <h4>Off time:</h4>
+            <form>
                 Toggle early: <input type="text" name="time_off_early" placeholder="hh:mm:ss"><br>
                 Toggle late: <input type="text" name="time_off_late" placeholder="hh:mm:ss"><br>
                 <input type="checkbox" name="time_off_random"> Randomize in early/late period
@@ -41,17 +67,8 @@
         </p>
 
         <p>
-            During the following days of the week:
+            <h4>Turn on during the given year/month/day range:</h4>
             <form>
-                {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']: %}
-                <input type="checkbox" name="dow" value="{{ day.lower() }}"> {{ day }}<br>
-                {% endfor %}
-            </form>
-        </p>
-
-        <p>
-            <form>
-                During the given year/month/day range:
                 <br>
                 <input class="doy" type="text" name="year_on" size="4" placeholder="2016">
                 <input class="doy" type="text" name="month_on" size="2" placeholder="05">
@@ -67,7 +84,9 @@
         </p>
 
         <p>
+            <h4>Toggle based on the following system:</h4>
             <form>
+                <br>
                 <input type="radio" name="hierarchy" value="parent"> Use the parent group's settings<br>
                 <input type="radio" name="hierarchy" value="own"> Use custom settings<br>
                 <input type="radio" name="hierarchy" value="or"> Turn on with both custom settings and parent group's settings<br>
@@ -75,16 +94,16 @@
                 <input type="radio" name="hierarchy" value="manual"> Control this light manually<br>
             </form>
         </p>
+    </div>
 
-        <div id="advanced">
-            <h4>
-                Advanced query:
-            </h4>
-            <textarea id="query" rows="4" disabled></textarea>
+    <div id="custom_query" class="box">
+        <p>
+            <h3>Custom Query</h3>
             <form>
                 <input type="checkbox" name="advanced_override"> Create an advanced query manually
             </form>
-        </div>
+            <textarea id="query" rows="4" disabled></textarea>
+        <p>
     </div>
 </div>
 
