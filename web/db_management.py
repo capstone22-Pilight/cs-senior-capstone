@@ -17,7 +17,7 @@ def build():
     group = Group(id=1, name="All Lights", parent_id=None)
 
     first_user = User(username="Pi",password="pilight")
-    city = Setting(name='city', value='Portland')
+    city = Setting(name='city', value='Seattle')
     db.session.add(first_user)
     db.session.add(city)
     db.session.add(group)

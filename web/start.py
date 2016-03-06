@@ -43,7 +43,11 @@ def index():
 
 @app.route("/settings")
 def settings():
-    return render_template('settings.html', geo=sorted(geo))
+    city = model.Setting.query.filter_by(name='city').first().value
+    for region in geo:
+        if city in getattr(geo, region).locations:
+            break
+    return render_template('settings.html', geo=sorted(geo), city=city, region=region)
 
 def str2bool(st):
     try:
@@ -68,14 +72,14 @@ def enlighten():
     return result
 
 def send_command(light, action):
-    print "Sending command to ", light.device.ipaddr, " on ", light.port, " turning it to ", action
+    #print "Sending command to ", light.device.ipaddr, " on ", light.port, " turning it to ", action
     ip = str(light.device.ipaddr)
     tcp_port = 9999
     command = ""
     for lights in range(0,4):
-        print light.device.lights[lights].status
+        #print light.device.lights[lights].status
         if light.device.lights[lights].port == light.port:
-            print "SEND TO ", light.port
+            #print "SEND TO ", light.port
             command += str(str(action))
             lightUpdate = model.Light.query.filter_by(id=light.device.lights[lights].id).first()
             lightUpdate.status = int(action)
@@ -84,7 +88,7 @@ def send_command(light, action):
             command += '0'
         else:
             command += str(light.device.lights[lights].status)
-    print command
+    #print command
     if not debug:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         result = sock.connect_ex((ip,tcp_port))
@@ -106,7 +110,7 @@ def advanced():
     if(querydata != None):
         querydata = json.loads(querydata)
     else:
-        querydata = { 'hierarchy' : 'own', 'time' : { 'on' : 'none', 'off' : 'none' } }
+        querydata = { 'hierarchy' : 'and', 'time' : { 'on' : 'none', 'off' : 'none' } }
     return render_template('advanced.html', lid=lid, gid=gid, name=name, querydata=querydata)
 
 @app.route("/devices")
@@ -199,15 +203,20 @@ def delete_group():
 @app.route('/select_region', methods=['POST'])
 def select_region():
     region = request.form['region']
-    location_string = ""
-    for location in sorted(getattr(geo, region).locations):
-        location_string += "<option>" + location + "</option>"
-    return location_string
+    selected_city = model.Setting.query.filter_by(name='city').first().value
+    city_string = ""
+    for city in sorted(getattr(geo, region).locations):
+        if(city == selected_city):
+            city_string += "<option selected>" + city + "</option>"
+        else:
+            city_string += "<option>" + city + "</option>"
+    return city_string
 
 @app.route('/select_city', methods=['POST'])
 def select_city():
     city = request.form['city']
-    #DO THINGS WITH CITY HERE
+    model.Setting.query.filter_by(name='city').first().value = city
+    model.db.session.commit()
     return city
 
 @app.route('/advanced_update', methods=['POST'])
@@ -304,7 +313,7 @@ def run_queries():
     print "Running all queries"
 
     # Set up Astral
-    city_name = 'Seattle'
+    city_name = model.Setting.query.filter_by(name='city').first().value
     city = ast[city_name]
     now = datetime.datetime.now()
     sun = city.sun(date=now, local=True)
