@@ -55,6 +55,7 @@ def str2bool(st):
 def enlighten():
     light_type = request.form['type']
     action = request.form['state']
+    result = "OK"
     if light_type == 'group':
         group = model.Group.query.filter_by(id=request.form['group']).first()
         print group.groups, " with ", len(group.groups) , " children"
