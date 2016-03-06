@@ -4,6 +4,7 @@ import datetime
 import json
 import random as rand
 import sys
+import getopt
 from threading import Thread
 import time
 
@@ -22,7 +23,7 @@ import schedule
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
 Session = sessionmaker(bind=engine)
 
-a = Astral()
+ast = Astral()
 geo = Astral().geocoder
 
 app = Flask(__name__)
@@ -292,7 +293,7 @@ def run_queries():
 
     # Set up Astral
     city_name = 'Seattle'
-    city = a[city_name]
+    city = ast[city_name]
     now = datetime.datetime.now()
     sun = city.sun(date=now, local=True)
     sunrise = sun['sunrise']
@@ -350,13 +351,45 @@ def run_schedule():
         schedule.run_pending()
         time.sleep(1)
 
+def add_device(new_mac,new_ipaddr,new_name):
+    new_device = model.Device(mac=new_mac,ipaddr=new_ipaddr,name=new_name)
+    model.db.session.add(new_device)
+    new_group = model.Group(name = "Group for " + new_mac, parent_id=1)
+    model.db.session.add(new_group)
+    model.db.session.commit()
+    for i in range(1,5):
+        new_light = model.Light(parent_id = new_group.id, name="Light " + str(i) + " on " + new_mac, device_mac = new_mac, port=i)
+        model.db.session.add(new_light)
+    model.db.session.commit()
+
+def init_debug():
+    add_device("913a8d11f5c5", "151.13.80.15", "Device 1")
+    add_device("45a4feaaceb3", "159.19.22.90", "Device 2")
+
 if __name__ == "__main__":
+    debug = False
+    try:
+        opts, args = getopt.getopt(sys.argv[1:],"hd",["help", "debug"])
+    except getopt.GetoptError as err:
+        print str(err)
+        exit(2)
+    for o,a in opts:
+        if o in ("-h", "--help"):
+            print "--debug to run in debug mode"
+            sys.exit(0)
+        elif o in ("-d", "--debug"):
+            debug = True
+        else:
+            assert False, "Unhandled Option!"
+
+    if(debug and len(model.Device.query.all()) == 0):
+        init_debug()
+
     # Spin off a scheduler thread to run the queries periodically
-    schedule.every(5).seconds.do(run_queries)
+    schedule.every(5 if debug else 60).seconds.do(run_queries)
     t = Thread(target=run_schedule)
     t.daemon = True # Makes the thread stop when the parent does
     t.start()
-
     app.jinja_env.globals.update(isLight=isLight)
     app.jinja_env.globals.update(enumerate=enumerate)
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=debug)

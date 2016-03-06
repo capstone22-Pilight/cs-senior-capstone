@@ -13,32 +13,14 @@ def build():
         api.version_control(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
     else:
         api.version_control(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO, api.version(SQLALCHEMY_MIGRATE_REPO))
-    device1 = Device(mac='913a8d11f5c5', ipaddr='151.13.80.15', name='Device 1')
-    device2 = Device(mac='45a4feaaceb3', ipaddr='159.19.22.90', name='Device 2')
-
-    groups = [Group(id=1, name="All Lights", parent_id=None),
-              Group(id=2, name="Group 2", parent_id=1),
-              Group(id=3, name="Group 3", parent_id=1),
-              Group(id=4, name="Group 4", parent_id=1)]
-
-    lights = [Light(id=1, parent_id=2, name='Light 1', device_mac='913a8d11f5c5', port=1),
-              Light(id=2, parent_id=2, name='Light 2', device_mac='913a8d11f5c5', port=2),
-              Light(id=3, parent_id=2, name='Light 3', device_mac='913a8d11f5c5', port=3),
-              Light(id=4, parent_id=3, name='Light 4', device_mac='913a8d11f5c5', port=4),
-              Light(id=5, parent_id=3, name='Light 5', device_mac='45a4feaaceb3', port=1),
-              Light(id=6, parent_id=3, name='Light 6', device_mac='45a4feaaceb3', port=2),
-              Light(id=7, parent_id=4, name='Light 7', device_mac='45a4feaaceb3', port=3),
-              Light(id=8, parent_id=4, name='Light 8', device_mac='45a4feaaceb3', port=4)]
+    
+    group = Group(id=1, name="All Lights", parent_id=None)
 
     first_user = User(username="Pi",password="pilight")
     city = Setting(name='city', value='Portland')
     db.session.add(first_user)
-    db.session.add(device1)
-    db.session.add(device2)
-    for g in groups:
-        db.session.add(g)
-    for l in lights:
-        db.session.add(l)
+    db.session.add(city)
+    db.session.add(group)
     db.session.commit()
 
 def upgrade():
