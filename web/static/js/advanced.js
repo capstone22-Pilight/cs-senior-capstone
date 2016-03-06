@@ -52,6 +52,38 @@ function buildquerydata() {
     return querydata;
 }
 
+function readquerydata(data) {
+    console.log(data);
+    // Set the on time
+    if(isNaN(data.time.on.replace(':', ''))){
+        $("input[name=time_on][value=" + data.time.on + "]").attr("checked", true);
+    }
+    else {
+        $("input[name='time_on'][value=other]").attr("checked", true);
+        $("input[name='time_on'][type=time]").val(data.time.on);
+    }
+
+    // Set the off time
+    if(isNaN(data.time.off.replace(':', ''))){
+        $("input[name=time_off][value=" + data.time.off + "]").attr("checked", true);
+    }
+    else {
+        $("input[name='time_off'][value=other]").attr("checked", true);
+        $("input[name='time_off'][type=time]").val(data.time.off);
+    }
+
+    // Set the days of the week
+    for (var i in data.dow){
+        $("input[name=dow][value=" + data.dow[i] + "]").attr("checked", true);
+    }
+
+    for (var key in data.doy){
+        $(".doy[name=" + key + "]").val(data.doy[key])
+    }
+
+    $("input[name=hierarchy][value=" + data.hierarchy + "]").attr("checked", true);
+}
+
 function buildquery(data) {
     query = "time > " + data.time.on + " and time < " + data.time.off;
 

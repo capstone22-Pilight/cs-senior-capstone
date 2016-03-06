@@ -96,10 +96,18 @@ def advanced():
     lid = request.args.get('lid')
     gid = request.args.get('gid')
     if lid != None:
-        name = model.Light.query.filter_by(id=int(lid)).first().name
+        light = model.Light.query.filter_by(id=int(lid)).first()
+        name = light.name
+        querydata = light.querydata
     else:
-        name = model.Group.query.filter_by(id=int(gid)).first().name
-    return render_template('advanced.html', lid=lid, gid=gid, name=name)
+        group = model.Group.query.filter_by(id=int(gid)).first()
+        name = group.name
+        querydata = group.querydata
+    if(querydata != None):
+        querydata = json.loads(querydata)
+    else:
+        querydata = { 'hierarchy' : 'own', 'time' : { 'on' : 'none', 'off' : 'none' } }
+    return render_template('advanced.html', lid=lid, gid=gid, name=name, querydata=querydata)
 
 @app.route("/devices")
 def devices():

@@ -19,7 +19,7 @@
             Turn on at:
             <form>
                 <input type="radio" name="time_on" value="none"> None<br>
-                <input type="radio" name="time_on" value="sunset" checked> Sunset<br>
+                <input type="radio" name="time_on" value="sunset"> Sunset<br>
                 <input type="radio" name="time_on" value="sunrise"> Sunrise<br>
                 <input type="radio" name="time_on" value="other"> Time: <input type="time" name="time_on" value="18:00"><br>
                 Toggle early: <input type="text" name="time_on_early" placeholder="hh:mm:ss"><br>
@@ -32,7 +32,7 @@
             <form>
                 <input type="radio" name="time_off" value="none"> None<br>
                 <input type="radio" name="time_off" value="sunset"> Sunset<br>
-                <input type="radio" name="time_off" value="sunrise" checked> Sunrise<br>
+                <input type="radio" name="time_off" value="sunrise"> Sunrise<br>
                 <input type="radio" name="time_off" value="other"> Time: <input type="time" name="time_off" value="08:00"><br>
                 Toggle early: <input type="text" name="time_off_early" placeholder="hh:mm:ss"><br>
                 Toggle late: <input type="text" name="time_off_late" placeholder="hh:mm:ss"><br>
@@ -69,7 +69,7 @@
         <p>
             <form>
                 <input type="radio" name="hierarchy" value="parent"> Use the parent group's settings<br>
-                <input type="radio" name="hierarchy" value="own" checked> Use custom settings<br>
+                <input type="radio" name="hierarchy" value="own"> Use custom settings<br>
                 <input type="radio" name="hierarchy" value="or"> Turn on with both custom settings and parent group's settings<br>
                 <input type="radio" name="hierarchy" value="and"> Turn on with the custom settings only if the parent group allows it<br>
                 <input type="radio" name="hierarchy" value="manual"> Control this light manually<br>
@@ -96,4 +96,5 @@
 <script src='/static/js/bootstrap-editable.min.js'></script>
 <script src='/static/js/jquery-sortable.js'></script>
 <script src="/static/js/advanced.js"></script>
+<script>readquerydata({{ querydata|tojson }});</script>
 {% endblock %}
