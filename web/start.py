@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import datetime
+from datetime import datetime, timedelta
 import json
 import random as rand
 import sys
@@ -63,16 +63,28 @@ def str2bool(st):
 def enlighten():
     light_type = request.form['type']
     action = request.form['state']
+    override = request.form['override']
     result = "OK"
     if light_type == 'group':
         group = model.Group.query.filter_by(id=request.form['group']).first()
         print group.groups, " with ", len(group.groups) , " children"
         for item in xrange(0,len(group.lights)):
+            if override == "True":
+                lightUpdate = model.Light.query.filter_by(id=group.lights[item].id).first()
+                futureTime = datetime.now() + timedelta(minutes=1)
+                lightUpdate.override = futureTime.strftime("%s")
+                model.db.session.add(lightUpdate)
+                model.db.session.commit()
             result = send_command(group.lights[item],str2bool(action))
     if light_type == 'light':
         light = model.Light.query.filter_by(id=request.form['light']).first()
         print "Light at ", light.device_mac
-        result = send_command(light,str2bool(action))
+        if override == "True":
+            futureTime = datetime.now() + timedelta(minutes=1)
+            light.override = futureTime.strftime("%s")
+            model.db.session.add(light)
+            model.db.session.commit()
+	result = send_command(light,str2bool(action))
     return result
 
 def send_command(light, action):
@@ -320,7 +332,7 @@ def run_queries():
     # Set up Astral
     city_name = model.Setting.query.filter_by(name='city').first().value
     city = ast[city_name]
-    now = datetime.datetime.now()
+    now = datetime.now()
     sun = city.sun(date=now, local=True)
     sunrise = sun['sunrise']
     sunset = sun['sunset']
@@ -348,9 +360,12 @@ def run_queries():
 
         if isinstance(e, model.Light):
             print "Light '{}' on? {}. Query: '{}'".format(e.name, state, query)
-
-            # Send update to light
-            send_command(e, intstate)
+            timeNow = datetime.now().strftime("%s")
+            if int(e.override) > int(timeNow):
+                print "Not running query. Override in place until " + str(e.override)
+            else:
+                # Send update to light
+                send_command(e, intstate)
         else:
             print "Group '{}' on? {}. Query: '{}'".format(e.name, state, query)
 

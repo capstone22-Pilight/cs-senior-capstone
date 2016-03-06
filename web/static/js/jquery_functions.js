@@ -33,7 +33,8 @@ document.addEventListener("DOMContentLoaded", function() {
       data = {
          type: "group",
          group: $(this).closest('li').attr('gid'),
-         state: state
+         state: state,
+         override: "True"
       };
       $.ajax({
          url: "/enlighten",
@@ -43,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
          cache: "false",
          success: function(response){
             $("[gid='" + data.group + "'] li input").bootstrapSwitch('state', data.state);
+
          }
       });
    });
@@ -51,7 +53,8 @@ document.addEventListener("DOMContentLoaded", function() {
       data = {
          type: "light",
          light: $(this).closest('li').attr('lid'),
-         state: state
+         state: state,
+         override: "True"
       };
       $.ajax({
          url: "/enlighten",
@@ -74,13 +77,13 @@ function refresh_group_state(group) {
 
    lights = $(group).find("input[name='checkbox-light']");
    off_count = 0
-   on_count = lights.length
-   for (var i = 0; i < lights.length; i++) {
-      if(!$(lights[i]).bootstrapSwitch('state')){
-         off_count += 1;
-         on_count -= 1;
+      on_count = lights.length
+      for (var i = 0; i < lights.length; i++) {
+         if(!$(lights[i]).bootstrapSwitch('state')){
+            off_count += 1;
+            on_count -= 1;
+         }
       }
-   }
    if(on_count != 0 && off_count == 0)
       switch_button.bootstrapSwitch('state', true);
    else if (off_count != 0 && on_count == 0)

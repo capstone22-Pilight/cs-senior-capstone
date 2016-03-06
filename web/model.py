@@ -40,6 +40,7 @@ class Group(db.Model):
     groups = db.relationship("Group", back_populates="parent")
     lights = db.relationship("Light", back_populates="parent")
     querydata = db.Column(db.String(4096))
+    override = db.Column(db.Integer(),default=0)
 
 class Light(db.Model):
     id = db.Column(db.Integer,primary_key=True)
@@ -51,6 +52,7 @@ class Light(db.Model):
     device = db.relationship("Device", back_populates="lights")
     status = db.Column(db.Integer)
     querydata = db.Column(db.String(4096))
+    override = db.Column(db.Integer(),default=0)
 
 class Setting(db.Model):
     name = db.Column(db.String(128), primary_key=True)
