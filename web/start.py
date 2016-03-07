@@ -137,7 +137,11 @@ def advanced():
                 },
                 "off": {
                     "time": ""
-                }
+                },
+            },
+            "range": {
+                "on": {},
+                "off": {}
             }
         }
     return render_template('advanced.html', lid=lid, gid=gid, name=name, querydata=querydata)
