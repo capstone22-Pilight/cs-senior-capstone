@@ -354,7 +354,12 @@ def run_queries():
             print "'{}' is under manual control; skipping".format(e.name)
             continue # Don't do anything if the light is under manual control
 
-        state = eval(query, {}, inputs)
+        try:
+            state = eval(query, {}, inputs)
+        except StandardError as exception:
+            print "'{}' has a bad query ({}: {}); skipping".format(e.name, exception.__class__.__name__, exception)
+            continue # Don't do anything if the light has a bad query
+
         intstate = 1 if state else 0
 
         if isinstance(e, model.Light):
