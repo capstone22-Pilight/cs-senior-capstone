@@ -19,7 +19,7 @@
         <p>
             <h4>Turn on at:</h4>
             <form>
-                <input type="radio" name="time_on" value="none"> None<br>
+                <input type="radio" name="time_on" value=""> None<br>
                 <input type="radio" name="time_on" value="sunset"> Sunset<br>
                 <input type="radio" name="time_on" value="sunrise"> Sunrise<br>
                 <input type="radio" name="time_on" value="other"> Time: <input type="time" name="time_on" value="18:00"><br>
@@ -29,7 +29,7 @@
         <p>
             <h4>Turn off at:</h4>
             <form>
-                <input type="radio" name="time_off" value="none"> None<br>
+                <input type="radio" name="time_off" value=""> None<br>
                 <input type="radio" name="time_off" value="sunset"> Sunset<br>
                 <input type="radio" name="time_off" value="sunrise"> Sunrise<br>
                 <input type="radio" name="time_off" value="other"> Time: <input type="time" name="time_off" value="08:00"><br>
@@ -39,8 +39,8 @@
         <p>
             <h4>Turn on during:</h4>
             <form>
-                {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']: %}
-                <input type="checkbox" name="dow" value="{{ day.lower() }}"> {{ day }}<br>
+                {% for i, day in enumerate(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']): %}
+                <input type="checkbox" name="dow" value="{{ i }}"> {{ day }}<br>
                 {% endfor %}
             </form>
         </p>
@@ -51,18 +51,18 @@
         <p>
             <h4>On time:</h4>
             <form>
-                Toggle early: <input type="text" name="time_on_early" placeholder="hh:mm:ss"><br>
-                Toggle late: <input type="text" name="time_on_late" placeholder="hh:mm:ss"><br>
-                <input type="checkbox" name="time_on_random"> Randomize in early/late period
+                Toggle early: <input type="text" name="time_on_early" placeholder="hh:mm"><br>
+                Toggle late: <input type="text" name="time_on_late" placeholder="hh:mm"><br>
+                Note: If both are specified, light will be toggled randomly within the period
             </form>
         </p>
 
         <p>
             <h4>Off time:</h4>
             <form>
-                Toggle early: <input type="text" name="time_off_early" placeholder="hh:mm:ss"><br>
-                Toggle late: <input type="text" name="time_off_late" placeholder="hh:mm:ss"><br>
-                <input type="checkbox" name="time_off_random"> Randomize in early/late period
+                Toggle early: <input type="text" name="time_off_early" placeholder="hh:mm"><br>
+                Toggle late: <input type="text" name="time_off_late" placeholder="hh:mm"><br>
+                Note: If both are specified, light will be toggled randomly within the period
             </form>
         </p>
 
@@ -70,13 +70,13 @@
             <h4>Turn on during the given year/month/day range:</h4>
             <form>
                 <br>
-                <input class="doy" type="text" name="year_on" size="4" placeholder="2016">
-                <input class="doy" type="text" name="month_on" size="2" placeholder="05">
-                <input class="doy" type="text" name="day_on" size="2" placeholder="23">
+                <input class="range" type="text" name="year_on" size="4" placeholder="2016">
+                <input class="range" type="text" name="month_on" size="2" placeholder="05">
+                <input class="range" type="text" name="day_on" size="2" placeholder="23">
                 <br>
-                <input class="doy" type="text" name="year_off" size="4" placeholder="2016">
-                <input class="doy" type="text" name="month_off" size="2" placeholder="06">
-                <input class="doy" type="text" name="day_off" size="2" placeholder="02">
+                <input class="range" type="text" name="year_off" size="4" placeholder="2016">
+                <input class="range" type="text" name="month_off" size="2" placeholder="06">
+                <input class="range" type="text" name="day_off" size="2" placeholder="02">
                 (assumes same as start date if left blank)
                 <br>
                 Note: It is possible to only specify certain fields, e.g. start in May and end in July, or start on the 1st of the month and end on the 20th.

@@ -39,8 +39,9 @@ class Group(db.Model):
     parent = db.relationship("Group", back_populates="groups", remote_side=[id])
     groups = db.relationship("Group", back_populates="parent")
     lights = db.relationship("Light", back_populates="parent")
-    querydata = db.Column(db.String(4096))
     override = db.Column(db.Integer(),default=0)
+    status = db.Column(db.Boolean)
+    querydata = db.Column(db.String(4096))
 
 class Light(db.Model):
     id = db.Column(db.Integer,primary_key=True)
@@ -50,9 +51,9 @@ class Light(db.Model):
     device_mac = db.Column(db.String(12), db.ForeignKey('device.mac'))
     port = db.Column(db.Integer)
     device = db.relationship("Device", back_populates="lights")
+    override = db.Column(db.Integer(),default=0)
     status = db.Column(db.Integer)
     querydata = db.Column(db.String(4096))
-    override = db.Column(db.Integer(),default=0)
 
 class Setting(db.Model):
     name = db.Column(db.String(128), primary_key=True)

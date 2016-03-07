@@ -1,7 +1,32 @@
 function buildquerydata() {
     querydata = {
         "hierarchy": $("input[name=hierarchy]:checked").val(),
-        "time": {}
+        "custom_query": "",
+        "time": {
+            "on": {
+                "time": "",
+                "early": "",
+                "late": ""
+            },
+            "off": {
+                "time": "",
+                "early": "",
+                "late": ""
+            }
+        },
+        "dow": [],
+        "range": {
+            "on": {
+                "year": "",
+                "month": "",
+                "day": ""
+            },
+            "off": {
+                "year": "",
+                "month": "",
+                "day": ""
+            }
+        }
     };
 
     // Get the custom query if one is set
@@ -11,48 +36,36 @@ function buildquerydata() {
 
     // Get the on time
     if ($("input[name=time_on][value=other]")[0].checked) {
-        querydata.time.on = $("input[name=time_on][type=time]").val();
+        querydata.time.on.time = $("input[name=time_on][type=time]").val();
     } else {
-        querydata.time.on = $("input[name=time_on]:checked").val();
+        querydata.time.on.time = $("input[name=time_on]:checked").val();
     }
 
     // Get the off time
     if ($("input[name=time_off][value=other]")[0].checked) {
-        querydata.time.off = $("input[name=time_off][type=time]").val();
+        querydata.time.off.time = $("input[name=time_off][type=time]").val();
     } else {
-        querydata.time.off = $("input[name=time_off]:checked").val();
+        querydata.time.off.time = $("input[name=time_off]:checked").val();
     }
+
+    // Get the toggle early/late times
+    querydata.time.on.early = $("input[name=time_on_early]").val()
+    querydata.time.on.late = $("input[name=time_on_late]").val()
+    querydata.time.off.early = $("input[name=time_off_early]").val()
+    querydata.time.off.late = $("input[name=time_off_late]").val()
 
     // Get the days of the week
-    dow = [];
     $("input[name=dow]:checked").each(function() {
-        dow.push(this.value);
+        querydata.dow.push(this.value);
     });
-    if (dow.length > 0) {
-        querydata.dow = dow;
-    }
 
-    // Get the days of the month
-    dom_on = $("input[name=dom_on]").val();
-    if (dom_on) {
-        querydata.dom = [];
-        querydata.dom.on = dom_on;
-        dom_off = $("input[name=dom_off]").val();
-        if (dom_off) {
-            querydata.dom.off = dom_off;
-        }
-    }
-
-    // Get the day of the year
-    doy = {};
-    $("input.doy").each(function() {
-        if (this.value != "") {
-            doy[this.name] = this.value;
-        }
-    });
-    if (Object.keys(doy).length > 0) {
-        querydata.doy = doy;
-    }
+    // Get the years/months/days range
+    querydata.range.on.year = $("input.range[name=year_on]").val()
+    querydata.range.on.month = $("input.range[name=month_on]").val()
+    querydata.range.on.day = $("input.range[name=day_on]").val()
+    querydata.range.off.year = $("input.range[name=year_off]").val()
+    querydata.range.off.month = $("input.range[name=month_off]").val()
+    querydata.range.off.day = $("input.range[name=day_off]").val()
 
     return querydata;
 }
@@ -60,7 +73,7 @@ function buildquerydata() {
 function readquerydata(data) {
     console.log(data);
     // Set the on time
-    if(isNaN(data.time.on.replace(':', ''))){
+    if(isNaN(data.time.on.time.replace(':', ''))){
         $("input[name=time_on][value=" + data.time.on + "]").attr("checked", true);
     }
     else {
@@ -69,7 +82,7 @@ function readquerydata(data) {
     }
 
     // Set the off time
-    if(isNaN(data.time.off.replace(':', ''))){
+    if(isNaN(data.time.off.time.replace(':', ''))){
         $("input[name=time_off][value=" + data.time.off + "]").attr("checked", true);
     }
     else {
@@ -82,8 +95,8 @@ function readquerydata(data) {
         $("input[name=dow][value=" + data.dow[i] + "]").attr("checked", true);
     }
 
-    for (var key in data.doy){
-        $(".doy[name=" + key + "]").val(data.doy[key])
+    for (var key in data.range){
+        $(".range[name=" + key + "]").val(data.range[key])
     }
 
     $("input[name=hierarchy][value=" + data.hierarchy + "]").attr("checked", true);
@@ -103,8 +116,8 @@ function buildquery(data) {
             dayqueries.push("dom == " + data.dom.on);
         }
     }
-    if ("doy" in data) {
-        dayqueries.push("(" + Array.prototype.join.call(Object.keys(data.doy).map(function(k) { return k + " == " + data.doy[k]; }), " and ") + ")");
+    if ("range" in data) {
+        dayqueries.push("(" + Array.prototype.join.call(Object.keys(data.range).map(function(k) { return k + " == " + data.range[k]; }), " and ") + ")");
     }
     if (dayqueries.length > 0) {
         query = "(" + query + ") and (" + dayqueries.join(" or ") + ")";

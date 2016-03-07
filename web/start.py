@@ -20,6 +20,9 @@ from astral import Astral
 import model as model
 import schedule
 
+from gen_query import gen_query
+from qtime import qtime
+
 debug = False
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
@@ -283,48 +286,6 @@ def logout():
     g.user = None
     return redirect(url_for('login'))
 
-# Given a query data structure in JSON format, returns a query in the form of a boolean expression.
-def gen_query(data):
-
-    # If the query isn't valid JSON (or is empty), just return a "False" query.
-    try:
-        data = json.loads(data)
-    except TypeError:
-        return "False"
-
-    # If a custom query is defined, just return that.
-    custom = data.get('custom_query', "")
-    if custom != "":
-        return custom
-    else:
-        query = "time > {} and time < {}".format(data['time']['on'],
-                                                 data['time']['off'])
-
-        dayqueries = []
-        if 'dow' in data:
-            dayqueries.append(" or ".join(["dow == {}".format(d) for d in data['dow']]))
-        if 'dom' in data:
-            if 'off' in data['dom']:
-                dayqueries.append("(dom >= {} and dom <= {})".format(data['dom']['on'],
-                                                                   data['dom']['off']))
-            else: # Only work for the 'on' day
-                dayqueries.append("dom == {}".format(data['dom']['on']))
-        if 'doy' in data:
-            dayqueries.append("(" + " and ".join(["{} == {}".format(k, v) for k, v in data['doy'].iteritems()]) + ")")
-        if len(dayqueries) > 0:
-            query = "({}) and ({})".format(query, " or ".join(dayqueries))
-
-        if data['hierarchy'] == 'manual':
-            query = "manual"
-        elif data['hierarchy'] == 'parent':
-            query = "parent"
-        elif data['hierarchy'] == 'or':
-            query = "({}) or parent".format(query)
-        elif data['hierarchy'] == 'and':
-            query = "({}) and parent".format(query)
-        # If the type is 'own', no changes are made to the query.
-        return query
-
 # Evaluate all light/group queries and send updates to client nodes
 def run_queries():
     print "Running all queries"
@@ -332,11 +293,10 @@ def run_queries():
     # Set up Astral
     city_name = model.Setting.query.filter_by(name='city').first().value
     city = ast[city_name]
-    now = datetime.now()
-    sun = city.sun(date=now, local=True)
-    sunrise = sun['sunrise']
-    sunset = sun['sunset']
-    now = now.replace(tzinfo=sunrise.tzinfo)
+    now = qtime(datetime.now())
+    sun = city.sun(date=now.time, local=True)
+    sunrise = sun['sunrise'].replace(tzinfo=None)
+    sunset = sun['sunset'].replace(tzinfo=None)
 
     # Evaluate groups and lights in top-down order since parents need to be
     # evaluated first in case their state is referenced by their children.
@@ -345,16 +305,25 @@ def run_queries():
     for e in eval_order:
         # Set variables for query evaluation, such as "time", "sunset", etc.
         inputs = {
+            "qtime": qtime, # Pass the qtime class for evaluation
             "time": now,
+            "dow": now.time.weekday(),
+            "year": now.time.year,
+            "month": now.time.month,
+            "day": now.time.day,
             "sunrise": sunrise,
             "sunset": sunset
         }
+
         # Also set the parent variable unless this is the root group, which has no parent
         if e.parent != None:
             inputs["parent"] = e.parent.status
 
         # Evaluate query using no global vars and with local vars from above
-        query = gen_query(e.querydata)
+        if e.querydata == None or e.querydata == "":
+            query = "False"
+        else:
+            query = gen_query(e.querydata)
         state = eval(query, {}, inputs)
         intstate = 1 if state else 0
 
@@ -366,12 +335,16 @@ def run_queries():
             else:
                 # Send update to light
                 send_command(e, intstate)
+
+                # Update state in database for website to read
+                e.status = intstate
+                model.db.session.commit()
         else:
             print "Group '{}' on? {}. Query: '{}'".format(e.name, state, query)
 
-        # Update state in database for website to read
-        e.status = intstate
-        model.db.session.commit()
+            # Update state in database for website to read
+            e.status = intstate
+            model.db.session.commit()
 
 # Given a root group/light, returns a list of all tree elements in the order
 # they should be evaluated, i.e. top down.

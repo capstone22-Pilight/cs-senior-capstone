@@ -2,20 +2,31 @@
     "hierarchy": "and",
     "custom_query": "",
     "time": {
-        "on": "1800",
-        "off": "sunrise"
+        "on": {
+            "time": "18:00",
+            "early": "00:30",
+            "late": "01:00"
+        },
+        "off": {
+            "time": "sunrise",
+            "early": "00:10",
+            "late": ""
+        }
     },
     "dow": [
-        "monday",
-        "tuesday"
+        "0",
+        "1"
     ],
-    "dom": {
-        "on": "1",
-        "off": "5"
-    },
-    "doy": {
-        "year": "2016",
-        "month": "2",
-        "day": "1"
+    "range": {
+        "on": {
+            "year": "2016",
+            "month": "2",
+            "day": "1"
+        },
+        "off": {
+            "year": "2018",
+            "month": "2",
+            "day": ""
+        }
     }
 }
