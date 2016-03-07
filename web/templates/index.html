@@ -1,12 +1,9 @@
 {% extends "base.html" %}
 {% block body %}
 <ol class='vertical grouplights'>
-  {% for e in lights %}
+  {% with e=root_group %}
   {% include "grouplight.html" %}
-  {% endfor %}
-  {% for e in groups %}
-  {% include "grouplight.html" %}
-  {% endfor %}
+  {% endwith %}
 </ol>
 <button id="add_group" type="button" class="btn btn-primary" style="float: right;">
   <span class="glyphicon glyphicon-plus"></span> New Group
@@ -54,6 +51,8 @@
 
 
     $.fn.bootstrapSwitch.defaults.size = 'small';
+
+
     $("[name='checkbox-light']").bootstrapSwitch();
     $("[name='checkbox-group']").bootstrapSwitch();
     groups = $("li[gid]")

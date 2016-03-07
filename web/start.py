@@ -42,7 +42,7 @@ app.secret_key = 'super_secret_key'
 
 @app.route("/")
 def index():
-    return render_template('index.html', groups=model.Group.query.filter_by(parent_id=None), lights=model.Light.query.filter_by(parent_id=None))
+    return render_template('index.html', root_group=model.Group.query.filter_by(parent_id=None).first())
 
 @app.route("/settings")
 def settings():

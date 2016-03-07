@@ -1,3 +1,6 @@
+ol.grouplights {
+	min-width: 500px;
+}
 ol.vertical ol, ol.vertical {
 	margin: 0;
 	padding: 0;
@@ -8,6 +11,10 @@ ol.vertical ol, ol.vertical {
 }
 li.droppable {
 	min-height: 42px;
+}
+li.droppable[lid] {
+	max-height: 42px;
+	display: block;
 }
 li .glyphicon {
 	font-size: 20px;
@@ -20,4 +27,14 @@ li a.glyphicon {
 }
 li a.glyphicon-remove {
 	color: red;
+}
+.edit {
+	white-space: nowrap;
+}
+
+@media only screen and (max-device-width: 480px) {
+	/* These will help conserve screen real-estate when viewed on a mobile device */
+	ol.vertical ol, ol.vertical {
+		margin-left: 0px;
+	}
 }
