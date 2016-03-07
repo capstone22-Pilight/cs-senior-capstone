@@ -74,20 +74,20 @@ function readquerydata(data) {
     console.log(data);
     // Set the on time
     if(isNaN(data.time.on.time.replace(':', ''))){
-        $("input[name=time_on][value=" + data.time.on + "]").attr("checked", true);
+        $("input[name=time_on][value=" + data.time.on.time + "]").attr("checked", true);
     }
     else {
         $("input[name='time_on'][value=other]").attr("checked", true);
-        $("input[name='time_on'][type=time]").val(data.time.on);
+        $("input[name='time_on'][type=time]").val(data.time.on.time);
     }
 
     // Set the off time
     if(isNaN(data.time.off.time.replace(':', ''))){
-        $("input[name=time_off][value=" + data.time.off + "]").attr("checked", true);
+        $("input[name=time_off][value=" + data.time.off.time + "]").attr("checked", true);
     }
     else {
         $("input[name='time_off'][value=other]").attr("checked", true);
-        $("input[name='time_off'][type=time]").val(data.time.off);
+        $("input[name='time_off'][type=time]").val(data.time.off.time);
     }
 
     // Set the days of the week
@@ -102,39 +102,22 @@ function readquerydata(data) {
     $("input[name=hierarchy][value=" + data.hierarchy + "]").attr("checked", true);
 }
 
-function buildquery(data) {
-    query = "time > " + data.time.on + " and time < " + data.time.off;
-
-    dayqueries = [];
-    if ("dow" in data) {
-        dayqueries.push(Array.prototype.join.call(data.dow.map(function(e) { return "dow == " + e; }), " or "));
-    }
-    if ("dom" in data) {
-        if ("off" in data.dom) {
-            dayqueries.push("(dom >= " + data.dom.on + " and dom <= " + data.dom.off + ")")
-        } else { // Only work for the "on" day
-            dayqueries.push("dom == " + data.dom.on);
-        }
-    }
-    if ("range" in data) {
-        dayqueries.push("(" + Array.prototype.join.call(Object.keys(data.range).map(function(k) { return k + " == " + data.range[k]; }), " and ") + ")");
-    }
-    if (dayqueries.length > 0) {
-        query = "(" + query + ") and (" + dayqueries.join(" or ") + ")";
-    }
-
-    if (data.hierarchy == 'manual') {
-        query = "manual";
-    } else if (data.hierarchy == 'parent') {
-        query = "parent";
-    } else if (data.hierarchy == 'or') {
-        query = "(" + query + ") or parent";
-    } else if (data.hierarchy == 'and') {
-        query = "(" + query + ") and parent";
-    }
-    // If the type is 'own', no changes are made to the query.
-
-    return query;
+function getquery(querydata) {
+    postdata = {
+        "querydata": querydata
+    };
+    $.ajax({
+            url: "/advanced_getquery",
+            global: false,
+            type: "POST",
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(postdata),
+            success: function(response){
+                $("#query").val(response);
+            }
+    });
 }
 
 function sendupdate(querydata) {
@@ -143,7 +126,7 @@ function sendupdate(querydata) {
         "querydata": querydata,
         "lid": title.attr("lid"),
         "gid": title.attr("gid")
-    }
+    };
     $.ajax({
             url: "/advanced_update",
             global: false,
@@ -163,7 +146,7 @@ $("input").on("change", function () {
     // Rebuild the query data structure
     querydata = buildquerydata();
     // Update the advanced query box with the new query
-    $("#query").val(buildquery(querydata));
+    getquery(querydata);
     // Send the updated query info to the server
     sendupdate(querydata);
 });
@@ -179,7 +162,7 @@ $(window).on("load", function () {
     // Rebuild the query data structure
     querydata = buildquerydata();
     // Update the advanced query box with the new query
-    $("#query").val(buildquery(querydata));
+    getquery(querydata);
 });
 
 $("input[name=custom_query_override]").on("change", function () {

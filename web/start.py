@@ -239,6 +239,13 @@ def save_setting():
     model.db.session.commit()
     return name + "," + value
 
+@app.route('/advanced_getquery', methods=['POST'])
+def advanced_getquery():
+    d = request.json
+    querydata = json.dumps(d['querydata'])
+    query = gen_query(querydata)
+    return json.dumps(query), 200, {'ContentType': 'application/json'}
+
 @app.route('/advanced_update', methods=['POST'])
 def advanced_update():
     d = request.json
