@@ -75,8 +75,8 @@ function readquerydata(data) {
 
     // Set the custom query if one is set
     if ('custom_query' in data && data['custom_query'] != ""){
-    	$("#query").val(data.custom_query);
-    	$("input[name=custom_query_override]").click();
+        $("#query").val(data.custom_query);
+        $("input[name=custom_query_override]").click();
     }
 
     // Set the on time
