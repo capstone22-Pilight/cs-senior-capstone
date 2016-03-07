@@ -195,3 +195,9 @@ $("input[name=custom_query_override]").on("change", function () {
         $("#basic_settings,#advanced_settings").addClass("box-en");
     }
 });
+
+$(function () {
+   $('#brightness').on('input change', function () {
+      $('#rangetext').text($(this).val());
+   });
+});
