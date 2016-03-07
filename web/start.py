@@ -191,13 +191,18 @@ def add_device(new_mac,new_ipaddr,new_name):
 def change_name():
     name = request.form['value']
     pk = request.form['pk']
-    isLight = request.form['name'] == "light"
-    if isLight:
+    if request.form['name'] == "light":
         light = model.Light.query.filter_by(id=pk).first()
         light.name = name
-    else:
+    elif request.form['name'] == "group":
         group = model.Group.query.filter_by(id=pk).first()
         group.name = name
+    elif request.form['name'] == "device":
+        device = model.Device.query.filter_by(mac=pk).first()
+        device.name = name
+    else:
+        print "invalid name"
+        return "ERROR"
     model.db.session.commit()
     return "Success!"
 

@@ -12,7 +12,9 @@
    <tbody>
       {% for row in devices %}
       <tr>
-         <td>{{ row['name'] }}</td>
+         <td>
+            <span class="edit" data-name="device" data-pk="{{ row['mac'] }}">{{ row['name'] }}</span>
+         </td>
          <td>{{ row['ipaddr'] }}</td>
          <td>{{ row['mac'] }}</td>
       </tr>
@@ -23,4 +25,13 @@
    <img src="/static/css/search.gif" id="spinner" alt="loading..." style="display: none;" />	
    <button type="button" id="add_devices" class="btn btn-primary" value="Add">ADD DEVICE</button>
 </div>
+<link href="/static/css/devices.css" rel="stylesheet">
+<script src='/static/js/bootstrap-editable.min.js'></script>
+<script>
+   $.fn.editable.defaults.mode = 'inline';
+   $.fn.editable.defaults.showbuttons = false;
+   $.fn.editable.defaults.url = '/change_name';
+   $.fn.editable.defaults.type = 'text';
+   $(".edit").editable();
+</script>
 {% endblock %}
