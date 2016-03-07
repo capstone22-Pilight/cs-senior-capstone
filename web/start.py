@@ -129,7 +129,17 @@ def advanced():
     if(querydata != None):
         querydata = json.loads(querydata)
     else:
-        querydata = { 'hierarchy' : 'and', 'time' : { 'on' : 'none', 'off' : 'none' } }
+        querydata = {
+            "hierarchy": "or",
+            "time": {
+                "on": {
+                    "time": "",
+                },
+                "off": {
+                    "time": ""
+                }
+            }
+        }
     return render_template('advanced.html', lid=lid, gid=gid, name=name, querydata=querydata)
 
 @app.route("/devices")
