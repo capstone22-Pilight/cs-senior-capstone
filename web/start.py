@@ -349,6 +349,11 @@ def run_queries():
             query = "parent"
         else:
             query = gen_query(e.querydata)
+
+        if query == "manual":
+            print "'{}' is under manual control; skipping".format(e.name)
+            continue # Don't do anything if the light is under manual control
+
         state = eval(query, {}, inputs)
         intstate = 1 if state else 0
 
