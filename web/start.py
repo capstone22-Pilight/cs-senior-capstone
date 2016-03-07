@@ -335,6 +335,8 @@ def run_queries():
         # Also set the parent variable unless this is the root group, which has no parent
         if e.parent != None:
             inputs["parent"] = e.parent.status
+        else:
+            inputs["parent"] = False
 
         # Evaluate query using no global vars and with local vars from above
         if e.querydata == None or e.querydata == "":
