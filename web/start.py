@@ -344,7 +344,7 @@ def run_queries():
 
         # Evaluate query using no global vars and with local vars from above
         if e.querydata == None or e.querydata == "":
-            query = "False"
+            query = "parent"
         else:
             query = gen_query(e.querydata)
         state = eval(query, {}, inputs)
