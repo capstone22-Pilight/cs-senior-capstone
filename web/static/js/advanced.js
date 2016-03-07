@@ -72,6 +72,13 @@ function buildquerydata() {
 
 function readquerydata(data) {
     console.log(data);
+
+    // Set the custom query if one is set
+    if ('custom_query' in data && data['custom_query'] != ""){
+    	$("#query").val(data.custom_query);
+    	$("input[name=custom_query_override]").click();
+    }
+
     // Set the on time
     if(isNaN(data.time.on.time.replace(':', ''))){
         $("input[name=time_on][value=" + data.time.on.time + "]").attr("checked", true);
@@ -95,9 +102,19 @@ function readquerydata(data) {
         $("input[name=dow][value=" + data.dow[i] + "]").attr("checked", true);
     }
 
-    for (var key in data.range){
-        $(".range[name=" + key + "]").val(data.range[key])
-    }
+    // Set the toggle early/late times
+    $("input[name=time_on_early]").val(data.time.on.early);
+    $("input[name=time_on_late]").val(data.time.on.late);
+    $("input[name=time_off_early]").val(data.time.off.early);
+    $("input[name=time_off_late]").val(data.time.off.late);
+
+    // Set the years/months/days range
+    $("input.range[name=year_on]").val(data.range.on.year);
+    $("input.range[name=month_on]").val(data.range.on.month);
+    $("input.range[name=day_on]").val(data.range.on.day);
+    $("input.range[name=year_off]").val(data.range.off.year);
+    $("input.range[name=month_off]").val(data.range.off.month);
+    $("input.range[name=day_off]").val(data.range.off.day);
 
     $("input[name=hierarchy][value=" + data.hierarchy + "]").attr("checked", true);
 }
