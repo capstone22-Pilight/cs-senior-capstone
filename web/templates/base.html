@@ -7,6 +7,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>PiLight</title>
 
+    <link rel="icon" href="/static/images/pilight.png">
     <!-- Bootstrap -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
 
@@ -28,5 +29,15 @@
      <div class="container" id="main" style="padding-top:5em">
      {% block body %}{% endblock %}
      </div>
+     <style type ="text/css" >
+        .footer{ 
+            position: fixed;     
+            text-align: center;    
+            bottom: 0px; 
+            width: 100%;
+            color: gray;
+        }
+      </style>
+     <div class="footer">Raspberry Pi is a trademark of the Raspberry Pi Foundation</div>
   </body>
 </html>

@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log(response);
             $(".vertical ol").first().append(response);
             $(".edit").editable();
-            $("[name='checkbox-group']").bootstrapSwitch('indeterminate', true, true);
+            $("[name='checkbox-group']").bootstrapSwitch();
          }
       });
    });
