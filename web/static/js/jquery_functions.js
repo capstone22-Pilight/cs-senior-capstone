@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
    $("#add_devices").click(function(){
-      $('#response').html('<img id="loading" src="/static/css/search.gif" />').show();
+      $('#response').html('<img id="loading" src="/static/images/search.gif" />').show();
       $.ajax({
          url: "/devices/search",
          global: false,
@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
          cache: false,
          beforeSend: function(){
             $('#response').remove('#add_devices');
-            $('#response').html('<img id="loading" src="/static/css/search.gif" />');
+            $('#response').html('<img id="loading" src="/static/images/search.gif" />');
          },
          success: function(response){
             console.log(response)
