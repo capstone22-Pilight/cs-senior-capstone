@@ -40,7 +40,8 @@ class Group(db.Model):
     groups = db.relationship("Group", back_populates="parent")
     lights = db.relationship("Light", back_populates="parent")
     override = db.Column(db.Integer(),default=0)
-    status = db.Column(db.Boolean)
+    status = db.Column(db.Boolean, default=False)
+    rulestatus = db.Column(db.Boolean, default=False)
     querydata = db.Column(db.String(4096))
 
 class Light(db.Model):
@@ -52,7 +53,8 @@ class Light(db.Model):
     port = db.Column(db.Integer)
     device = db.relationship("Device", back_populates="lights")
     override = db.Column(db.Integer(),default=0)
-    status = db.Column(db.Integer)
+    status = db.Column(db.Integer, default=0)
+    rulestatus = db.Column(db.Boolean, default=False)
     querydata = db.Column(db.String(4096))
 
 class Setting(db.Model):

@@ -331,6 +331,18 @@ def run_queries():
     root = model.Group.query.filter_by(parent_id=None).first()
     eval_order = traverse_tree(root)
     for e in eval_order:
+
+        # Generate query
+        if e.querydata == None or e.querydata == "":
+            query = "parent"
+        else:
+            query = gen_query(e.querydata)
+
+        # Don't evaluate the query if the light is under manual control
+        if query == "manual":
+            print "'{}' is under manual control; skipping".format(e.name)
+            continue # Don't do anything if the light is under manual control
+
         # Set variables for query evaluation, such as "time", "sunset", etc.
         inputs = {
             "qtime": qtime, # Pass the qtime class for evaluation
@@ -349,42 +361,52 @@ def run_queries():
         else:
             inputs["parent"] = False
 
+        # Get the result of the previous query
+        previous_rule_state = e.rulestatus
+
         # Evaluate query using no global vars and with local vars from above
-        if e.querydata == None or e.querydata == "":
-            query = "parent"
-        else:
-            query = gen_query(e.querydata)
-
-        if query == "manual":
-            print "'{}' is under manual control; skipping".format(e.name)
-            continue # Don't do anything if the light is under manual control
-
         try:
-            state = eval(query, {}, inputs)
+            current_rule_state = eval(query, {}, inputs)
         except StandardError as exception:
             print "'{}' has a bad query ({}: {}); skipping".format(e.name, exception.__class__.__name__, exception)
             continue # Don't do anything if the light has a bad query
 
-        intstate = 1 if state else 0
-
-        if isinstance(e, model.Light):
-            print "Light '{}' on? {}. Query: '{}'".format(e.name, state, query)
-            timeNow = datetime.now().strftime("%s")
-            if int(e.override) > int(timeNow):
-                print "Not running query. Override in place until " + str(e.override)
+        # Print query info for debugging
+        if debug:
+            if isinstance(e, model.Light):
+                print "Light '{}'".format(e.name)
             else:
-                # Send update to light
-                send_command(e, intstate)
+                print "Group '{}'".format(e.name)
+            print "Query:\t{}".format(query)
+            print "Previous rule:\t{}".format(previous_rule_state)
+            print "Current rule:\t{}".format(current_rule_state)
+            print "Current state:\t{}".format(bool(e.status))
 
-                # Update state in database for website to read
-                e.status = intstate
-                model.db.session.commit()
+        # For an explanation of this logic, see here:
+        # https://github.com/rettigs/cs-senior-capstone/issues/27#issuecomment-194592403
+        if bool(e.status) == previous_rule_state and bool(e.status) != current_rule_state:
+            if debug:
+                print "New state:\t{}".format(current_rule_state)
+            current_rule_state_int = 1 if current_rule_state else 0
+
+            # Send update to light
+            if isinstance(e, model.Light):
+                send_command(e, current_rule_state_int)
+
+            # Update current state in database
+            if isinstance(e, model.Light):
+                e.status = current_rule_state_int
+            else:
+                e.status = current_rule_state
         else:
-            print "Group '{}' on? {}. Query: '{}'".format(e.name, state, query)
+            if debug:
+                print "Not changing state"
 
-            # Update state in database for website to read
-            e.status = intstate
-            model.db.session.commit()
+        # Update the current rule state in the database so it can be used as
+        # the previous rule state the next time this function runs
+        e.rulestatus = current_rule_state
+
+        model.db.session.commit()
 
 # Given a root group/light, returns a list of all tree elements in the order
 # they should be evaluated, i.e. top down.
