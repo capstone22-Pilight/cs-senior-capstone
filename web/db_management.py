@@ -17,8 +17,7 @@ def build():
     group = Group(id=1, name="All Lights", parent_id=None)
 
     first_user = User(username="Pi",password="pilight")
-    settings = [Setting(name='city', value='Seattle'),
-                Setting(name='overridetime', value='02:00')]
+    settings = [Setting(name='city', value='Seattle')]
     db.session.add(first_user)
     for s in settings:
         db.session.add(s)

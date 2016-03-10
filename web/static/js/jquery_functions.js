@@ -33,8 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
       data = {
          type: "group",
          group: $(this).closest('li').attr('gid'),
-         state: state,
-         override: "True"
+         state: state
       };
       $.ajax({
          url: "/enlighten",
@@ -53,8 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
       data = {
          type: "light",
          light: $(this).closest('li').attr('lid'),
-         state: state,
-         override: "True"
+         state: state
       };
       $.ajax({
          url: "/enlighten",

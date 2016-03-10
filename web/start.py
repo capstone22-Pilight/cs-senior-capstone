@@ -66,29 +66,16 @@ def str2bool(st):
 def enlighten():
     light_type = request.form['type']
     action = request.form['state']
-    override = request.form['override']
-    override_time = time.strptime(model.Setting.query.filter_by(name = "overridetime").first().value, "%H:%M")
-    futureTime = datetime.now() + timedelta(minutes=((override_time.tm_hour * 60)+override_time.tm_min))
     result = "OK"
     if light_type == 'group':
         group = model.Group.query.filter_by(id=request.form['group']).first()
-        group.override = futureTime.strftime("%s")
         group.status = int(str2bool(action))
         print group.groups, " with ", len(group.groups) , " children"
         for item in xrange(0,len(group.lights)):
-            if override == "True":
-                lightUpdate = model.Light.query.filter_by(id=group.lights[item].id).first()
-                lightUpdate.override = futureTime.strftime("%s")
-                model.db.session.add(lightUpdate)
-                model.db.session.commit()
             result = send_command(group.lights[item],str2bool(action))
     if light_type == 'light':
         light = model.Light.query.filter_by(id=request.form['light']).first()
         print "Light at ", light.device_mac
-        if override == "True":
-            light.override = futureTime.strftime("%s")
-            model.db.session.add(light)
-            model.db.session.commit()
 	result = send_command(light,str2bool(action))
     return result
 
