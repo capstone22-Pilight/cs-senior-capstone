@@ -89,12 +89,12 @@ def send_command(light, action):
             #print "SEND TO ", light.port
             command += str(str(action))
             lightUpdate = model.Light.query.filter_by(id=light.device.lights[lights].id).first()
-            lightUpdate.status = int(action)
+            lightUpdate.status = int(not action)
             model.db.session.commit()
         elif light.device.lights[lights].status is None:
             command += '1'
         else:
-            command += str(light.device.lights[lights].status)
+            command += str(int(not light.device.lights[lights].status))
     #print command
     if not debug:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
