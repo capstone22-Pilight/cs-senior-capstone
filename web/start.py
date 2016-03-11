@@ -80,12 +80,11 @@ def enlighten():
     return result
 
 def send_command(light, action):
-    #print "Sending command to ", light.device.ipaddr, " on ", light.port, " turning it to ", action
     ip = str(light.device.ipaddr)
     tcp_port = 9999
+    action = int(not action) 
     command = ""
     for lights in range(0,4):
-        #print light.device.lights[lights].status
         if light.device.lights[lights].port == light.port:
             #print "SEND TO ", light.port
             command += str(str(action))
@@ -93,7 +92,7 @@ def send_command(light, action):
             lightUpdate.status = int(action)
             model.db.session.commit()
         elif light.device.lights[lights].status is None:
-            command += '0'
+            command += '1'
         else:
             command += str(light.device.lights[lights].status)
     #print command
