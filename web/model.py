@@ -39,7 +39,7 @@ class Group(db.Model):
     parent = db.relationship("Group", back_populates="groups", remote_side=[id])
     groups = db.relationship("Group", back_populates="parent")
     lights = db.relationship("Light", back_populates="parent")
-    status = db.Column(db.Boolean, default=False)
+    status = db.Column(db.Boolean, default=True)
     rulestatus = db.Column(db.Boolean, default=False)
     querydata = db.Column(db.String(4096))
 
@@ -51,7 +51,7 @@ class Light(db.Model):
     device_mac = db.Column(db.String(12), db.ForeignKey('device.mac'))
     port = db.Column(db.Integer)
     device = db.relationship("Device", back_populates="lights")
-    status = db.Column(db.Integer, default=0)
+    status = db.Column(db.Integer, default=1)
     rulestatus = db.Column(db.Boolean, default=False)
     querydata = db.Column(db.String(4096))
 
