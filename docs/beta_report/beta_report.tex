@@ -64,36 +64,37 @@ interface allows users to easily set ``rules'' for what their lights do and
 when, depending on the time of day, the sun/moon position, and potentially even
 triggers such as weather conditions or calendar dates.\\
 
-Throughout the last term and a half, our team has produced initial designs,
-documentation, and an alpha-level deliverable for the project.  With regular
+Throughout the last two terms, our team has produced initial designs,
+documentation, and an alpha-level deliverable for the project and now a
+beta version, which contains all the core functionality for our
+final release design next term.  With regular
 communication through email and IRC, our group kept coordinated throughout the
-term, publishing progress reports to the Sharepoint site and code samples to
+project terms, publishing progress reports to the Sharepoint site and code samples to
 our Github page. We will discuss our progress so far and describe how the
-prototype and documentation unfolded over the course of the first term of the
+prototype and documentation unfolded over the course of the first two terms of the
 capstone project. This should provide an assessment on where our groups stands
 in preparedness to move forward with increased functionality in preparation for
-a beta presentation.
+the final submission and expo presentation.
 \end{abstract}
 \pagebreak
 \tableofcontents
 \newpage
 
 \section{Status}
-
-At this point in the project, all alpha-level features have been implemented;
-all planned user interface pages and their corresponding elements have been
-created and at least stubbed; not all elements are fully functional yet.
-However, many of the elements are already at beta-level functionality:
+With the alpha release, most of our functionality was already beta-level,
+but a few core components were missing. We caught and patched some bugs from the
+alpha release and implemented the few remaining features. Testing revealed
+some bugs, which we classified as high, medium, or low priority on \href{https://github.com/rettigs/cs-senior-capstone/issues}{Github}.
 
 \begin{itemize}
     \item The ESP firmware has been written and can automatically connect to
         the Pi wirelessly. \\ \\
       \includegraphics[width=0.75\textwidth]{pi-esp.png}
     \item The Pi is loaded with our custom build of Yocto Linux and can act as
-        a wireless router for the ESPs to connect to. \\ \\
-      \includegraphics[width=0.50\textwidth]{pi-screen.png}
-    \item The Pi is set up to run our Flask web site, and it can be connected 
-        to by wireless devices and viewed in a browser.
+        a wireless router for the ESPs to connect to.
+    \item The Pi is set up to run our Flask web site, and it can be connected
+        to by wireless devices and viewed in a browser. \\ \\
+      \includegraphics[width=1.0\textwidth]{pi-screen.png}
     \item The Flask web site has a SQL database that stores information about
         the lights, groups, devices, rules, and users.
     \item The web interface has a main page that lists all available lights,
@@ -114,9 +115,20 @@ However, many of the elements are already at beta-level functionality:
       \includegraphics[width=0.75\textwidth]{devices-page.png}
     \item There is now a Settings page, where global settings for the application can be set. \\ \\
       \includegraphics[width=0.75\textwidth]{settings-page.png}
+    \item The web interface manual control will override the automated rules
+         until the next rule change.
 \end{itemize}
 
 \section{Work in Progress}
+Much of our work after the alpha release had to do with the
+bugs we encountered adding the missing features into the
+project. The override system provided some bugs, such as
+issues with when a rule would have been moved back after manually
+changing it. Additionally, we had some issues with implementing
+the advanced options and adding new changes to the database. Our full
+list of high priority issues was on our \href{https://github.com/rettigs/cs-senior-capstone/issues}{Github issues page}. All these issues were
+successfully resolved, leaving us with only low-priority issues.\\
+\includegraphics[width=1.0\textwidth]{github-issues.png}
 
 \subsection{Device Communication}
 
@@ -124,30 +136,33 @@ One of the current post-Alpha goals is to complete the communication mechanism
 between the Raspberry Pi and the ESP8266 modules. We are working on finalizing
 our logical evaluation subsystem and determining what do to in the case of
 manual user override. The databases and communication parameters have been
-completed; we know what the function that will flip the lights themselves
-expects, but we don't know how to perform our Python-based evaluations yet. We
-expect that it will come shortly after finishing up the advanced query editor,
-at which point we expect to have a format and value range locked down for the
-queries to be evaluated.\\
+completed; we know what the function that will flip the lights themselves and
+we have finalized the function that sends the command. The same function is
+used for both query execution and manual control, and has been vigorously
+tested with all the relevant devices. Database control has also been implemented
+so that the lights use the persistent data.
 
 The devices are already prepared in a database to draw from, using the MAC
 address as the unique key to locate the IP address from the table. We don't
 anticipate the ISC DHCP server flipping addresses around, but by using the
 physical hardware addresses we are eliminating any possibility of sending the
 code to the wrong device. The Python ISC DHCP library provides us with a
-mechanism for determining if a device's IP has changed, and we will write that
-change to the devices table.
+mechanism for determining if a device's IP has changed, and we are writing those
+changes to the devices table.
 
 \subsection{User Interface/Website}
 
-Much of the functionality that we need for Beta has already been completed.
+Much of the functionality that we need for Beta was completed at the Alpha stage.
 The database has been created and the main page is currently able to persist
 user-submitted data, such as the names of groups and lights.  The advanced page
-has yet to actually perform any server communication for persistence of
-user-submitted data, but the implementation of this will be similar to the
-front page.  There are also a few UI elements that are currently not
-implemented, such as group deletion on the main page, but none of these require
-new knowledge in order to implement and should be completed soon.
+now triggers server communication utilizing newly created
+user-submitted data, using the same core functionality as the front page.
+
+The user interface saw some slight design changes, such as changing the CSS
+to make it more friendly for mobile devices by shrinking some elements on the
+page. Additionally, the web application has been set to auto-deploy on the Pi
+with sufficient error handling when powered on, and it sets the display on the
+TFT LCD to properly show the application.
 
 \subsection{Scheduling System}
 
@@ -158,8 +173,10 @@ are to be turned on/off.  The scheduling system is also in charge of parsing
 the group/light rules that are stored in JSON format into boolean logic
 expressions that can be evaluated, including replacing keywords such as
 "sunset" and "sunrise" with actual times based on the user's location and the
-time of the year.  So far, the basic JSON to boolean expression conversion has
-been implemented.
+time of the year. A complex JSON-driven data collection and query analysis
+system has been a major focus since the Alpha. After the remaining elements
+were added to the query and written to the database, testing proved that the
+queries were being executed correctly.
 
 \section{Problems}
 
