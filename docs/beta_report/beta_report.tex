@@ -32,7 +32,7 @@
    }
 \hypersetup{
     bookmarks=false, % show bookmarks bar?
-    pdftitle={Software Requirement Specification}, % title
+    pdftitle={Winter Term Progress Report Beta Stage}, % title
     pdfauthor={Malcom Diller, Evan Steele, Sean Rettig}, % author
     pdfsubject={Raspberry Pi Outdoor Lighting}, % subject of the document
     pdfkeywords={TeX, LaTeX, graphics, images}, % list of keywords
@@ -45,10 +45,8 @@
 }
 \title{Not exactly the Internet of Things for Outdoor Lighting\\ Winter Term Progress Report\\ Beta Stage}
 \author{Oregon State University CS Senior Capstone Group 22\\Malcolm Diller, Sean Rettig, Evan Steele\\Client: Victor Hsu}
-\date{\today, Winter Term}
 
 \begin{document}
-\pagenumbering{gobble}
 \maketitle
 \begin{abstract}
 The goal of this project is to create a home lighting automation system from
@@ -79,7 +77,6 @@ a beta presentation.
 \pagebreak
 \tableofcontents
 \newpage
-\pagenumbering{arabic}
 
 \section{Status}
 
@@ -91,17 +88,17 @@ However, many of the elements are already at beta-level functionality:
 \begin{itemize}
     \item The ESP firmware has been written and can automatically connect to
         the Pi wirelessly. \\ \\
-      \includegraphics[width=1.0\textwidth]{pi-esp.png}
+      \includegraphics[width=0.75\textwidth]{pi-esp.png}
     \item The Pi is loaded with our custom build of Yocto Linux and can act as
         a wireless router for the ESPs to connect to. \\ \\
-      \includegraphics[width=1.0\textwidth]{pi-screen.png}
+      \includegraphics[width=0.50\textwidth]{pi-screen.png}
     \item The Pi is set up to run our Flask web site, and it can be connected 
         to by wireless devices and viewed in a browser.
     \item The Flask web site has a SQL database that stores information about
         the lights, groups, devices, rules, and users.
     \item The web interface has a main page that lists all available lights,
         where lights can be renamed and sorted into groups. \\ \\
-      \includegraphics[width=1.0\textwidth]{main-page.png}
+      \includegraphics[width=0.75\textwidth]{main-page.png}
     \item Groups in the main page can also be created, renamed, nested into
         each other, and deleted, though deletion has not been fully implemented
         yet.
@@ -110,11 +107,13 @@ However, many of the elements are already at beta-level functionality:
     \item All types of rules (including time of day, day of week, day of month,
         day of year, specific dates, sunrise/sunset times, and even parent
         interaction and offsets/staggering) are available to be created. \\ \\
-      \includegraphics[width=1.0\textwidth]{advanced-page.png}
+      \includegraphics[width=0.75\textwidth]{advanced-page-faded.png}
     \item The web interface has a login screen. \\ \\
-      \includegraphics[width=1.0\textwidth]{login-page.png}
+      \includegraphics[width=0.75\textwidth]{login-page.png}
     \item The web interface has a device pairing screen. \\ \\
-      \includegraphics[width=1.0\textwidth]{devices-page.png}
+      \includegraphics[width=0.75\textwidth]{devices-page.png}
+    \item There is now a Settings page, where global settings for the application can be set. \\ \\
+      \includegraphics[width=0.75\textwidth]{settings-page.png}
 \end{itemize}
 
 \section{Work in Progress}
