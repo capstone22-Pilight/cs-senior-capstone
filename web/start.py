@@ -93,7 +93,7 @@ def send_command(light,action):
             command += '1'
         else:
             command += str(int(not light.device.lights[lights].status))
-    if debug:
+    if not debug:
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.connect_ex((ip,tcp_port))
