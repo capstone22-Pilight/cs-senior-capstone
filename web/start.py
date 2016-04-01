@@ -79,28 +79,29 @@ def enlighten():
 	result = send_command(light,str2bool(action))
     return result
 
-def send_command(light, action):
+def send_command(light,action):
     ip = str(light.device.ipaddr)
     tcp_port = 9999
-    action = int(not action) 
+    action = int(not action)
     command = ""
     for lights in range(0,4):
         if light.device.lights[lights].port == light.port:
-            #print "SEND TO ", light.port
             command += str(str(action))
             lightUpdate = model.Light.query.filter_by(id=light.device.lights[lights].id).first()
             lightUpdate.status = int(not action)
-            model.db.session.commit()
         elif light.device.lights[lights].status is None:
             command += '1'
         else:
             command += str(int(not light.device.lights[lights].status))
-    #print command
     if not debug:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        result = sock.connect_ex((ip,tcp_port))
-        sock.send(command)
-    return "OK"
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.connect_ex((ip,tcp_port))
+            sock.send(command)
+        except socket.error:
+            return "Connection refused to device: ", ip
+    model.db.session.commit()
+    return "Connection OK"
 
 @app.route("/advanced")
 def advanced():
