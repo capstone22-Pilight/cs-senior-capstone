@@ -31,12 +31,11 @@ document.addEventListener("DOMContentLoaded", function() {
 document.addEventListener("DOMContentLoaded", function() {
    $('input[name="checkbox-group"]').on('switchChange.bootstrapSwitch', function(event, state) {
       data = {
-         type: "group",
-         group: $(this).closest('li').attr('gid'),
+         gid: $(this).closest('li').attr('gid'),
          state: state
       };
       $.ajax({
-         url: "/enlighten",
+         url: "/enlighten_group",
          global: false,
          type: "POST",
          data:  data,
@@ -50,12 +49,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
    $('input[name="checkbox-light"]').on('switchChange.bootstrapSwitch', function(event, state) {
       data = {
-         type: "light",
-         light: $(this).closest('li').attr('lid'),
+         lid: $(this).closest('li').attr('lid'),
          state: state
       };
       $.ajax({
-         url: "/enlighten",
+         url: "/enlighten_light",
          global: false,
          type: "POST",
          data:  data,

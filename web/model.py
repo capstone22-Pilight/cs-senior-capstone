@@ -51,7 +51,7 @@ class Light(db.Model):
     device_mac = db.Column(db.String(12), db.ForeignKey('device.mac'))
     port = db.Column(db.Integer)
     device = db.relationship("Device", back_populates="lights")
-    status = db.Column(db.Integer, default=1)
+    status = db.Column(db.Boolean, default=True)
     rulestatus = db.Column(db.Boolean, default=False)
     querydata = db.Column(db.String(4096))
 

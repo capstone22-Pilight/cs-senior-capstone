@@ -67,45 +67,46 @@ def str2bool(st):
     except (ValueError, AttributeError):
         raise ValueError('no Valid Conversion Possible')
 
-@app.route('/enlighten',methods=['POST'])
-def enlighten():
-    light_type = request.form['type']
+@app.route('/enlighten_group',methods=['POST'])
+def enlighten_group():
     action = request.form['state']
     result = "OK"
-    if light_type == 'group':
-        group = model.Group.query.filter_by(id=request.form['group']).first()
-        group.status = int(str2bool(action))
-        print group.groups, " with ", len(group.groups) , " children"
-        for item in xrange(0,len(group.lights)):
-            result = send_command(group.lights[item],str2bool(action))
-    if light_type == 'light':
-        light = model.Light.query.filter_by(id=request.form['light']).first()
-        print "Light at ", light.device_mac
-	result = send_command(light,str2bool(action))
+    group = model.Group.query.filter_by(id=request.form['gid']).first()
+    group.status = str2bool(action)
+    #print group.groups, " with ", len(group.groups) , " children"
+    for item in xrange(0,len(group.lights)):
+        result = send_command(group.lights[item],str2bool(action))
     return result
+
+@app.route('/enlighten_light',methods=['POST'])
+def enlighten_light():
+    action = request.form['state']
+    light = model.Light.query.filter_by(id=request.form['lid']).first()
+    #print "Light at ", light.device_mac
+    return send_command(light,str2bool(action))
 
 def send_command(light, action):
     ip = str(light.device.ipaddr)
     tcp_port = 9999
-    action = int(not action) 
+
     command = ""
-    for lights in range(0,4):
-        if light.device.lights[lights].port == light.port:
-            #print "SEND TO ", light.port
-            command += str(str(action))
-            lightUpdate = model.Light.query.filter_by(id=light.device.lights[lights].id).first()
-            lightUpdate.status = int(not action)
-            model.db.session.commit()
-        elif light.device.lights[lights].status is None:
-            command += '1'
+    for i in range(0,4):
+        if light.device.lights[i].port == light.port:
+            command += '1' if action else '0'
         else:
-            command += str(int(not light.device.lights[lights].status))
-    #print command
+            command += '1' if light.device.lights[i].status else '0'
+
     if not debug:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        result = sock.connect_ex((ip,tcp_port))
-        sock.send(command)
-    return "OK"
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.connect_ex((ip,tcp_port))
+            sock.send(command)
+        except socket.error:
+            return "Connection refused to device: ", ip
+
+    model.Light.query.filter_by(id=light.id).first().status = action
+    model.db.session.commit()
+    return "Connection OK"
 
 @app.route("/advanced")
 def advanced():
@@ -394,15 +395,10 @@ def run_queries():
         if bool(e.status) == previous_rule_state and bool(e.status) != current_rule_state:
             if debug >= 2:
                 print "New state:\t{}".format(current_rule_state)
-            current_rule_state_int = 1 if current_rule_state else 0
 
-            # Send update to light
+            # Send update to light, or update the group in the database
             if isinstance(e, model.Light):
-                send_command(e, current_rule_state_int)
-
-            # Update current state in database
-            if isinstance(e, model.Light):
-                e.status = current_rule_state_int
+                send_command(e, current_rule_state)
             else:
                 e.status = current_rule_state
         else:

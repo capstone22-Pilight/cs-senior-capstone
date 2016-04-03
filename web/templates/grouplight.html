@@ -1,7 +1,7 @@
 {% if isLight(e) %}
 <li class='droppable' lid="{{ e.id }}">
   <span name="handle" class="glyphicon glyphicon-move"></span>
-  <input type="checkbox" name="checkbox-light" {{ 'checked' if e.status == 1 }}>
+  <input type="checkbox" name="checkbox-light" {{ 'checked' if e.status }}>
   <span float='left' class="edit" data-name="light" data-pk="{{ e.id }}">{{ e.name }}</span>
   <a href="advanced?lid={{ e.id }}" class="glyphicon glyphicon-cog"></a>
 </li>
