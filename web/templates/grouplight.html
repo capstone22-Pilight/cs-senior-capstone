@@ -1,14 +1,15 @@
 {% if isLight(e) %}
 <li class='droppable' lid="{{ e.id }}">
   <span name="handle" class="glyphicon glyphicon-move"></span>
-  <input type="checkbox" name="checkbox-light" {{ 'checked' if e.status }}>
+  <input type="checkbox" name="light-switch" {{ 'checked' if e.status }}>
   <span float='left' class="edit" data-name="light" data-pk="{{ e.id }}">{{ e.name }}</span>
   <a href="advanced?lid={{ e.id }}" class="glyphicon glyphicon-cog"></a>
 </li>
 {% else %}
 <li class='droppable' gid="{{ e.id }}">
   <span name="handle" class="glyphicon glyphicon-move"></span>
-  <input type="checkbox" name="checkbox-group">
+  <button name="group-on" type="button" class="btn btn-primary btn-sm" onclick="enlighten_group({{ e.id }}, true)">ON</button>
+  <button name="group-off" type="button" class="btn btn-default btn-sm" onclick="enlighten_group({{ e.id }}, false)">OFF</button>
   <span float='left' class="edit" data-name="group" data-pk="{{ e.id }}">{{ e.name }}</span>
   <a href="advanced?gid={{ e.id }}" class="glyphicon glyphicon-cog"></a>
   <a onclick="delete_group({{ e.id }})" role="button" name='delete-button' class="glyphicon glyphicon-remove"></a>

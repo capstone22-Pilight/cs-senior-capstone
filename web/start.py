@@ -61,29 +61,12 @@ def settings():
             break
     return render_template('settings.html', regions=sorted(geo), region=region, settings=settings)
 
-def str2bool(st):
-    try:
-        return ['false', 'true'].index(st.lower())
-    except (ValueError, AttributeError):
-        raise ValueError('no Valid Conversion Possible')
-
-@app.route('/enlighten_group',methods=['POST'])
-def enlighten_group():
-    action = request.form['state']
-    result = "OK"
-    group = model.Group.query.filter_by(id=request.form['gid']).first()
-    group.status = str2bool(action)
-    #print group.groups, " with ", len(group.groups) , " children"
-    for item in xrange(0,len(group.lights)):
-        result = send_command(group.lights[item],str2bool(action))
-    return result
-
-@app.route('/enlighten_light',methods=['POST'])
-def enlighten_light():
+@app.route('/enlighten',methods=['POST'])
+def enlighten():
     action = request.form['state']
     light = model.Light.query.filter_by(id=request.form['lid']).first()
     #print "Light at ", light.device_mac
-    return send_command(light,str2bool(action))
+    return send_command(light, action == 'true')
 
 def send_command(light, action):
     ip = str(light.device.ipaddr)
@@ -103,10 +86,11 @@ def send_command(light, action):
             sock.send(command)
         except socket.error:
             return "Connection refused to device: ", ip
-
+    
     model.Light.query.filter_by(id=light.id).first().status = action
     model.db.session.commit()
-    return "Connection OK"
+
+    return "OK"
 
 @app.route("/advanced")
 def advanced():
