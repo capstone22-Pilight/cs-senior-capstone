@@ -28,39 +28,46 @@ document.addEventListener("DOMContentLoaded", function() {
    });
 
    $('input[name="light-switch"]').on('switchChange.bootstrapSwitch', function(event, state) {
-      data = {
-         lid: $(this).closest('li').attr('lid'),
-         state: state
-      };
       // Dont change the state of the switch until we have confirmation
       $(this).bootstrapSwitch('state', !state, true);
-   
-      $.ajax({
-         url: "/enlighten",
-         global: false,
-         type: "POST",
-         data:  data,
-         cache: "false",
-         success: function(response) {
-            if(response == "OK") {
-               light_switch = $("li[lid='" + data.lid + "'] input[name='light-switch']:first");
-               light_switch.bootstrapSwitch('state', state, true);
-            }
-            else {
-               light_name = $("li[lid='" + data.lid + "'] span.edit:first").text();
-               alert("Unable to change light '" + light_name + "': " + response);
-            }
-         }
-      });
+      enlighten_light($(this), state);
    });
 },true);
+
+function enlighten_light(light, action) {
+   data = {
+      lid: light.closest('li').attr('lid'),
+      action: action
+   };
+
+   $.ajax({
+      url: "/enlighten",
+      global: false,
+      type: "POST",
+      data:  data,
+      cache: "false",
+      success: function(response) {
+         if(response == "OK") {
+            light_switch = $("li[lid='" + data.lid + "'] input[name='light-switch']:first");
+            light_switch.bootstrapSwitch('state', action, true);
+         }
+         else {
+            console.log("error");
+            light_name = $("li[lid='" + data.lid + "'] span.edit:first").text();
+            alert("Unable to change light '" + light_name + "': " + response);
+         }
+      }
+   });
+}
 
 function enlighten_group(gid, action) {
    group = $("li[gid='" + gid + "']").first();
    lights = $(group).find("input[name='light-switch']");
 
    for (var i = 0; i < lights.length; i++) {
-      $(lights[i]).bootstrapSwitch('state', action);
+      if($(lights[i]).bootstrapSwitch('state') != action) {
+         enlighten_light($(lights[i]), action);
+      }
    }
 }
 

@@ -63,7 +63,7 @@ def settings():
 
 @app.route('/enlighten',methods=['POST'])
 def enlighten():
-    action = request.form['state']
+    action = request.form['action']
     light = model.Light.query.filter_by(id=request.form['lid']).first()
     #print "Light at ", light.device_mac
     return send_command(light, action == 'true')
