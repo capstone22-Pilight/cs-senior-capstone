@@ -162,16 +162,26 @@ def devices_search():
                 additions = additions + 1
     return str(additions)
 
-def add_device(new_mac,new_ipaddr,new_name):
-    new_device = model.Device(mac=new_mac,ipaddr=new_ipaddr,name=new_name)
+def add_device(mac, ipaddr, name):
+    # Create the device
+    new_device = model.Device(mac=mac,ipaddr=ipaddr,name=name)
     model.db.session.add(new_device)
-    new_group = model.Group(name = "Group for " + new_mac, parent_id=1)
+    model.db.session.commit()
+
+    # Create a group
+    new_group = model.Group(parent_id=1, name="Group")
     model.db.session.add(new_group)
     model.db.session.commit()
-    for i in range(1,5):
-        new_light = model.Light(parent_id = new_group.id, name="Light " + str(i) + " on " + new_mac, device_mac = new_mac, port=i)
-        model.db.session.add(new_light)
+    new_group.name = "Group {}".format(new_group.id)
     model.db.session.commit()
+
+    # Create the lights
+    for i in xrange(4):
+        new_light = model.Light(parent_id=new_group.id, name="Light")
+        model.db.session.add(new_light)
+        model.db.session.commit()
+        new_light.name = "Light {}".format(new_light.id)
+        model.db.session.commit()
 
 @app.route('/change_name', methods=['POST'])
 def change_name():
