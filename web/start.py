@@ -26,6 +26,9 @@ from qtime import qtime
 # Set default flags
 debug = 0
 rule_eval_period = 5
+time_warp_enabled = False
+
+time_offset = timedelta()
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
 Session = sessionmaker(bind=engine)
@@ -312,6 +315,12 @@ def logout():
     g.user = None
     return redirect(url_for('login'))
 
+# Adds an hour to the current time_offset; this function should be scheduled to
+# run once every second, making a day happen in 24 seconds.
+def time_warp():
+    global time_offset
+    time_offset += timedelta(hours=1)
+
 # Evaluate all light/group queries and send updates to client nodes
 def run_queries():
     print "Running all queries"
@@ -319,7 +328,7 @@ def run_queries():
     # Set up Astral
     city_name = model.Setting.query.filter_by(name='city').first().value
     city = ast[city_name]
-    now = qtime(datetime.now())
+    now = qtime(datetime.now() + time_offset)
     sun = city.sun(date=now.time, local=True)
     sunrise = sun['sunrise'].replace(tzinfo=None)
     sunset = sun['sunset'].replace(tzinfo=None)
@@ -434,14 +443,15 @@ def show_help():
     helpLines = [
         ("-h, --help", "Show this help"),
         ("-d, --debug", "Run in debug mode; show debug info"),
-        ("-p SECONDS, --rule-eval-period SECONDS", "Set how often to evaluate rules")
+        ("-p SECONDS, --rule-eval-period SECONDS", "Set how often to evaluate rules"),
+        ("-t, --time-warp", "Simulate fast time; a day completes in 24 seconds")
     ]
     for line in helpLines:
         print "{:<32}\t{}".format(*line)
 
 if __name__ == "__main__":
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hdp:", ["help", "debug", "rule-eval-period="])
+        opts, args = getopt.getopt(sys.argv[1:], "hdp:t", ["help", "debug", "rule-eval-period=", "time-warp"])
     except getopt.GetoptError as err:
         print str(err)
         exit(2)
@@ -450,6 +460,8 @@ if __name__ == "__main__":
             debug += 1
         elif o in ("-p", "--rule-eval-period"):
             rule_eval_period = int(a)
+        elif o in ("-t", "--time-warp"):
+            time_warp_enabled = True
         else:
             show_help()
             sys.exit(0)
@@ -457,8 +469,14 @@ if __name__ == "__main__":
     if(debug and len(model.Device.query.all()) == 0):
         init_debug()
 
-    # Spin off a scheduler thread to run the queries periodically
+    # Schedule queries to run periodically
     schedule.every(rule_eval_period).seconds.do(run_queries)
+
+    # Schedule a time warp to simulate time running more quickly
+    if time_warp_enabled:
+        schedule.every(1).seconds.do(time_warp)
+
+    # Spin off the scheduler thread
     t = Thread(target=run_schedule)
     t.daemon = True # Makes the thread stop when the parent does
     t.start()
