@@ -23,7 +23,9 @@ import schedule
 from gen_query import gen_query
 from qtime import qtime
 
+# Set default flags
 debug = False
+rule_eval_period = 5
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
 Session = sessionmaker(bind=engine)
@@ -427,26 +429,36 @@ def init_debug():
     add_device("913a8d11f5c5", "151.13.80.15", "Device 1")
     add_device("45a4feaaceb3", "159.19.22.90", "Device 2")
 
+def show_help():
+    '''Prints command line usage help.'''
+    helpLines = [
+        ("-h, --help", "Show this help"),
+        ("-d, --debug", "Run in debug mode; show debug info"),
+        ("-p SECONDS, --rule-eval-period SECONDS", "Set how often to evaluate rules")
+    ]
+    for line in helpLines:
+        print "{:<32}\t{}".format(*line)
+
 if __name__ == "__main__":
     try:
-        opts, args = getopt.getopt(sys.argv[1:],"hd",["help", "debug"])
+        opts, args = getopt.getopt(sys.argv[1:], "hdp:", ["help", "debug", "rule-eval-period="])
     except getopt.GetoptError as err:
         print str(err)
         exit(2)
-    for o,a in opts:
-        if o in ("-h", "--help"):
-            print "--debug to run in debug mode"
-            sys.exit(0)
-        elif o in ("-d", "--debug"):
+    for o, a in opts:
+        if o in ("-d", "--debug"):
             debug = True
+        elif o in ("-p", "--rule-eval-period"):
+            rule_eval_period = int(a)
         else:
-            assert False, "Unhandled Option!"
+            show_help()
+            sys.exit(0)
 
     if(debug and len(model.Device.query.all()) == 0):
         init_debug()
 
     # Spin off a scheduler thread to run the queries periodically
-    schedule.every(5 if debug else 60).seconds.do(run_queries)
+    schedule.every(rule_eval_period).seconds.do(run_queries)
     t = Thread(target=run_schedule)
     t.daemon = True # Makes the thread stop when the parent does
     t.start()
