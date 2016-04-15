@@ -179,7 +179,7 @@ def add_device(mac, ipaddr, name):
 
     # Create the lights
     for i in xrange(4):
-        new_light = model.Light(parent_id=new_group.id, name="Light")
+        new_light = model.Light(parent_id=new_group.id, name="Light", device_mac=mac, port=i)
         model.db.session.add(new_light)
         model.db.session.commit()
         new_light.name = "Light {}".format(new_light.id)
