@@ -24,7 +24,7 @@ from gen_query import gen_query
 from qtime import qtime
 
 # Set default flags
-debug = False
+debug = 0
 rule_eval_period = 5
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
@@ -370,7 +370,7 @@ def run_queries():
             continue # Don't do anything if the light has a bad query
 
         # Print query info for debugging
-        if debug:
+        if debug >= 2:
             if isinstance(e, model.Light):
                 print "Light '{}'".format(e.name)
             else:
@@ -397,7 +397,7 @@ def run_queries():
             else:
                 e.status = current_rule_state
         else:
-            if debug:
+            if debug >= 2:
                 print "Not changing state"
 
         # Update the current rule state in the database so it can be used as
@@ -447,7 +447,7 @@ if __name__ == "__main__":
         exit(2)
     for o, a in opts:
         if o in ("-d", "--debug"):
-            debug = True
+            debug += 1
         elif o in ("-p", "--rule-eval-period"):
             rule_eval_period = int(a)
         else:
