@@ -61,12 +61,24 @@ def settings():
             break
     return render_template('settings.html', regions=sorted(geo), region=region, settings=settings)
 
-@app.route('/enlighten',methods=['POST'])
-def enlighten():
+@app.route('/enlighten_light',methods=['POST'])
+def enlighten_light():
     action = request.form['action']
     light = model.Light.query.filter_by(id=request.form['lid']).first()
-    #print "Light at ", light.device_mac
     return send_command(light, action == 'true')
+
+@app.route('/enlighten_group',methods=['POST'])
+def enlighten_group():
+    action = request.form['action'] == 'true'
+    gid = request.form['gid']
+    enlighten_group_helper(gid, action)
+    return "OK"
+
+def enlighten_group_helper(gid, action):
+    model.Group.query.filter_by(id=gid).first().status = action
+    model.db.session.commit()
+    for group in model.Group.query.filter_by(id=gid).first().groups:
+        enlighten_group_helper(group.id, action)
 
 def send_command(light, action):
     ip = str(light.device.ipaddr)
@@ -85,7 +97,7 @@ def send_command(light, action):
             sock.connect_ex((ip,tcp_port))
             sock.send(command)
         except socket.error:
-            return "Connection refused to device: ", ip
+            return "Connection refused to device: " + ip
     
     model.Light.query.filter_by(id=light.id).first().status = action
     model.db.session.commit()

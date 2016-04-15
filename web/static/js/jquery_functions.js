@@ -35,25 +35,27 @@ document.addEventListener("DOMContentLoaded", function() {
 },true);
 
 function enlighten_light(light, action) {
-   data = {
+   var data = {
       lid: light.closest('li').attr('lid'),
       action: action
    };
 
    $.ajax({
-      url: "/enlighten",
+      url: "/enlighten_light",
       global: false,
       type: "POST",
       data:  data,
       cache: "false",
       success: function(response) {
+         console.log(response);
          if(response == "OK") {
-            light_switch = $("li[lid='" + data.lid + "'] input[name='light-switch']:first");
+            console.log("successful update")
+            var light_switch = $("li[lid='" + data.lid + "'] input[name='light-switch']:first");
             light_switch.bootstrapSwitch('state', action, true);
          }
          else {
-            console.log("error");
-            light_name = $("li[lid='" + data.lid + "'] span.edit:first").text();
+            console.log("error")
+            var light_name = $("li[lid='" + data.lid + "'] span.edit:first").text();
             alert("Unable to change light '" + light_name + "': " + response);
          }
       }
@@ -61,14 +63,30 @@ function enlighten_light(light, action) {
 }
 
 function enlighten_group(gid, action) {
-   group = $("li[gid='" + gid + "']").first();
-   lights = $(group).find("input[name='light-switch']");
+   var group = $("li[gid='" + gid + "']").first();
+   var lights = $(group).find("input[name='light-switch']");
 
    for (var i = 0; i < lights.length; i++) {
       if($(lights[i]).bootstrapSwitch('state') != action) {
          enlighten_light($(lights[i]), action);
       }
    }
+
+   var data = {
+      gid: gid,
+      action: action
+   };
+
+   $.ajax({
+      url: "/enlighten_group",
+      global: false,
+      type: "POST",
+      data:  data,
+      cache: "false",
+      success: function(response) {
+         console.log(response)
+      }
+   });
 }
 
 function delete_group(id) {
