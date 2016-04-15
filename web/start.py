@@ -80,6 +80,11 @@ def enlighten_group_helper(gid, action):
     for group in model.Group.query.filter_by(id=gid).first().groups:
         enlighten_group_helper(group.id, action)
 
+@app.route('/poll',methods=['POST'])
+def poll():
+    all_devices = model.Device.query.all()
+    return "OK"
+
 def send_command(light, action):
     ip = str(light.device.ipaddr)
     tcp_port = 9999
