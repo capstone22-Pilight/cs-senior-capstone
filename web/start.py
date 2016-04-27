@@ -392,7 +392,7 @@ def run_queries():
         # For an explanation of this logic, see here:
         # https://github.com/rettigs/cs-senior-capstone/issues/27#issuecomment-194592403
         if bool(e.status) == previous_rule_state and bool(e.status) != current_rule_state:
-            if debug:
+            if debug >= 2:
                 print "New state:\t{}".format(current_rule_state)
             current_rule_state_int = 1 if current_rule_state else 0
 
