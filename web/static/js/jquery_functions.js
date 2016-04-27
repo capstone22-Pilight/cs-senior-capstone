@@ -26,86 +26,68 @@ document.addEventListener("DOMContentLoaded", function() {
          }
       });
    });
-},true);
 
-document.addEventListener("DOMContentLoaded", function() {
-   $('input[name="checkbox-group"]').on('switchChange.bootstrapSwitch', function(event, state) {
-      data = {
-         type: "group",
-         group: $(this).closest('li').attr('gid'),
-         state: state
-      };
-      $.ajax({
-         url: "/enlighten",
-         global: false,
-         type: "POST",
-         data:  data,
-         cache: "false",
-         success: function(response){
-            $("[gid='" + data.group + "'] li input").bootstrapSwitch('state', data.state);
-
-         }
-      });
-   });
-
-   $('input[name="checkbox-light"]').on('switchChange.bootstrapSwitch', function(event, state) {
-      data = {
-         type: "light",
-         light: $(this).closest('li').attr('lid'),
-         state: state
-      };
-      $.ajax({
-         url: "/enlighten",
-         global: false,
-         type: "POST",
-         data:  data,
-         cache: "false",
-         success: function(response) {
-            parents = $("li[lid='" + data.light + "']").parents("li[gid]");
-            for (var i = 0; i < parents.length; i++) {
-               refresh_group_state(parents[i]);
-            }
-         }
-      });
+   $('input[name="light-switch"]').on('switchChange.bootstrapSwitch', function(event, state) {
+      // Dont change the state of the switch until we have confirmation
+      $(this).bootstrapSwitch('state', !state, true);
+      enlighten_light($(this), state);
    });
 },true);
 
-function refresh_group_state(group) {
-   switch_button = $(group).find("input[name='checkbox-group']:first");
+function enlighten_light(light, action) {
+   var data = {
+      lid: light.closest('li').attr('lid'),
+      action: action
+   };
 
-   lights = $(group).find("input[name='checkbox-light']");
-   off_count = 0
-      on_count = lights.length
-      for (var i = 0; i < lights.length; i++) {
-         if(!$(lights[i]).bootstrapSwitch('state')){
-            off_count += 1;
-            on_count -= 1;
+   $.ajax({
+      url: "/enlighten_light",
+      global: false,
+      type: "POST",
+      data:  data,
+      cache: "false",
+      success: function(response) {
+         console.log(response);
+         if(response == "OK") {
+            console.log("successful update")
+            var light_switch = $("li[lid='" + data.lid + "'] input[name='light-switch']:first");
+            light_switch.bootstrapSwitch('state', action, true);
+         }
+         else {
+            console.log("error")
+            var light_name = $("li[lid='" + data.lid + "'] span.edit:first").text();
+            alert("Unable to change light '" + light_name + "': " + response);
          }
       }
-   if(on_count != 0 && off_count == 0)
-      switch_button.bootstrapSwitch('state', true);
-   else if (off_count != 0 && on_count == 0)
-      switch_button.bootstrapSwitch('state', false);
-   else
-      switch_button.bootstrapSwitch('indeterminate', true);
+   });
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-   $("#add_group").click(function(){
-      $.ajax({
-         url: "/new_group",
-         global: false,
-         type: "POST",
-         cache: false,
-         success: function(response){
-            console.log(response);
-            $(".vertical ol").first().append(response);
-            $(".edit").editable();
-            $("[name='checkbox-group']").bootstrapSwitch();
-         }
-      });
+function enlighten_group(gid, action) {
+   var group = $("li[gid='" + gid + "']").first();
+   var lights = $(group).find("input[name='light-switch']");
+
+   for (var i = 0; i < lights.length; i++) {
+      if($(lights[i]).bootstrapSwitch('state') != action) {
+         enlighten_light($(lights[i]), action);
+      }
+   }
+
+   var data = {
+      gid: gid,
+      action: action
+   };
+
+   $.ajax({
+      url: "/enlighten_group",
+      global: false,
+      type: "POST",
+      data:  data,
+      cache: "false",
+      success: function(response) {
+         console.log(response)
+      }
    });
-},true);
+}
 
 function delete_group(id) {
    group_name = $("[gid='" + id + "'] span.edit:first").text();
@@ -124,3 +106,18 @@ function delete_group(id) {
       }
    });
 }
+
+function add_group() {
+   $.ajax({
+      url: "/new_group",
+      global: false,
+      type: "POST",
+      cache: false,
+      success: function(response){
+         console.log(response);
+         $(".vertical ol").first().append(response);
+         $(".edit").editable();
+      }
+   });
+}
+

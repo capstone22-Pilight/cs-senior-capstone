@@ -5,7 +5,7 @@
   {% include "grouplight.html" %}
   {% endwith %}
 </ol>
-<button id="add_group" type="button" class="btn btn-primary" style="float: right;">
+<button id="add_group" type="button" class="btn btn-primary" style="float: right;" onclick="add_group()">
   <span class="glyphicon glyphicon-plus"></span> New Group
 </button>
  <!-- <a href="#" id="edit" data-type="text">superuser</a> -->
@@ -58,15 +58,7 @@
       $("li [name='handle']").remove()
     }
 
-
-    $("[name='checkbox-light']").bootstrapSwitch();
-    $("[name='checkbox-group']").bootstrapSwitch();
-    groups = $("li[gid]")
-    for (var i = 0; i < groups.length; i++) {
-       refresh_group_state(groups[i]);
-       console.log("hi")
-    }
-
+    $("[name='light-switch']").bootstrapSwitch();
 
     $.fn.editable.defaults.mode = 'inline';
     $.fn.editable.defaults.showbuttons = false;
