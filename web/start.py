@@ -49,6 +49,12 @@ app.secret_key = 'super_secret_key'
 def index():
     return render_template('index.html', root_group=model.Group.query.filter_by(parent_id=None).first())
 
+@app.route('/reset',methods=['POST'])
+def reset():
+    value = request.form['value']
+    print value
+    return "OK"
+
 @app.route("/settings")
 def settings():
     model.Setting.query.filter_by(name='city').first().value

@@ -121,3 +121,16 @@ function add_group() {
    });
 }
 
+function reset(value) {
+	$.ajax({
+      url: "/reset",
+      global: false,
+      type: "POST",
+      cache: false,
+      data: 'value=' + value,
+      success: function(response){
+         console.log(response);
+      }
+   	});
+	window.location = '/';
+}
