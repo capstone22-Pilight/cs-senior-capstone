@@ -82,11 +82,15 @@ def enlighten_group_helper(gid, action):
 
 @app.route('/poll',methods=['POST'])
 def poll():
-    changes ={}
+    response = {}
     all_devices = model.Light.query.all()
-    for light in all_devices:
-        changes[str(light.id)] = str(light.status)
-    return jsonify(changes)
+    if (request.form['data'] == "state"):
+        for light in all_devices:
+            response[str(light.id)] = str(light.status)
+    elif (request.form['data'] == "names"):
+        for light in all_devices:
+            response[str(light.id)] = str(light.name)
+    return jsonify(response)
 
 def send_command(light, action):
     ip = str(light.device.ipaddr)

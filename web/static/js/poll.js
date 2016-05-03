@@ -1,11 +1,14 @@
 setInterval(function(){
-   var numdevices = 5;
    var state;
+   data = {
+      data: "state"
+   };
    $.ajax({
       url: "/poll",
       global: false,
       type: "POST",
       cache: false,
+      data: data,
       success: function(response){
          for (var key in response) {
             if (response.hasOwnProperty(key)) {
@@ -16,9 +19,35 @@ setInterval(function(){
                   state = true;
                }
                console.log(state);
-               switch_button.bootstrapSwitch('state',state);
+               if (((switch_button).is(':focus'))!=true){
+                  switch_button.bootstrapSwitch('state',state);
+               }
                state = null;
             }
          }
       }});
 },3000);
+
+// Name change poll, a seperate poller since we want
+// different polling times for each type
+setInterval(function(){
+   var name;
+   data = {
+      data : "names"
+   }
+   $.ajax({
+      url: "/poll",
+      global: false,
+      type: "POST",
+      cache: false,
+      data: data,
+      success: function(response){
+         for (var key in response) {
+            if (response.hasOwnProperty(key)) {
+               switch_button = $("span[data-name='" + response[key] + "']");
+               console.log(switch_button);
+               switch_button.html('ey b0ss');
+            }
+         }
+      }});
+},3000)
