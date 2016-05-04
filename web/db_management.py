@@ -15,7 +15,6 @@ def build():
         api.version_control(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO, api.version(SQLALCHEMY_MIGRATE_REPO))
     
     group = Group(id=1, name="All Lights", parent_id=None)
-
     first_user = User(username="Pi",password="pilight")
     settings = [Setting(name='city', value='Seattle')]
     db.session.add(first_user)

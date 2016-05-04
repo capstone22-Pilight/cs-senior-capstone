@@ -52,8 +52,32 @@ def index():
 @app.route('/reset',methods=['POST'])
 def reset():
     value = request.form['value']
-    print value
+    if value == "everything":
+        model.User.query.delete()
+        model.Device.query.delete()
+        model.Light.query.delete()
+        model.Group.query.delete()
+        model.Setting.query.delete()
+        model.db.session.commit()
+        init_database()
+        print "reset database"
+    elif value == "lightsgroups":
+        model.Light.query.delete()
+        model.Group.query.filter(model.Group.parent_id != None).delete()
+        model.db.session.commit()
+        for device in model.Device.query.all():
+            create_device_lights(device.mac);
     return "OK"
+
+def init_database():
+    group = model.Group(id=1, name="All Lights", parent_id=None)
+    first_user = model.User(username="Pi",password="pilight")
+    settings = [model.Setting(name='city', value='Seattle')]
+    model.db.session.add(first_user)
+    for s in settings:
+        model.db.session.add(s)
+    model.db.session.add(group)
+    model.db.session.commit()
 
 @app.route("/settings")
 def settings():
@@ -175,7 +199,10 @@ def add_device(mac, ipaddr, name):
     new_device = model.Device(mac=mac,ipaddr=ipaddr,name=name)
     model.db.session.add(new_device)
     model.db.session.commit()
+    create_device_lights(mac)
 
+#Create all of the groups and lights for this device
+def create_device_lights(mac):
     # Create a group
     new_group = model.Group(parent_id=1, name="Group")
     model.db.session.add(new_group)
