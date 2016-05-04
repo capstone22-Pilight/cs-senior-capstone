@@ -1,0 +1,119 @@
+\documentclass[10pt,draftclsnofoot,onecolumn]{IEEEtran}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{listings}
+\usepackage{underscore}
+\usepackage[breaklinks]{hyperref}
+\usepackage{url}
+\usepackage{breakurl}
+\usepackage{graphicx}
+\usepackage{atbegshi}% http://ctan.org/pkg/atbegshi
+
+\renewcommand{\refname}{References}
+\lstset{ %
+   language=Python,                % choose the language of the code
+   basicstyle=\small,        % the size of the fonts that are used for the code
+   keywordstyle=\color{blue},
+   stringstyle=\color{red},
+   commentstyle=\color{green},
+   numbers=left,                   % where to put the line-numbers
+   numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+   stepnumber=1,                   % the step between two line-numbers. If it is 1 e ach line will be numbered
+   numbersep=5pt,                  % how far the line-numbers are from the code
+   backgroundcolor=\color{white},  % choose the background color. You must add \usep ackage{color}
+   showspaces=false,               % show spaces adding particular underscores
+   showstringspaces=false,         % underline spaces within strings
+   showtabs=false,                 % show tabs within strings adding particular unde rscores
+   frame=single,           % adds a frame around the code
+   tabsize=2,          % sets default tabsize to 2 spaces
+   captionpos=b,           % sets the caption-position to bottom
+   breaklines=true,        % sets automatic line breaking
+   breakatwhitespace=false,    % sets if automatic breaks should only happen at whitespace
+   escapeinside={\%*}{*)}          % if you want to add a comment within your codey
+   }
+\hypersetup{
+    bookmarks=false, % show bookmarks bar?
+    pdftitle={Spring Term Report Final Stage}, % title
+    pdfauthor={Malcom Diller, Evan Steele, Sean Rettig}, % author
+    pdfsubject={Raspberry Pi Outdoor Lighting}, % subject of the document
+    pdfkeywords={TeX, LaTeX, graphics, images}, % list of keywords
+    colorlinks=true, % false: boxed links; true: colored links
+    linkcolor=blue, % color of internal links
+    citecolor=black, % color of links to bibliography
+    filecolor=black, % color of file links
+    urlcolor=blue, % color of external links
+  %linktoc=page % only page is linked
+}
+\title{Not exactly the Internet of Things for Outdoor Lighting\\ Spring Term Report\\ Final Stage}
+\author{Oregon State University CS Senior Capstone Group 22\\Malcolm Diller, Sean Rettig, Evan Steele\\Client: Victor Hsu}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+The goal of this project is to create a home lighting automation system from
+open source software and inexpensive commodity hardware that allows lights to
+be controlled automatically and remotely while also being easy to set up and
+use.\\
+
+The system consists of a wireless network of tiny ``client'' computers that
+each control up to 4 sets of lights and are controlled by a central ``server''
+computer, which automatically sends out commands to the clients when it's
+time to turn on or off.  The central node runs a control program that can
+be easily accessed via a touch screen, a web browser, or a mobile device, where
+the user can locally or remotely control each light individually. The control
+interface allows users to easily set ``rules'' for what their lights do and
+when, depending on the time of day, the sun/moon position, and potentially even
+triggers such as weather conditions or calendar dates.\\
+
+Since September 2015, we have been developing the final deliverable through several 
+iterations. The core system was completed for the Winter progress report in the beta
+stage, in which all functionality was present. The Spring term was used to polish the 
+end result and work on various bugs discovered through extensive testing. Our \href{https://github.com/rettigs/cs-senior-capstone}{Github repository} served as our issue tracker, and as the host for our codebase. 
+The project was extensively tested and debugged before our final presentation.
+\end{abstract}
+\pagebreak
+\tableofcontents
+\newpage
+
+\section{Status}
+For the final release, all core components were completed and debugged,
+leaving many quality-of-life changes for the Spring term. Our medium-priority issues
+were resolved for the final
+deliverable. Our full issue list can be 
+found at \href{https://github.com/rettigs/cs-senior-capstone/issues}{Github}.
+
+\begin{itemize}
+    \item Allow option to simulate time running faster\\
+	  - For testing purposes, we wanted to have a system where 
+            we could pass a flag to the startup script and run an entire
+            day in a usable time frame. 
+    \item Better default names for lights\\ 
+          - Early iterations had the light name start as "Light@<mac\_address>",
+            which was confusing to read. Better names enhance the user experience.
+    \item No login functionality\\
+          - A login system was built into the application, however as development
+            continued it was decided that it was unnecessary, given that we already
+            authenticate to connect to the Pi as an access point.
+    \item Jumbled display on mobile devices\\
+          - Some of our web design choices were not performing well on mobile
+            devices when the light names were long. More nesting in div elements
+            fixed this problem.
+    \item Server crash on invalid query\\
+          - Early iterations of the query thread would cause an exception that would
+            end the query runner too soon. Now we handle that exception and just skip 
+            bad queries.
+\end{itemize}
+
+\section{Work To Do}
+
+\section{Problems}
+
+\section{Code}
+
+\section{Concluding Analysis}
+
+\newpage
+\Urlmuskip=0mu plus 1mu\relax
+\bibliography{design}{}
+\bibliographystyle{IEEEtran}
+
+\end{document}
