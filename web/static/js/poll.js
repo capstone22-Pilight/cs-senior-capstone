@@ -43,8 +43,9 @@ setInterval(function(){
       data: data,
       success: function(response){
          for (var key in response) {
-            if (response.hasOwnProperty(key)) {
-               switch_button = $("li[lid="+key+"]").find('span:eq(4)').html(response[key]);
+            list_item = $("li[lid="+key+"]");
+            if (response.hasOwnProperty(key) && !(list_item.find('input:focus').length > 0)) {
+               list_item.find('span.edit').editable('setValue', response[key], false);
             }
          }
       }});
