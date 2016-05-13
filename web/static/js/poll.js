@@ -44,9 +44,7 @@ setInterval(function(){
       success: function(response){
          for (var key in response) {
             if (response.hasOwnProperty(key)) {
-               switch_button = $("span[data-name='" + response[key] + "']");
-               console.log(switch_button);
-               switch_button.html('ey b0ss');
+               switch_button = $("li[lid="+key+"]").find('span:eq(4)').html(response[key]);
             }
          }
       }});
