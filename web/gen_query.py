@@ -16,50 +16,67 @@ def gen_query(data):
     else:
 
         query = ""
+        is_overnight = data['time']['off']['next_day']
+
+        # Days of week
+        dowquery_on = " or ".join(["dow == {}".format(d) for d in data['dow']])
+        if is_overnight:
+            # Shift the days over by 1 for the off time
+            dowquery_off = " or ".join(["dow == {}".format((int(d)+1)%7) for d in data['dow']])
+        else:
+            dowquery_off = dowquery_on
+
+        if len(dowquery_on) > 0:
+            dowquery_on = "({})".format(dowquery_on)
+        if len(dowquery_off) > 0:
+            dowquery_off = "({})".format(dowquery_off)
 
         # Time
         timequeries = []
         if data['time']['on']['time'] != "":
             # If time is a number, quote it into a string
-            if data['time']['on']['time'] == "sunrise" or data['time']['on']['time'] == "sunset":
+            if data['time']['on']['time'] in ["sunrise", "sunset"]:
                 time = data['time']['on']['time']
             else:
                 time = "'{}'".format(data['time']['on']['time'])
 
             # Build the query string with the qtime object
-            qtimestr = "time >= qtime({}".format(time)
+            qtimestr = "(time >= qtime({}".format(time)
             if data['time']['on']['early'] != "":
                 qtimestr += ", early='{}'".format(data['time']['on']['early'])
             if data['time']['on']['late'] != "":
                 qtimestr += ", late='{}'".format(data['time']['on']['late'])
             qtimestr += ")"
+
+            # Also add in days of the week
+            qtimestr += " and {})".format(dowquery_on)
+
             timequeries.append(qtimestr)
 
         if data['time']['off']['time'] != "":
             # If time is a number, quote it into a string
-            if data['time']['off']['time'] == "sunrise" or data['time']['off']['time'] == "sunset":
+            if data['time']['off']['time'] in ["sunrise", "sunset"]:
                 time = data['time']['off']['time']
             else:
                 time = "'{}'".format(data['time']['off']['time'])
 
             # Build the query string with the qtime object
-            qtimestr = "time <= qtime({}".format(time)
+            qtimestr = "(time <= qtime({}".format(time)
             if data['time']['off']['early'] != "":
                 qtimestr += ", early='{}'".format(data['time']['off']['early'])
             if data['time']['off']['late'] != "":
                 qtimestr += ", late='{}'".format(data['time']['off']['late'])
             qtimestr += ")"
+
+            # Also add in days of the week
+            qtimestr += " and {})".format(dowquery_off)
+
             timequeries.append(qtimestr)
 
-        if len(timequeries) > 0:
+        if is_overnight:
+            query += "({})".format(" or ".join(timequeries))
+        else:
             query += "({})".format(" and ".join(timequeries))
-
-        # Days of week
-        dowquery = " or ".join(["dow == {}".format(d) for d in data['dow']])
-        if len(dowquery) > 0:
-            if len(query) > 0:
-                query += " and "
-            query += "({})".format(dowquery)
 
         # Year/month/day range
         rangequeries = []

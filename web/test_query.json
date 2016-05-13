@@ -10,7 +10,8 @@
         "off": {
             "time": "sunrise",
             "early": "00:10",
-            "late": ""
+            "late": "",
+            "next_day": true
         }
     },
     "dow": [
