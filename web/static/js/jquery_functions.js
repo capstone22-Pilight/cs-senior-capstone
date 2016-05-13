@@ -121,3 +121,21 @@ function add_group() {
    });
 }
 
+function reset(value) {
+   string_value = value;
+   if(string_value == "lightsgroups")
+      string_value = "all of the lights and groups";
+   if(!window.confirm("Are you sure you want to reset " + string_value + "?"))
+      return;
+	$.ajax({
+      url: "/reset",
+      global: false,
+      type: "POST",
+      cache: false,
+      data: 'value=' + value,
+      success: function(response){
+         console.log(response);
+         window.location = '/';
+      }
+   	});
+}
