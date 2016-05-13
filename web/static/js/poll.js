@@ -51,3 +51,7 @@ setInterval(function(){
          }
       }});
 },3000)
+
+setInterval(function(){
+   window.location.reload(1);
+},60000)
