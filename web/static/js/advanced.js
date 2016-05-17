@@ -56,7 +56,7 @@ function buildquerydata() {
     querydata.time.off.late = $("input[name=time_off_late]").val()
 
     // Get whether the off time is supposed to be the next day
-    querydata.time.off.next_day = $("input[name=time_off_next_day]").val()
+    querydata.time.off.next_day = $("input[name=time_off_next_day]")[0].checked
 
     // Get the days of the week
     $("input[name=dow]:checked").each(function() {

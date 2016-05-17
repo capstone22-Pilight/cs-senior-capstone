@@ -26,9 +26,9 @@ def gen_query(data):
         else:
             dowquery_off = dowquery_on
 
-        if len(dowquery_on) > 0:
+        if len(data['dow']) > 1:
             dowquery_on = "({})".format(dowquery_on)
-        if len(dowquery_off) > 0:
+        if len(data['dow']) > 1:
             dowquery_off = "({})".format(dowquery_off)
 
         # Time
@@ -49,7 +49,8 @@ def gen_query(data):
             qtimestr += ")"
 
             # Also add in days of the week
-            qtimestr += " and {})".format(dowquery_on)
+            if len(dowquery_on) > 0:
+                qtimestr += " and {})".format(dowquery_on)
 
             timequeries.append(qtimestr)
 
@@ -69,7 +70,8 @@ def gen_query(data):
             qtimestr += ")"
 
             # Also add in days of the week
-            qtimestr += " and {})".format(dowquery_off)
+            if len(dowquery_off) > 0:
+                qtimestr += " and {})".format(dowquery_off)
 
             timequeries.append(qtimestr)
 
