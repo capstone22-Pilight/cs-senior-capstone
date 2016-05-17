@@ -150,7 +150,7 @@ def advanced():
         querydata = json.loads(querydata)
     else:
         querydata = {
-            "hierarchy": "or",
+            "hierarchy": "own",
             "time": {
                 "on": {
                     "time": "",
