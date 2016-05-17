@@ -101,16 +101,19 @@ function readquerydata(data) {
         $("input[name='time_off'][type=time]").val(data.time.off.time);
     }
 
-    // Set the days of the week
-    for (var i in data.dow){
-        $("input[name=dow][value=" + data.dow[i] + "]").attr("checked", true);
-    }
-
     // Set the toggle early/late times
     $("input[name=time_on_early]").val(data.time.on.early);
     $("input[name=time_on_late]").val(data.time.on.late);
     $("input[name=time_off_early]").val(data.time.off.early);
     $("input[name=time_off_late]").val(data.time.off.late);
+
+    // Set whether the off time is supposed to be the next day
+    $("input[name=time_off_next_day]").attr("checked", data.time.off.next_day);
+
+    // Set the days of the week
+    for (var i in data.dow){
+        $("input[name=dow][value=" + data.dow[i] + "]").attr("checked", true);
+    }
 
     // Set the years/months/days range
     $("input.range[name=year_on]").val(data.range.on.year);
