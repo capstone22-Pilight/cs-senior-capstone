@@ -359,6 +359,8 @@ def run_queries():
     city_name = model.Setting.query.filter_by(name='city').first().value
     city = ast[city_name]
     now = qtime(datetime.now() + time_offset)
+    if debug:
+        print "Current time: {}".format(now)
     sun = city.sun(date=now.time, local=True)
     sunrise = sun['sunrise'].replace(tzinfo=None)
     sunset = sun['sunset'].replace(tzinfo=None)
