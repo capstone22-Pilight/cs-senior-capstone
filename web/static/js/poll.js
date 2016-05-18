@@ -13,9 +13,9 @@ setInterval(function(){
          for (var key in response) {
             if (response.hasOwnProperty(key)) {
                switch_button = $("li[lid='" + key + "']").find('input');
-               if (response[key] == '0'){
+               if (response[key] == 'False'){
                   state = false;
-               }else if (response[key] == '1'){
+               }else if (response[key] == 'True'){
                   state = true;
                }
                console.log(state);
