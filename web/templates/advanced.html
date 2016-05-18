@@ -19,20 +19,9 @@
         <p>
             <h4>Turn on at:</h4>
             <form>
-                <input type="radio" name="time_on" value=""> None<br>
                 <input type="radio" name="time_on" value="sunset"> Sunset<br>
                 <input type="radio" name="time_on" value="sunrise"> Sunrise<br>
                 <input type="radio" name="time_on" value="other"> Time: <input type="time" name="time_on" value="18:00"><br>
-            </form>
-        </p>
-
-        <p>
-            <h4>Turn off at:</h4>
-            <form>
-                <input type="radio" name="time_off" value=""> None<br>
-                <input type="radio" name="time_off" value="sunset"> Sunset<br>
-                <input type="radio" name="time_off" value="sunrise"> Sunrise<br>
-                <input type="radio" name="time_off" value="other"> Time: <input type="time" name="time_off" value="08:00"><br>
             </form>
         </p>
 
@@ -43,14 +32,31 @@
                 <input type="checkbox" name="dow" value="{{ i }}"> {{ day }}<br>
                 {% endfor %}
             </form>
+        </p>
+
+        <p>
+            <h4>Turn off at:</h4>
             <form>
-               <input type="range" style="max-width:20%" id="brightness" value="brightness">Brightness: <label style="dispaly:inline-block" id="rangetext"><br>
+                <input type="radio" name="time_off" value="sunset"> Sunset<br>
+                <input type="radio" name="time_off" value="sunrise"> Sunrise<br>
+                <input type="radio" name="time_off" value="other"> Time: <input type="time" name="time_off" value="08:00"><br>
+            </form>
+
+            <form>
+                <input type="checkbox" name="time_off_next_day"> Turn off the next day
+            </form>
+        </p>
+
+        <p>
+            <form>
+               Brightness: <input type="range" style="max-width:20%" id="brightness" value="brightness">
             </form>
         </p>
     </div>
 
     <div id="advanced_settings" class="box box-en">
         <h3>Advanced Settings</h3>
+
         <p>
             <h4>On time:</h4>
             <form>
