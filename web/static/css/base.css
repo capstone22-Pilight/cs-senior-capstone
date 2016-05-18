@@ -10,11 +10,20 @@ html, body {
 #main {
 	padding-bottom:30px; /* Height of the footer element */
 }
+.time-clock {
+	height:30px;
+    text-align: left; 
+	position:fixed;
+    color: gray;
+	bottom:0;
+	left:0;
+	margin-left: 10px;
+}
 .footer {
 	width:100%;
 	height:30px;
     text-align: center; 
-	position:absolute;
+	position: absolute;
     color: gray;
 	bottom:0;
 	left:0;

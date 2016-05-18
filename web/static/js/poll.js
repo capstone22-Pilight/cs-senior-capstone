@@ -51,6 +51,23 @@ setInterval(function(){
       }});
 },3000)
 
+// Time clock poller
+setInterval(function(){
+   var name;
+   data = {
+      data : "clock"
+   }
+   $.ajax({
+      url: "/poll",
+      global: false,
+      type: "POST",
+      cache: false,
+      data: data,
+      success: function(response){
+         $(".time-clock").text(response);
+      }});
+},1000)
+
 setInterval(function(){
    window.location.reload(1);
 },60000)
