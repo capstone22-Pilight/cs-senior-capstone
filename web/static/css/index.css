@@ -38,3 +38,12 @@ li a.glyphicon-remove {
 		margin-left: 0px;
 	}
 }
+.time-clock {
+	height:30px;
+    text-align: left; 
+	position:fixed;
+    color: gray;
+	bottom:0;
+	left:0;
+	margin-left: 10px;
+}
