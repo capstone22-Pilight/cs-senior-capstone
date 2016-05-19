@@ -56,4 +56,4 @@ class qtime(object):
 
     # Compare this QueryTime with a datetime object.
     def __cmp__(self, other):
-        return cmp(self.gettime(), other.gettime())
+        return cmp(self.gettime().time(), other.gettime().time())
