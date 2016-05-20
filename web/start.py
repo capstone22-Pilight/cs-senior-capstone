@@ -400,6 +400,7 @@ def run_queries():
         inputs = {
             "qtime": qtime, # Pass the qtime class for evaluation
             "time": now,
+            "date": now.time.date(),
             "dow": now.time.weekday(),
             "year": now.time.year,
             "month": now.time.month,
