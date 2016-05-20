@@ -131,9 +131,9 @@ def send_command(light, action):
     command = ""
     for i in range(0,4):
         if light.device.lights[i].port == light.port:
-            command += '1' if action else '0'
+            command += '1' if not action else '0'
         else:
-            command += '1' if light.device.lights[i].status else '0'
+            command += '1' if not light.device.lights[i].status else '0'
 
     if not debug:
         try:
