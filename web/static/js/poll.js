@@ -26,7 +26,7 @@ setInterval(function(){
             }
          }
       }});
-},3000);
+},1000);
 
 // Name change poll, a seperate poller since we want
 // different polling times for each type

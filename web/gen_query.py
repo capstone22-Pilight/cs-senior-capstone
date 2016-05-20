@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import json
 
 # Given a query data structure in JSON format, returns a query in the form of a boolean expression.
@@ -83,30 +84,25 @@ def gen_query(data):
             query += "({})".format(" and ".join(timequeries))
 
         # Year/month/day range
-        rangequeries = []
-        if data['range']['on']['year'] != "":
-            if data['range']['off']['year'] != "": # If an off setting is specified, use a range
-                rangequeries.append("year >= {} and year <= {}".format(data['range']['on']['year'],
-                                                                         data['range']['off']['year']))
-            else: # Otherwise, only work for the 'on' setting
-                rangequeries.append("year == {}".format(data['range']['on']['year']))
-        if data['range']['on']['month'] != "":
-            if data['range']['off']['month'] != "": # If an off setting is specified, use a range
-                rangequeries.append("month >= {} and month <= {}".format(data['range']['on']['month'],
-                                                                         data['range']['off']['month']))
-            else: # Otherwise, only work for the 'on' setting
-                rangequeries.append("month == {}".format(data['range']['on']['month']))
-        if data['range']['on']['day'] != "":
-            if data['range']['off']['day'] != "": # If an off setting is specified, use a range
-                rangequeries.append("day >= {} and day <= {}".format(data['range']['on']['day'],
-                                                                         data['range']['off']['day']))
-            else: # Otherwise, only work for the 'on' setting
-                rangequeries.append("day == {}".format(data['range']['on']['day']))
+        date_on = ",".join("{}={}".format(k, v) for k, v in data['range']['on'].iteritems() if v != "")
 
-        if len(rangequeries) > 0:
-            if len(query) > 0:
-                query += " and "
-            query += "({})".format(" and ".join(rangequeries))
+        # If all of the off values are empty, we ignore the off values to simplify the query.
+        if all(v == "" for v in data['range']['off'].values()):
+            pass
+        # Otherwise, for each off value not specified, the on value will be used as the default.
+        else:
+            for k, v in data['range']['on'].iteritems():
+                if data['range']['off'][k] == "":
+                    data['range']['off'][k] = v
+        date_off = ",".join("{}={}".format(k, v) for k, v in data['range']['off'].iteritems() if v != "")
+        rangequery = None
+        if date_on != "":
+            if date_off != "":
+                rangequery = "(date >= date.replace({}) and date <= date.replace({}))".format(date_on, date_off)
+            else:
+                rangequery = "date == date.replace({})".format(date_on)
+        if rangequery != None:
+            query += " and {}".format(rangequery)
 
         if data['hierarchy'] == 'manual':
             query = "manual"
