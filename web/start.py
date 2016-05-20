@@ -121,7 +121,7 @@ def poll():
         for light in all_devices:
             response[str(light.id)] = str(light.name)
     elif (request.form['data'] == "clock"):
-        return (datetime.now() + time_offset).strftime("%x - %I:%M%p")
+        return (datetime.now() + time_offset).strftime("%Y-%m-%d - %I:%M%p")
     return jsonify(response)
 
 def send_command(light, action):
