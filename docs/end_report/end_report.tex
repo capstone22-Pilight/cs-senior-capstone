@@ -1,0 +1,95 @@
+\documentclass[10pt,draftclsnofoot,onecolumn]{IEEEtran}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{listings}
+\usepackage{underscore}
+\usepackage[breaklinks]{hyperref}
+\usepackage{url}
+\usepackage{breakurl}
+\usepackage{graphicx}
+\usepackage{atbegshi}% http://ctan.org/pkg/atbegshi
+\usepackage{color}
+
+\renewcommand{\refname}{References}
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstset{
+   language=Python,
+   backgroundcolor=\color{lightgray},
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   numbers=left,
+   numberstyle=\footnotesize,
+   numbersep=9pt,
+   tabsize=2,
+   breaklines=true,
+   showtabs=false,
+   captionpos=b
+}
+
+\hypersetup{
+    bookmarks=false, % show bookmarks bar?
+    pdftitle={Spring Term Report }, % title
+    pdfauthor={Malcom Diller, Evan Steele, Sean Rettig}, % author
+    pdfsubject={Raspberry Pi Outdoor Lighting}, % subject of the document
+    pdfkeywords={TeX, LaTeX, graphics, images}, % list of keywords
+    colorlinks=true, % false: boxed links; true: colored links
+    linkcolor=blue, % color of internal links
+    citecolor=black, % color of links to bibliography
+    filecolor=black, % color of file links
+    urlcolor=blue, % color of external links
+  %linktoc=page % only page is linked
+}
+\title{Not exactly the Internet of Things for Outdoor Lighting\\ Spring Term Report\\ Final Stage}
+\author{Oregon State University CS Senior Capstone Group 22\\Malcolm Diller, Sean Rettig, Evan Steele\\Client: Victor Hsu}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Not exactly the internet of things
+\end{abstract}
+\newpage
+\tableofcontents
+\section{Introduction}
+\section{Requirements Document}
+\section{Changes}
+\section{Design Document}
+\section{Technical Review}
+\section{Blog}
+\section{Poster}
+\section{The Project}
+\subsection{Design}
+\subsection{Theory of Operation}
+\subsection{Installation}
+\subsection{Runtime}
+\subsection{Hardware Requirements}
+\section{New Technology}
+\section{Team Discussion}
+\subsection{Evan Steele}
+\subsection{Malcolm Diller}
+\subsection{Sean Rettig}
+\section{Code}
+\section{Photos}
+\Urlmuskip=0mu plus 1mu\relax
+\bibliography{design}{}
+\bibliographystyle{IEEEtran}
+
+\end{document}
