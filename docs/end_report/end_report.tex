@@ -8,6 +8,7 @@
 \usepackage{graphicx}
 \usepackage{atbegshi}% http://ctan.org/pkg/atbegshi
 \usepackage{color}
+\usepackage{rotating}
 
 \renewcommand{\refname}{References}
 \definecolor{lightgray}{rgb}{.9,.9,.9}
@@ -69,8 +70,10 @@ Not exactly the internet of things
 \newpage
 \tableofcontents
 \section{Introduction}
-\section{Requirements Document}
-\section{Changes}
+\section{Original Requirements Document}
+\input{original-requirements}
+\section{Updated Requirements}
+\input{updated-requirements}
 \section{Design Document}
 \input{design-document}
 \section{Technology Review}
