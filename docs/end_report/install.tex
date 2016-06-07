@@ -1,0 +1,24 @@
+As part of our installation, we have two modes of putting the image on your Raspberry Pi. These are tailored to users who just want an express installation with no difficulties, and for users who wish to build their own Pilight image from scratch using the Yocto Builder.
+\subsection{Express install}
+The wiki on Github has a link to a prebuilt image of the Pilight system we had in place at expo. This image is updated using Yocto's autobuilder program Toaster. Once downloaded, it can be installed like any other image for a Raspberry Pi.
+\subsubsection{Windows}
+Windows will use the graphical utility Win32DiskImager to install our image to the SD card.
+\begin{itemize}
+\item Download the image from the Pilight Wiki at \url{https://github.com/rettigs/cs-senior-capstone/wiki}
+\item Insert the SD card into your SD card reader and check which drive letter was assigned. You can easily see the drive letter, such as G:, by looking in the left column of Windows Explorer. You can use the SD card slot if you have one, or a cheap SD adapter in a USB port.
+\item Download the Win32DiskImager program from \url{http://sourceforge.net/projects/win32diskimager/}, which will provide a way to put the image on the SD card
+\item Extract the executable from the zip file and run the Win32DiskImager utility; you may need to run this as administrator. Right-click on the file, and select Run as administrator.
+\item Select the image file you extracted earlier.
+\item Select the drive letter of the SD card in the device box. Be careful to select the correct drive; if you get the wrong one you can destroy the data on your computer's hard disk! If you are using an SD card slot in your computer and can't see the drive in the Win32DiskImager window, try using an external SD adapter.
+\item Click Write and wait for the write to complete.
+\item Exit the imager and eject the SD card.
+\end{itemize}
+\subsubsection{OSX}
+On Macs we can use the command-line utilities for creating our image.
+\begin{itemize}
+\item Insert your SD card to an SD card reader
+\item Use the disk reader program to identify your SD card:
+\begin{lstlisting}
+diskutil list
+\end{lstlisting}
+\end{itemize}
