@@ -4,21 +4,55 @@ The wiki on Github has a link to a prebuilt image of the Pilight system we had i
 \subsubsection{Windows}
 Windows will use the graphical utility Win32DiskImager to install our image to the SD card.
 \begin{itemize}
-\item Download the image from the Pilight Wiki at \url{https://github.com/rettigs/cs-senior-capstone/wiki}
-\item Insert the SD card into your SD card reader and check which drive letter was assigned. You can easily see the drive letter, such as G:, by looking in the left column of Windows Explorer. You can use the SD card slot if you have one, or a cheap SD adapter in a USB port.
-\item Download the Win32DiskImager program from \url{http://sourceforge.net/projects/win32diskimager/}, which will provide a way to put the image on the SD card
-\item Extract the executable from the zip file and run the Win32DiskImager utility; you may need to run this as administrator. Right-click on the file, and select Run as administrator.
-\item Select the image file you extracted earlier.
-\item Select the drive letter of the SD card in the device box. Be careful to select the correct drive; if you get the wrong one you can destroy the data on your computer's hard disk! If you are using an SD card slot in your computer and can't see the drive in the Win32DiskImager window, try using an external SD adapter.
-\item Click Write and wait for the write to complete.
-\item Exit the imager and eject the SD card.
+   \item Download the image from the Pilight Wiki at \url{https://github.com/rettigs/cs-senior-capstone/wiki}
+   \item Insert the SD card into your SD card reader and check which drive letter was assigned. You can easily see the drive letter, such as G:, by looking in the left column of Windows Explorer. You can use the SD card slot if you have one, or a cheap SD adapter in a USB port.
+   \item Download the Win32DiskImager program from \url{http://sourceforge.net/projects/win32diskimager/}, which will provide a way to put the image on the SD card
+   \item Extract the executable from the zip file and run the Win32DiskImager utility; you may need to run this as administrator. Right-click on the file, and select Run as administrator.
+   \item Select the image file you extracted earlier.
+   \item Select the drive letter of the SD card in the device box. Be careful to select the correct drive; if you get the wrong one you can destroy the data on your computer's hard disk! If you are using an SD card slot in your computer and can't see the drive in the Win32DiskImager window, try using an external SD adapter.
+   \item Click Write and wait for the write to complete.
+   \item Exit the imager and eject the SD card.
 \end{itemize}
 \subsubsection{OSX}
 On Macs we can use the command-line utilities for creating our image.
 \begin{itemize}
-\item Insert your SD card to an SD card reader
-\item Use the disk reader program to identify your SD card:
-\begin{lstlisting}
-diskutil list
-\end{lstlisting}
+   \item Insert your SD card to an SD card reader
+   \item Use the disk reader program to identify your SD card:
+      \begin{lstlisting}
+      diskutil list
+      \end{lstlisting}
+   \item Identify the disk (not partition) of your SD card e.g \textit{disk4}, not \textit{disk4s1}
+   \item Unmount the SD card
+      \begin{lstlisting}
+      diskutil unmountDisk /dev/disk<disk# from diskutil>
+      \end{lstlisting}
+      where \textit{disk} is your BSD name e.g. \textit{diskutil unmountDisk /dev/disk4}
+   \item Copy the data to the SD card:
+      \begin{lstlisting}
+      sudo dd bs=1m if=pilight.img of=/dev/rdisk<disk# from diskutil>
+      \end{lstlisting}
+      where \textit{disk} is your BSD name e.g. \textit{/dev/disk4}
+      \begin{itemize}
+         \item This may result in a \textit{dd: invalid number '1m'} error if you have GNU coreutils installed. In that case, just change the \textbf{bs=1m} to \textbf{bs=1M}
+      \end{itemize}
+\end{itemize}
+\subsubsection{Linux}
+Our Linux install is similar to OSX, but using Linux tools instead
+\begin{itemize}
+   \item Run \textit{df} to find where your SD card is mounted:
+      \begin{lstlisting}
+      df -h
+      \end{lstlisting}
+      It will be listed as something like \textit{/dev/mmcblk0p1} or \textit{/dev/sdd1}. For later steps, you'll need the name without the partition number, which would change the values to \textit{/dev/mmcblk0} and \textit{dev/sdd}
+   \item Unmount the drive. For \textit{/dev/sdd} it would be:
+      \begin{lstlisting}
+      umount /dev/sdd1
+      \end{lstlisting}
+   \item Write the data to the SD card. Again for \textit{/dev/sdd} it would be:
+      \begin{lstlisting}
+      dd bs=4M if=pilight.img of=/dev/sdd
+      \end{lstlisting}
+   \item Run sync to flush the write cache
+      \begin{lstlisting}
+      \end{lstlisting}
 \end{itemize}
