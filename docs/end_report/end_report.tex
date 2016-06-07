@@ -59,18 +59,33 @@
     urlcolor=blue, % color of external links
   %linktoc=page % only page is linked
 }
-\title{Not exactly the Internet of Things for Outdoor Lighting\\ Spring Term Report\\ Final Stage}
-\author{Oregon State University CS Senior Capstone Group 22\\Malcolm Diller, Sean Rettig, Evan Steele\\Client: Victor Hsu}
+\title{Not Exactly the Internet of Things for Outdoor Lighting\\ Spring Term 2016 Report\\ Final Stage}
+\author{Oregon State University CS Senior Capstone Group 22\\Malcolm Diller (dillerm@oregonstate.edu), Sean Rettig (rettigs@oregonstate.edu), Evan Steele (steelee@oregonstate.edu)\\Client: Victor Hsu (hsuv@onid.orst.edu)}
 
 \begin{document}
 \maketitle
 \begin{abstract}
-Not exactly the internet of things
+
+``Not Exactly the Internet of Things for Outdoor Lighting'' (or simply
+``PiLight'') is a self-contained home lighting automation system designed to be
+powerful and highly customizable, yet inexpensive.  Standard wallwart plug
+timers are cheap, but their usefulness is limited.  High-tech
+Internet-connected automation systems are feature-rich, but are often very
+expensive, are not easily customizable, and can be rendered useless if the
+external service is ever shut down.  PiLight solves this issue by not requiring
+any external dependencies to function normally.  Furthermore, PiLight is built
+from commodity hardware and open source software, so the system is not only
+inexpensive, but also easy to extend and personalize, for the technically
+inclined.  PiLight includes a sophisticated rule and scheduling system and has
+the potential to integrate with devices other than lights, such as sprinkler
+systems, garage door openers, and more.
+
 \end{abstract}
 \newpage
 \tableofcontents
 \newpage
 \section{Introduction}
+\input{introduction}
 \section{Original Requirements Document}
 \input{original-requirements}
 \section{Updated Requirements}
@@ -89,6 +104,7 @@ Not exactly the internet of things
 \input{install}
 \subsection{Hardware Requirements}
 \section{New Technology}
+\input{new-technology}
 \section{Team Discussion}
 \subsection{Evan Steele}
 \subsection{Malcolm Diller}

@@ -1,0 +1,53 @@
+``Not Exactly the Internet of Things for Outdoor Lighting'' (or simply
+``PiLight'') is a self-contained home lighting automation system designed to be
+powerful and highly customizable, yet inexpensive.  Originally commissioned by
+Victor Hsu at Oregon State University for simple outdoor lighting automation,
+the project has expanded to include a sophisticated rule and scheduling system
+and has the potential to integrate with devices other than lights, such as
+sprinkler systems, garage door openers, and more.
+
+While similar products do exist, PiLight attempts to fill a niche between
+``overly simplistic'' and ``walled garden''.  Standard wallwart plug timers are
+cheap, but their usefulness is limited; if you want your lights to turn on at
+sunset, for example, you must manually adjust the timer throughout the year.
+If you only want your lights on for the weekends, you're out of luck.
+High-tech Internet-connected automation systems are feature-rich, but are often
+very expensive and not easily customizable.  Even worse, should the external
+Internet services running the show break or shut down, the entire system can be
+rendered useless.  PiLight solves these issues by being self-contained; no
+external dependencies are required for the system to function normally.
+Furthermore, PiLight is built from commodity hardware and open source software,
+so the system is not only inexpensive, but also easy to extend and personalize,
+for the technically inclined.
+
+PiLight consists of a wireless network of tiny ``client'' computers that each
+control up to 4 sets of lights and are controlled by a central ``server''
+computer, which automatically sends out commands to the clients when it's time
+to turn on or off.  The central node runs a control program that can be easily
+accessed via a touch screen, a web browser, or a mobile device, where the user
+can locally or remotely control each light individually. The control interface
+allows users to easily set ``rules'' for what their lights do and when,
+depending on the time of day, day of the week, sun position, and potentially
+even triggers such as weather conditions or calendar dates.
+
+A Raspberry Pi with a small touchscreen and Wi-Fi card comprises the central
+control unit; it runs its own web server to allow control of lights, as well as
+a wireless network that allows both users and client nodes to connect.  The
+client nodes are each composed of an ESP8266 Wi-Fi module and a relay, which
+automatically connect to the Pi's wireless network when the ``Add Devices''
+button is pressed on the web UI.  In a commercial implementation of PiLight,
+the client nodes could be integrated into a standard power strip/surge
+protector, so users can simply plug their devices in and start using the system
+immediately without having to order and wire up the components individually.
+
+The PiLight team is composed of Malcolm Diller, Sean Rettig, and Evan Steele,
+who are computer science students at Oregon State University.  Evan Steele's
+primary role was creating the Yocto Linux builds for the Raspberry Pi and
+writing the ESP8266 firmware, while Malcolm and Sean focused primarily on the
+web application, a Flask app with a Bootstrap frontend.  In particular, Sean
+developed most of the rule system and advanced settings for lights, while
+Malcolm and Evan developed the front page UI, using Javascript to dynamically
+update the statuses and names of lights.  Throughout development, we have met
+with our client, Victor, to help clarify project requirements, drive
+hardware/software design decisions, and provide general guidance to ensure the
+project's success.
