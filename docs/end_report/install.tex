@@ -59,42 +59,52 @@ Our Linux install is similar to OSX, but using Linux tools instead
 \subsection{Yocto Build}
 Using the Yocto autobuilder allows you to build the image from scratch, however it does require some advanced knowledge of the Linux command line. You'll also need about 30 GB of drive space for the build.
 \begin{itemize}
-\item Start by fetching the builder and all the source repositories we'll need
-\begin{lstlisting}
-mkdir source
-cd source
-git clone -b dizzy git://git.yoctoproject.org/poky
-cd poky
-git clone -b dizzy git://git.openembedded.org/meta-openembedded
-git clone -b dizzy git://git.yoctoproject.org/meta-intel-iot-middleware
-git clone -b dizzy https://github.com/Pilight/meta-pilight.git
-\end{lstlisting}
-\item Initialize the build environment
-\begin{lstlisting}
-source oe-init-build-env
-\end{lstlisting}
-\item Now add the layers to the bblayers file and the configuration options to the local.conf file:
-\begin{lstlisting}
-echo "BBLAYERS += \"$HOME/source/poky/meta-pilight\"" >> conf/bblayers.conf
-echo "BBLAYERS += \"$HOME/source/poky/meta-openembedded/meta-python\"" >> conf/bblayers.conf
-echo "BBLAYERS += \"$HOME/source/poky/meta-openembedded/meta-oe\"" >> conf/bblayers.conf
-echo "BBLAYERS += \"$HOME/source/poky/meta-openembedded/meta-networking\"" >> conf/bblayers.conf
-echo "MACHINE = \"raspberrypi2\"" >> conf/local.conf
-echo "CORE_IMAGE_EXTRA_INSTALL += \"kernel-dev\"" >> conf/local.conf
-echo "CORE_IMAGE_EXTRA_INSTALL += \"pilight\"" >> conf/local.conf
-echo "MACHINE_FEATURES_BACKFILL_CONSIDERED += \"rtc"\" >> conf/local.conf
-echo "EXTRA_IMAGE_FEATURES = \"debug-tweaks package-management dev-pkgs tools-sdk dev-pkgs\"" >> conf/local.conf
-\end{lstlisting}
-\item Now build your image. This could take several hours depending on the system:
-\begin{lstlisting}
-bitbake maker-image
-\end{lstlisting}
-\item Using Yocto's builtin installer script, we can write the image to the SD card. Assuming it's at \textit{/dev/sdd}:
-\begin{lstlisting}
-$ sudo poky/scripts/contrib/mkefidisk.sh \
-/dev/sdd \
-poky/build/tmp/deploy/images/raspberrypi2/pilight-image-raspberrypi2.hddimg \
-/dev/sda
-\end{lstlisting}
-We now have a bootable SD card
+   \item Start by fetching the builder and all the source repositories we'll need
+      \begin{lstlisting}
+      mkdir source
+      cd source
+      git clone -b dizzy git://git.yoctoproject.org/poky
+      cd poky
+      git clone -b dizzy git://git.openembedded.org/meta-openembedded
+      git clone -b dizzy git://git.yoctoproject.org/meta-intel-iot-middleware
+      git clone -b dizzy https://github.com/Pilight/meta-pilight.git
+      \end{lstlisting}
+   \item Initialize the build environment
+      \begin{lstlisting}
+      source oe-init-build-env
+      \end{lstlisting}
+   \item Now add the layers to the bblayers file and the configuration options to the local.conf file:
+      \begin{lstlisting}
+      echo "BBLAYERS += \"$HOME/source/poky/meta-pilight\"" >> conf/bblayers.conf
+      echo "BBLAYERS += \"$HOME/source/poky/meta-openembedded/meta-python\"" >> conf/bblayers.conf
+      echo "BBLAYERS += \"$HOME/source/poky/meta-openembedded/meta-oe\"" >> conf/bblayers.conf
+      echo "BBLAYERS += \"$HOME/source/poky/meta-openembedded/meta-networking\"" >> conf/bblayers.conf
+      echo "MACHINE = \"raspberrypi2\"" >> conf/local.conf
+      echo "CORE\_IMAGE\_EXTRA\_INSTALL += \"kernel-dev\"" >> conf/local.conf
+      echo "CORE\_IMAGE\_EXTRA\_INSTALL += \"pilight\"" >> conf/local.conf
+      echo "MACHINE\_FEATURES\_BACKFILL\_CONSIDERED += \"rtc"\" >> conf/local.conf
+      echo "EXTRA\_IMAGE\_FEATURES = \"debug-tweaks package-management dev-pkgs tools-sdk dev-pkgs\"" >> conf/local.conf
+      \end{lstlisting}
+   \item Now build your image. This could take several hours depending on the system:
+      \begin{lstlisting}
+      bitbake maker-image
+      \end{lstlisting}
+   \item Using Yocto's builtin installer script, we can write the image to the SD card. Assuming it's at \textit{/dev/sdd}:
+      \begin{lstlisting}
+      sudo poky/scripts/contrib/mkefidisk.sh \
+      /dev/sdd \
+      poky/build/tmp/deploy/images/raspberrypi2/pilight-image-raspberrypi2.hddimg \
+      /dev/sda
+      \end{lstlisting}
+      We now have a bootable SD card
 \end{itemize}
+\section{Usage}
+\subsubsection{Hardware setup}
+Setting up the hardware depends on how you want to use the Pilight system. If you want to control a standard light switch, for example, you'll need to replace the light switch itself. Before connecting the existing power line to the relay, cut off the power to the switch for safety. Simply connect the live wire to the the relay as shown here:\\
+\includegraphics[scale=0.5]{relay}\\
+To connect the ESP8266 module to the relay, you'll need to connect each one of the connections you want to use on the ESP module to the corresponding relay pin. For instance, connecting pin 1 on the ESP to relay in IN1 will allow you to control the light on IN1 with pin 1 on the ESP module.\\
+\includegraphics[scale=0.05]{connection}\\
+Both the relay and the ESP module will need 5V power supplied. You can either run these through a wall outlet with a 5V power supply, or try a long-term battery. Use what works best for your electrical setup. To set up the Raspberry Pi, just provide it with standard wall power over a micro USB cable.
+\subsubsection{Software Setup}
+Once the system is booted on the SD card, you'll see the web interface appear on the TFT LCD screen. You can also access it by logging onto the "Pilight\_Access" wireless access point on a smartphone, tablet or computer. The default password is "RaspberryPi" for connecting. Once you're on, go to \textbf{http://192.168.42.1} in your web browser to access the interface.\\
+\includegraphics[width=1.0\textwidth]{basepage.png}\\
