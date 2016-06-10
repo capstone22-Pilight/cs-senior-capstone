@@ -5,11 +5,11 @@ automated home should be able to control appliances such as lights through
 single-board computer units that have Internet connectivity. Many commercial
 options exist, such as those from Nest Labs, but such devices are prohibitively
 expensive for most consumers, especially for simple tasks such as lighting
-automation. This project aims to provide an low-cost alternative for simple
-home automation, for devices like lights and garage door openers. Using a
-low-cost embedded computer such as the Raspberry Pi and cheap wireless
-communication modules such as the ESP8266, this project will provide a cheap,
-easy-to-install home automation system.
+automation. This project aims to provide a low-cost alternative for simple home
+automation, for devices like lights and garage door openers. Using a low-cost
+embedded computer such as the Raspberry Pi and cheap wireless communication
+modules such as the ESP8266, this project will provide a cheap, easy-to-install
+home automation system.
 
 The project is called ``Not Exactly the Internet-of-Things'' because it's not
 designed as a typical IoT product. The network is entirely local, not worrying
@@ -51,7 +51,7 @@ following features:
             \item Day of year (e.g. ``turn on every January 1st'')
             \item Specific dates (e.g. ``turn on from Dec. 24th at 2am to Dec
                 27th at 8pm'')
-            \item Sunrise / sunset (e.g ``turn on when the sun sets, turn off
+            \item Sunrise / sunset (e.g. ``turn on when the sun sets, turn off
                 when the sun rises'')
         \end{enumerate}
         \item Multiple rules can be applied to each light or group of lights by
@@ -122,12 +122,12 @@ varied set of tools to accomplish our goal, including:
             designed for educational and embedded projects \cite{raspi}. We
             will use it as a low-cost server solution for the lighting
             automation system. It can serve as the web server running NGINX and
-            transmit TCP commands to the ESP8266 wifi modules \cite{nginx}. The
-            Pi will be outfitted with a 320x280 TFTLCD display \cite{tftlcd} so
-            that the interface for control can be accessed directly.  The Pi
-            will also act as a wireless router for the plug units to connect
-            to, and run a DHCP server to distribute IP addresses to the plug
-            units.
+            transmit TCP commands to the ESP8266 Wi-Fi modules \cite{nginx}.
+            The Pi will be outfitted with a 320x280 TFTLCD display
+            \cite{tftlcd} so that the interface for control can be accessed
+            directly.  The Pi will also act as a wireless router for the plug
+            units to connect to, and run a DHCP server to distribute IP
+            addresses to the plug units.
     \end{enumerate} 
         \item ESP8266
     \begin{enumerate}
@@ -162,11 +162,11 @@ lamps, and the display on the control unit will update itself automatically
 with a list of lights.  The lights can have either numbered (e.g. ``Zone 1,
 Light 1'') or randomized but memorable names by default (e.g. ``Blue Koala'')
 which can be later edited through the web interface.  To access the web
-interface, the user connects to the wifi network provided by the control unit
+interface, the user connects to the Wi-Fi network provided by the control unit
 using the credentials included with the manual, or perhaps printed on the
 control unit itself.  They then open a web browser and connect to a specific
-URL, provided to the user with the wifi password.  From the web interface, all
-features are accessble, such as renaming lights, creating light groups, and
+URL, provided to the user with the Wi-Fi password.  From the web interface, all
+features are accessible, such as renaming lights, creating light groups, and
 applying rules for when to toggle lights.
 
 \subsection{Testing}

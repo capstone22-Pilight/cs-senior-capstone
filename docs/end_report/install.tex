@@ -89,7 +89,7 @@ Using the Yocto autobuilder allows you to build the image from scratch, however 
       \begin{lstlisting}
       bitbake maker-image
       \end{lstlisting}
-   \item Using Yocto's builtin installer script, we can write the image to the SD card. Assuming it's at \textit{/dev/sdd}:
+   \item Using Yocto's built-in installer script, we can write the image to the SD card. Assuming it's at \textit{/dev/sdd}:
       \begin{lstlisting}
       sudo poky/scripts/contrib/mkefidisk.sh \
       /dev/sdd \
@@ -108,7 +108,7 @@ Setting up the hardware depends on how you want to use the Pilight system. If yo
 To connect the ESP8266 module to the relay, you'll need to connect each one of the connections you want to use on the ESP module to the corresponding relay pin. For instance, connecting pin 1 on the ESP to relay in IN1 will allow you to control the light on IN1 with pin 1 on the ESP module.\\
 \begin{figure}[h!]
    \includegraphics[scale=0.05]{connection}
-   \caption{An example of a connection from the esp device to a relay board that controls lights.}
+   \caption{An example of a connection from the ESP device to a relay board that controls lights.}
 \end{figure}
 Both the relay and the ESP module will need 5V power supplied. You can either run these through a wall outlet with a 5V power supply, or try a long-term battery. Use what works best for your electrical setup. To set up the Raspberry Pi, just provide it with standard wall power over a micro USB cable.
 \subsubsection{Software Setup}
