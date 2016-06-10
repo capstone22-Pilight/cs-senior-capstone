@@ -26,3 +26,22 @@ def send_command(light, action):
     model.Light.query.filter_by(id=light.id).first().status = action
     model.db.session.commit()
 \end{lstlisting}
+
+In the query generator, we have to evaluate the queries from the database to determine what the current state of the light should be. This loop runs every few seconds in a seperate process.
+
+\begin{lstlisting}
+# For an explanation of this logic, see here:
+        # https://github.com/rettigs/cs-senior-capstone/issues/27#issuecomment-194592403
+        if bool(e.status) == previous_rule_state and bool(e.status) != current_rule_state:
+            if debug >= 2:
+                print "New state:\t{}".format(current_rule_state)
+
+            # Send update to light, or update the group in the database
+            if isinstance(e, model.Light):
+                send_command(e, current_rule_state)
+            else:
+                e.status = current_rule_state
+        else:
+            if debug >= 2:
+                print "Not changing state"
+\end{lstlisting}
