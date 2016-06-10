@@ -101,16 +101,31 @@ Using the Yocto autobuilder allows you to build the image from scratch, however 
 \section{Usage}
 \subsubsection{Hardware setup}
 Setting up the hardware depends on how you want to use the Pilight system. If you want to control a standard light switch, for example, you'll need to replace the light switch itself. Before connecting the existing power line to the relay, cut off the power to the switch for safety. Simply connect the live wire to the relay as shown here:\\
-\includegraphics[scale=0.5]{relay}\\
+\begin{figure}[h!]
+   \includegraphics[scale=0.5]{relay}
+   \caption{An example of a two-relay setup.}
+\end{figure}
 To connect the ESP8266 module to the relay, you'll need to connect each one of the connections you want to use on the ESP module to the corresponding relay pin. For instance, connecting pin 1 on the ESP to relay in IN1 will allow you to control the light on IN1 with pin 1 on the ESP module.\\
-\includegraphics[scale=0.05]{connection}\\
+\begin{figure}[h!]
+   \includegraphics[scale=0.05]{connection}
+   \caption{An example of a connection from the esp device to a relay board that controls lights.}
+\end{figure}
 Both the relay and the ESP module will need 5V power supplied. You can either run these through a wall outlet with a 5V power supply, or try a long-term battery. Use what works best for your electrical setup. To set up the Raspberry Pi, just provide it with standard wall power over a micro USB cable.
 \subsubsection{Software Setup}
 Once the system is booted on the SD card, you'll see the web interface appear on the TFT LCD screen. You can also access it by logging onto the "Pilight\_Access" wireless access point on a smartphone, tablet or computer. The default password is "RaspberryPi" for connecting. Once you're on, go to \textbf{http://192.168.42.1} in your web browser to access the interface.\\
-\includegraphics[width=1.0\textwidth]{devices.png}\\
+\begin{figure}[h!]
+   \includegraphics[width=1.0\textwidth]{devices.png}
+   \caption{The devices page before any devices are added.}
+\end{figure}
 Assuming the ESP8266 modules are powered on with 5v and connected up to the relay, you can add the devices on the "Manage Devices" page. Click on the "Add Devices" button to add the ESP8266 devices to the list. Once it's done checking for devices, all your modules should appear.\\
-\includegraphics[width=1.0\textwidth]{added-devices.png}\\
+\begin{figure}[h!]
+   \includegraphics[width=1.0\textwidth]{added-devices.png}
+   \caption{The devices page after two devices are detected and added.}
+\end{figure}
 With these devices added, the front page will automatically populate itself with listings of your new devices. The ESP8266 modules used for this project have 4 GPIOs for controlling the lights, so you'll find 4 entries per device. The front page lets you reorganize these lights into groups for control, and with it you can set intelligent rules for turning these lights on and off
 \subsubsection{Controlling Lights}
 To control groups of lights, you can create an empty group using the "Create Group" button at the bottom of the page. Clicking and dragging lights and groups on the movement icon on the left side of the button will allow you to create groups. You can nest groups within other groups or have lights independent of groups. Clicking the gear icon to the right of the name of a light or group will take you to the configuration page.\\
-\includegraphics[width=1.0\textwidth]{advanced.png}\\
+\begin{figure}[h!]
+   \includegraphics[width=1.0\textwidth]{devices.png}
+   \caption{The advanced page for a light named "Light 3"}
+\end{figure}
