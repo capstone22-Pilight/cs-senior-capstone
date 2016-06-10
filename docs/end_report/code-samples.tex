@@ -1,0 +1,28 @@
+The \textit{send\_command(light,action)} function sends the TCP command to the ESP8266 module from the Raspberry Pi. It takes two arguments:
+\begin{itemize}
+\item \textit{light} = Light object chosen from the database
+\item \textit{action} = Boolean for light status ("True" = ON, "False" = OFF)
+\end{itemize}
+\begin{lstlisting}
+def send_command(light, action):
+    ip = str(light.device.ipaddr)
+    tcp_port = 9999
+
+    command = ""
+    for i in range(0,4):
+        if light.device.lights[i].port == light.port:
+            command += '1' if not action else '0'
+        else:
+            command += '1' if not light.device.lights[i].status else '0'
+
+    if not debug:
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.connect_ex((ip,tcp_port))
+            sock.send(command)
+        except socket.error:
+            return "Connection refused to device: " + ip
+
+    model.Light.query.filter_by(id=light.id).first().status = action
+    model.db.session.commit()
+\end{lstlisting}
