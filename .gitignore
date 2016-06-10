@@ -5,7 +5,6 @@
 *.log
 *.out
 *.toc
-*.pdf
 *.bbl
 *.blg
 *.dvi
